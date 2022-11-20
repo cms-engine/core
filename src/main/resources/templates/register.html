@@ -14,17 +14,18 @@
 </div>
 
 <div class="w-100 p-4 d-flex justify-content-center pb-4">
-    <form method="post">
+    <!--/*@thymesVar id="user" type="com.ecommerce.engine.model.entity.User"*/-->
+    <form method="post" th:object="${user}">
 
         <div th:fragment="createFragment">
             <div class="mb-3">
                 <label class="form-label" for="id">Username</label>
                 <input class="form-control" id="id" name="id" type="text"
-                       th:value="${user.id}"
+                       th:value="*{id}"
                        th:readonly="${!#httpServletRequest.requestURI.endsWith('register')}">
             </div>
 
-            <div class="mb-3" th:if="${#httpServletRequest.requestURI.endsWith('register')}">
+            <div class="mb-3">
                 <label class="form-label" for="password">Password</label>
                 <input class="form-control" id="password" name="password"
                        type="password">
@@ -32,14 +33,14 @@
 
             <div class="mb-3">
                 <label class="form-label" for="email">Email (not necessary)</label>
-                <input class="form-control" id="email" name="email" placeholder="test@gmail.com" th:value="${user.email}"
+                <input class="form-control" id="email" name="email" placeholder="test@gmail.com" th:value="*{email}"
                        type="email">
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="role">Role</label>
                 <select class="form-select" id="role" name="role">
-                    <option th:each="role: ${roles}"
+                    <option th:each="role: ${T(com.ecommerce.engine.model.entity.Role).values()}"
                             th:selected="${user.role == role}"
                             th:text="${role}"
                             th:value="${role}">
@@ -47,14 +48,14 @@
             </div>
         </div>
 
-        <div class="text-center">
+        <div class="text-center mb-3">
             <button class="btn btn-primary" type="submit">Sign up</button>
         </div>
 
+        <div th:insert="~{fragments/main :: errorFragment}"></div>
+
     </form>
 </div>
-
-<div th:insert="~{fragments/main :: errorFragment}"></div>
 
 <script crossorigin="anonymous"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"

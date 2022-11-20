@@ -1,4 +1,4 @@
-package com.divizia.dbconstructor.model;
+package com.ecommerce.engine.model;
 
 @FunctionalInterface
 public interface Updatable<T> {

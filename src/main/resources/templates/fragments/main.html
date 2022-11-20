@@ -6,8 +6,13 @@
 </head>
 <body>
 
-<div class="text-center" th:if="${errorList != null}" th:fragment="errorFragment" style="color: darkred; font-weight: bold; font-size: 120%" >
+<!--/*@thymesVar id="errorList" type="java.util.Collection"*/-->
+<!--<div class="alert alert-danger" role="alert" th:if="${errorList != null}" th:fragment="errorFragment">
     <p th:each="error : ${errorList}" th:text="${error}"></p>
+</div>-->
+
+<div th:fragment="errorFragment" class="alert alert-danger" role="alert" th:if="${#fields.hasErrors()}">
+    <p th:each="err : ${#fields.errors()}" th:text="${err}"/>
 </div>
 
 </body>

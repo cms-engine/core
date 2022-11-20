@@ -1,4 +1,4 @@
-package com.divizia.dbconstructor.exceptions;
+package com.ecommerce.engine.exception;
 
 public class UserPermissionException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.divizia.dbconstructor.controller;
+package com.ecommerce.engine.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -24,15 +24,18 @@
             <input class="form-control form-control-lg" id="password" name="password" placeholder="" type="password">
         </div>
 
-        <div class="text-center">
+        <div class="text-center mb-4">
             <button class="btn btn-primary btn-lg w-100" type="submit">Sign in</button>
             <span>or</span>
             <a class="btn btn-secondary btn-lg w-100" href="/register" type="button">Sign up</a>
         </div>
+
+        <!--/*@thymesVar id="errorList" type="java.util.Collection<java.lang.String>"*/-->
+        <div class="alert alert-danger" role="alert" th:if="${errorList != null}" >
+            <p th:each="error : ${errorList}" th:text="${error}"></p>
+        </div>
     </form>
 </div>
-
-<div th:insert="~{fragments/main :: errorFragment}"></div>
 
 <script crossorigin="anonymous"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"

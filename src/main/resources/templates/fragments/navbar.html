@@ -11,34 +11,15 @@
     <div class="container">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
             <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-                <img alt="favicon" th:src="@{/images/favicon.png}" class="bi me-2 pb-2" />
-                <h5 class="ms-2"><strong>DB Constructor</strong></h5>
+                <img alt="favicon" th:src="@{/images/favicon.png}" class="bi me-2 pb-2"/>
+                <h5 class="ms-2" href="/"><strong>Engine</strong></h5>
             </a>
-
-            <ul class="nav col-9 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li>
-                    <a href="/" class="nav-link px-2 link-dark">
-                        <i class="bi bi-house-door"></i> Home</a>
-                </li>
-                <li>
-                    <a href="/tables/all" class="nav-link px-2 link-dark">
-                        <i class="bi bi-table"></i> All tables</a>
-                </li>
-                <li sec:authorize="hasAuthority('ADMIN')">
-                    <a href="/users/all" class="nav-link px-2 link-dark">
-                        <i class="bi bi-person-lines-fill"></i> Manage users</a>
-                </li>
-                <li>
-                    <a th:href="@{'/users/edit/{id}'(id=${#authentication.name})}"
-                       class="nav-link px-2 link-dark"><i class="bi bi-person"></i> My profile</a>
-                </li>
-            </ul>
 
             <div class="d-flex justify-content-end" sec:authorize="isAuthenticated()">
 
                 <div class="dropdown me-4">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span sec:authentication="name" class="fw-bold">Username</span>
+                        <span sec:authentication="name" class="fw-bold"></span>
                         <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
                     </a>
                     <ul class="dropdown-menu text-small">
@@ -48,11 +29,6 @@
                                 Profile
                             </a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{'/users/password/{id}'(id=${#authentication.name})}">
-                                Change Password
-                            </a>
-                        </li>
                     </ul>
                 </div>
 
@@ -60,7 +36,6 @@
             </div>
         </header>
     </div>
-
 </div>
 
 </body>

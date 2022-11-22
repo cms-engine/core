@@ -18,7 +18,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_users")
+@Table(name = "e_user")
 public class User implements Updatable<User> {
 
     @Id

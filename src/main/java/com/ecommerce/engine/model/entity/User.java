@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
@@ -32,16 +31,16 @@ public class User implements Updatable<User> {
     @Email(regexp = "^$|^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email is wrong")
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "Role can't be null")
-    private Role role;
+    @ManyToOne
+    @JoinColumn
+    private UserGroup group;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        User that = (User) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override

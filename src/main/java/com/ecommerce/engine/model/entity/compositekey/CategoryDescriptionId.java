@@ -2,21 +2,18 @@ package com.ecommerce.engine.model.entity.compositekey;
 
 import com.ecommerce.engine.model.entity.Category;
 import com.ecommerce.engine.model.entity.Language;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
-@Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class CategoryDescriptionId implements Serializable {
 
-    @ManyToOne
-    @JoinColumn
     private Language language;
-
-    @ManyToOne
-    @JoinColumn
     private Category category;
 
 }

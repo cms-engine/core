@@ -11,7 +11,7 @@
     <p th:each="error : ${errorList}" th:text="${error}"></p>
 </div>-->
 
-<div th:fragment="errorFragment" class="alert alert-danger" role="alert" th:if="${#fields.hasErrors()}">
+<div class="alert alert-danger" role="alert" th:fragment="errorFragment" th:if="${#fields.hasErrors()}">
     <p th:each="err : ${#fields.errors()}" th:text="${err}"/>
 </div>
 

@@ -27,9 +27,26 @@
          role="tabpanel" tabindex="0" th:object="${user}">
         <div class="d-flex justify-content-center mb-3">
 
-            <form method="post"  th:action="@{'/users/edit/{id}'(id=*{id})}">
+            <form method="post" th:action="@{'/users/edit/{id}'(id=*{id})}">
 
-                <div th:insert="~{register :: createFragment}"></div>
+                <div class="mb-3">
+                    <label class="form-label" for="id">Username</label>
+                    <input class="form-control" id="id" name="id" th:readonly="*{id != null && !id.isEmpty()}"
+                           th:value="*{id}"
+                           type="text">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-control" id="password" name="password"
+                           type="password">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="email">Email (not necessary)</label>
+                    <input class="form-control" id="email" name="email" placeholder="test@gmail.com" th:value="*{email}"
+                           type="email">
+                </div>
 
                 <div class="text-center mb-3">
                     <button class="btn btn-primary" type="submit">Edit</button>

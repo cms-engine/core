@@ -17,32 +17,32 @@
 
 <!--/*@thymesVar id="users" type="java.util.Collection<com.ecommerce.engine.model.entity.User>"*/-->
 <div class="d-flex justify-content-center">
-<table class="table table-striped" style="width: 40rem">
-    <thead>
-    <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Role</th>
-        <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <th scope="row" th:text="${user.id}"></th>
-        <td th:text="${user.role}"></td>
-        <td>
-            <form th:action="@{'edit/{id}'(id=${user.id})}">
-            <button type="submit" class="btn btn-secondary">Edit</button>
-            </form>
-        </td>
-        <td>
-            <form th:action="@{'delete/{id}'(id=${user.id})}" method="post">
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table class="table table-striped" style="width: 40rem">
+        <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Group</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <th scope="row" th:text="${user.id}"></th>
+            <td th:text="${user.group}"></td>
+            <td>
+                <form th:action="@{'edit/{id}'(id=${user.id})}">
+                    <button class="btn btn-secondary" type="submit">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" th:action="@{'delete/{id}'(id=${user.id})}">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <div th:insert="~{fragments/footer :: footer}"></div>

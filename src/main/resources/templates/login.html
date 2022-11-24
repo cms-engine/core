@@ -10,7 +10,7 @@
 <body>
 
 <div class="w-100 p-4 d-flex justify-content-center pb-4 text-center mt-5">
-    <form method="post" action="/login">
+    <form action="/login" method="post">
 
         <h1 class="h1 mb-3 fw-normal">Please authorize</h1>
 
@@ -26,12 +26,10 @@
 
         <div class="text-center mb-4">
             <button class="btn btn-primary btn-lg w-100" type="submit">Sign in</button>
-            <span>or</span>
-            <a class="btn btn-secondary btn-lg w-100" href="/register" type="button">Sign up</a>
         </div>
 
         <!--/*@thymesVar id="errorList" type="java.util.Collection<java.lang.String>"*/-->
-        <div class="alert alert-danger" role="alert" th:if="${errorList != null}" >
+        <div class="alert alert-danger" role="alert" th:if="${errorList != null}">
             <p th:each="error : ${errorList}" th:text="${error}"></p>
         </div>
     </form>

@@ -25,7 +25,7 @@ public class Language {
     private String locale;
     @OneToOne
     @JoinColumn
-    private com.ecommerce.engine.repository.entity.Image image;
+    private Image image;
     private Boolean status;
 
     @Override

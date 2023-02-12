@@ -26,7 +26,7 @@ public class Category {
     private Category parent;
     @OneToOne
     @JoinColumn
-    private com.ecommerce.engine.repository.entity.Image image;
+    private Image image;
     private Integer sortOrder;
     @CreationTimestamp
     private LocalDate dateAdded;

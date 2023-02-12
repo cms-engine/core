@@ -38,7 +38,7 @@ public class Product {
     private Brand brand;
     @OneToOne
     @JoinColumn
-    private com.ecommerce.engine.repository.entity.Image image;
+    private Image image;
     @OneToOne
     @JoinColumn
     private StoreStatus availableStatus;

@@ -23,7 +23,7 @@ public class ProductAdditionalImage {
     private Product product;
     @OneToOne
     @JoinColumn
-    private com.ecommerce.engine.repository.entity.Image image;
+    private Image image;
     private Boolean video;
     private String videoUrl;
 

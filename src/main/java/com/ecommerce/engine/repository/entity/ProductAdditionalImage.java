@@ -12,27 +12,26 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_language")
-public class Language {
+@Table(name = "e_product_additional_image")
+public class ProductAdditionalImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn
-    private Country country;
-    @Column(length = 64)
-    private String locale;
+    private Product product;
     @OneToOne
     @JoinColumn
     private com.ecommerce.engine.repository.entity.Image image;
-    private Boolean status;
+    private Boolean video;
+    private String videoUrl;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Language that = (Language) o;
+        ProductAdditionalImage that = (ProductAdditionalImage) o;
         return id != null && Objects.equals(id, that.id);
     }
 
@@ -40,4 +39,5 @@ public class Language {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

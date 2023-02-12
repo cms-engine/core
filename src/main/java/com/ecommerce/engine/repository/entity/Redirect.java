@@ -3,11 +3,9 @@ package com.ecommerce.engine.repository.entity;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
@@ -16,22 +14,19 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_currency")
-public class Currency {
+@Table(name = "e_redirect")
+public class Redirect {
 
     @Id
-    private String code;
-    private String name;
-    private String number;
-    @Column(precision = 15, scale = 4)
-    private BigDecimal value;
+    private String oldAddress;
+    private String newAddress;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Currency that = (Currency) o;
-        return code != null && Objects.equals(code, that.code);
+        Redirect that = (Redirect) o;
+        return oldAddress != null && Objects.equals(oldAddress, that.oldAddress);
     }
 
     @Override

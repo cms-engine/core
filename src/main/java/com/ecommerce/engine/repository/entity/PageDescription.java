@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
-import com.ecommerce.engine.repository.entity.compositekey.CategoryDescriptionId;
+import com.ecommerce.engine.repository.entity.compositekey.PageDescriptionId;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -13,9 +13,9 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_category_description")
-@IdClass(CategoryDescriptionId.class)
-public class CategoryDescription {
+@Table(name = "e_page_description")
+@IdClass(PageDescriptionId.class)
+public class PageDescription {
 
     @Id
     @ManyToOne
@@ -24,7 +24,8 @@ public class CategoryDescription {
     @Id
     @ManyToOne
     @JoinColumn
-    private Category category;
+    private Page page;
+
     private String title;
     @Lob
     private String description;
@@ -35,13 +36,13 @@ public class CategoryDescription {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CategoryDescription that = (CategoryDescription) o;
+        PageDescription that = (PageDescription) o;
         return language != null && Objects.equals(language, that.language)
-                && category != null && Objects.equals(category, that.category);
+                && page != null && Objects.equals(page, that.page);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(language, category);
+        return Objects.hash(language, page);
     }
 }

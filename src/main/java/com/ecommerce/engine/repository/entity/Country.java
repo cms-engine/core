@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
@@ -16,21 +15,23 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_currency")
-public class Currency {
+@Table(name = "e_country")
+public class Country {
 
     @Id
+    @Column(length = 3)
     private String code;
     private String name;
-    private String number;
-    @Column(precision = 15, scale = 4)
-    private BigDecimal value;
+    @Column(length = 2)
+    private String alpha2;
+    @Column(length = 3)
+    private String alpha3;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Currency that = (Currency) o;
+        Country that = (Country) o;
         return code != null && Objects.equals(code, that.code);
     }
 

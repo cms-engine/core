@@ -4,9 +4,8 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -15,29 +14,22 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_user")
-public class User {
+@Table(name = "e_user_group")
+public class UserGroup {
 
     @Id
-    @Pattern(regexp = "^\\w+$", message = "Username can contain only word character [a-zA-Z0-9_]")
-    private String id;
-
-    @NotBlank(message = "Password can't be blank")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    @OneToMany(mappedBy = "userGroup", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private String password;
-
-    @Email(regexp = "^$|^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email is wrong")
-    private String email;
-
-    @ManyToOne
-    @JoinColumn
-    private UserGroup group;
+    private List<UserGroupPermission> userGroupPermissionList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User that = (User) o;
+        UserGroup that = (UserGroup) o;
         return id != null && Objects.equals(id, that.id);
     }
 
@@ -45,5 +37,4 @@ public class User {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 }

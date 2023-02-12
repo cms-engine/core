@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
-import com.ecommerce.engine.repository.entity.compositekey.CategoryDescriptionId;
+import com.ecommerce.engine.repository.entity.compositekey.LengthClassDescriptionId;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -13,9 +13,9 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_category_description")
-@IdClass(CategoryDescriptionId.class)
-public class CategoryDescription {
+@Table(name = "e_length_class_description")
+@IdClass(LengthClassDescriptionId.class)
+public class LengthClassDescription {
 
     @Id
     @ManyToOne
@@ -24,24 +24,23 @@ public class CategoryDescription {
     @Id
     @ManyToOne
     @JoinColumn
-    private Category category;
+    private LengthClass lengthClass;
+    @Column(length = 32)
     private String title;
-    @Lob
-    private String description;
-    private String metaTitle;
-    private String metaDescription;
+    @Column(length = 4)
+    private String unit;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CategoryDescription that = (CategoryDescription) o;
+        LengthClassDescription that = (LengthClassDescription) o;
         return language != null && Objects.equals(language, that.language)
-                && category != null && Objects.equals(category, that.category);
+                && lengthClass != null && Objects.equals(lengthClass, that.lengthClass);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(language, category);
+        return Objects.hash(language, lengthClass);
     }
 }

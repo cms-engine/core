@@ -2,8 +2,13 @@ package com.ecommerce.engine.repository.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -12,27 +17,34 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_language")
-public class Language {
+@Table(name = "e_store_review")
+public class StoreReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
-    @JoinColumn
-    private Country country;
-    @Column(length = 64)
-    private String locale;
     @OneToOne
     @JoinColumn
-    private com.ecommerce.engine.repository.entity.Image image;
+    private Customer customer;
+    private String author;
+    @Lob
+    private String text;
+    @Lob
+    private String reply;
+    @Min(1)
+    @Max(5)
+    private Integer rating;
+    @CreationTimestamp
+    private LocalDate dateAdded;
+    @UpdateTimestamp
+    private LocalDate dateModified;
     private Boolean status;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Language that = (Language) o;
+        StoreReview that = (StoreReview) o;
         return id != null && Objects.equals(id, that.id);
     }
 
@@ -40,4 +52,5 @@ public class Language {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

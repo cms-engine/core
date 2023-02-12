@@ -1,7 +1,7 @@
 package com.ecommerce.engine.repository.entity.compositekey;
 
-import com.ecommerce.engine.repository.entity.Language;
 import com.ecommerce.engine.repository.entity.Product;
+import com.ecommerce.engine.repository.entity.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,9 +11,9 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDescriptionId implements Serializable {
+public class SupplierPriceId implements Serializable {
 
-    private Language language;
+    private Supplier supplier;
     private Product product;
 
 }

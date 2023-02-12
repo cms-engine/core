@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity.compositekey;
 
-import com.ecommerce.engine.repository.entity.Category;
+import com.ecommerce.engine.repository.entity.DeliveryMethod;
 import com.ecommerce.engine.repository.entity.Language;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,9 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDescriptionId implements Serializable {
+public class DeliveryMethodDescriptionId implements Serializable {
 
     private Language language;
-    private Category category;
+    private DeliveryMethod deliveryMethod;
 
 }

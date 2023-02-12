@@ -1,10 +1,11 @@
 package com.ecommerce.engine.repository.entity;
 
-import com.ecommerce.engine.repository.entity.compositekey.ProductDescriptionId;
+import com.ecommerce.engine.repository.entity.compositekey.SupplierPriceId;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
@@ -13,35 +14,35 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_product_description")
-@IdClass(ProductDescriptionId.class)
-public class ProductDescription {
+@Table(name = "e_supplier_price")
+@IdClass(SupplierPriceId.class)
+public class SupplierPrice {
 
     @Id
     @ManyToOne
     @JoinColumn
-    private Language language;
+    private Supplier supplier;
     @Id
     @ManyToOne
     @JoinColumn
     private Product product;
-    private String title;
-    @Lob
-    private String description;
-    private String metaTitle;
-    private String metaDescription;
+    @OneToOne
+    @JoinColumn
+    private Currency currency;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal price;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ProductDescription that = (ProductDescription) o;
-        return language != null && Objects.equals(language, that.language)
+        SupplierPrice that = (SupplierPrice) o;
+        return supplier != null && Objects.equals(supplier, that.supplier)
                 && product != null && Objects.equals(product, that.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(language, product);
+        return Objects.hash(supplier, product);
     }
 }

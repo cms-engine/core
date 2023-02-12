@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
-import com.ecommerce.engine.repository.entity.compositekey.CategoryDescriptionId;
+import com.ecommerce.engine.repository.entity.compositekey.OrderStatusDescriptionId;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -13,9 +13,9 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_category_description")
-@IdClass(CategoryDescriptionId.class)
-public class CategoryDescription {
+@Table(name = "e_order_status_description")
+@IdClass(OrderStatusDescriptionId.class)
+public class OrderStatusDescription {
 
     @Id
     @ManyToOne
@@ -24,24 +24,20 @@ public class CategoryDescription {
     @Id
     @ManyToOne
     @JoinColumn
-    private Category category;
-    private String title;
-    @Lob
-    private String description;
-    private String metaTitle;
-    private String metaDescription;
+    private OrderStatus orderStatus;
+    private String name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CategoryDescription that = (CategoryDescription) o;
+        OrderStatusDescription that = (OrderStatusDescription) o;
         return language != null && Objects.equals(language, that.language)
-                && category != null && Objects.equals(category, that.category);
+                && orderStatus != null && Objects.equals(orderStatus, that.orderStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(language, category);
+        return Objects.hash(language, orderStatus);
     }
 }

@@ -1,5 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.repository.entity.compositekey.SeoUrlId;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -12,32 +13,29 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_language")
-public class Language {
+@Table(name = "e_seo_url")
+@IdClass(SeoUrlId.class)
+public class SeoUrl {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     @ManyToOne
     @JoinColumn
-    private Country country;
-    @Column(length = 64)
-    private String locale;
-    @OneToOne
-    @JoinColumn
-    private com.ecommerce.engine.repository.entity.Image image;
-    private Boolean status;
+    private Language language;
+    @Id
+    private String route;
+    private String address;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Language that = (Language) o;
-        return id != null && Objects.equals(id, that.id);
+        SeoUrl seoUrl = (SeoUrl) o;
+        return language != null && Objects.equals(language, seoUrl.language)
+                && route != null && Objects.equals(route, seoUrl.route);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(language, route);
     }
 }

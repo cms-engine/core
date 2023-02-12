@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: engine
+  datasource:
+    url: jdbc:postgresql://localhost:5432/engine
+    username: postgres
+    password: 159753
+  jpa:
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+  data:
+    rest:
+      base-path: /api/v1/repo
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+vaadin:
+  launch-browser: false
+  excludeUrls:
+    - /swagger-ui/**
+    - /api/v1/**
+
+server:
+  port: 8080

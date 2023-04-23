@@ -4,9 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -19,15 +17,21 @@ import java.util.Objects;
 public class User {
 
     @Id
-    @Pattern(regexp = "^\\w+$", message = "Username can contain only word character [a-zA-Z0-9_]")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Integer id;
 
-    @NotBlank(message = "Password can't be blank")
+    @Column(nullable = false, unique = true)
+    private String username;
+
     @ToString.Exclude
     private String password;
 
-    @Email(regexp = "^$|^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email is wrong")
     private String email;
+
+    private Integer age;
+
+    private LocalDate dateOfBirth;
 
     @ManyToOne
     @JoinColumn

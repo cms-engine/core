@@ -1,9 +1,9 @@
 package com.ecommerce.engine.repository.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 

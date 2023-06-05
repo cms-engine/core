@@ -1,9 +1,9 @@
 package com.ecommerce.engine.repository.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

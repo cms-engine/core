@@ -4,14 +4,14 @@ import com.ecommerce.engine.model.FilterType;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.service.SearchService;
 import com.vaadin.flow.data.provider.SortDirection;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collection;

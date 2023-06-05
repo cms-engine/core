@@ -11,12 +11,11 @@ public class CustomErrorHandler implements ErrorHandler {
 
     @Override
     public void error(ErrorEvent errorEvent) {
-        log.error("Something wrong happened", errorEvent.getThrowable());
+        String errorMessage = errorEvent.getThrowable().getMessage();
+        log.error(errorMessage, errorEvent.getThrowable());
         if(UI.getCurrent() != null) {
-            UI.getCurrent().access(() -> {
-                Notification.show("An internal error has occurred." +
-                        "Contact support for assistance.");
-            });
+            UI.getCurrent().access(() -> Notification.show("An internal error has occurred: " +
+                    errorMessage));
         }
     }
 }

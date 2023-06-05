@@ -1,11 +1,11 @@
 package com.ecommerce.engine.repository.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.util.Objects;
 

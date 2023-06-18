@@ -12,6 +12,6 @@ import com.vaadin.flow.router.Route;
 public class UserList extends ListForm<User, Integer> {
 
     public UserList(UserRepository userRepository, UserDataProvider userDataProvider, UserAdd userAdd, UserEdit userEdit) {
-        super(userRepository, User.class, User::getId, userDataProvider, userAdd, userEdit, new UserFilter(userDataProvider.withConfigurableFilter()));
+        super(userRepository, User.class, User::getId, userDataProvider, userAdd, userEdit, new UserFilter());
     }
 }

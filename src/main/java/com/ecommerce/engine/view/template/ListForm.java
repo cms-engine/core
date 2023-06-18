@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public class ListForm<T, ID> extends VerticalLayout {
 
-    public ListForm(CrudRepository<T, ID> crudRepository, Class<T> aClass, Function<T, ID> identifierGetter, EntityDataProvider<T> dataProvider, AddForm<T, ID> addForm, EditForm<T, ID> editForm, FilterForm<T> filterForm) {
+    public ListForm(CrudRepository<T, ID> crudRepository, Class<T> aClass, Function<T, ID> identifierGetter, EntityDataProvider<T> dataProvider, AddForm<T, ID> addForm, EditForm<T, ID> editForm, FilterDivComponent filterDivComponent) {
         setHeightFull();
 
         Grid<T> grid = new Grid<>(aClass);
@@ -33,8 +33,10 @@ public class ListForm<T, ID> extends VerticalLayout {
         var configurableFilterDataProvider = dataProvider.withConfigurableFilter();
         grid.setItems(configurableFilterDataProvider);
 
-        filterForm.setVisible(false);
-        Button filter = new Button("Filter", VaadinIcon.FILTER.create(), event -> filterForm.setVisible(!filterForm.isVisible()));
+        FilterDiv<T> filterDiv = new FilterDiv<>(configurableFilterDataProvider, filterDivComponent);
+
+        filterDiv.setVisible(false);
+        Button filter = new Button("Filter", VaadinIcon.FILTER.create(), event -> filterDiv.setVisible(!filterDiv.isVisible()));
 
         ConfirmDialog deleteConfirm = confirm(crudRepository, grid);
         Button delete = new Button("Delete", VaadinIcon.MINUS.create(), buttonClickEvent -> {
@@ -52,7 +54,7 @@ public class ListForm<T, ID> extends VerticalLayout {
         setAlignSelf(Alignment.END, horizontalLayout);
 
         grid.setSizeFull();
-        HorizontalLayout gridLayout = new HorizontalLayout(grid, filterForm);
+        HorizontalLayout gridLayout = new HorizontalLayout(grid, filterDiv);
         gridLayout.setSizeFull();
         add(horizontalLayout, gridLayout);
     }

@@ -5,7 +5,9 @@ import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.view.template.FilterDivComponent;
 import com.ecommerce.engine.view.template.FormatDatePicker;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.IntegerField;
@@ -16,7 +18,7 @@ import java.util.List;
 
 public class UserFilter implements FilterDivComponent {
 
-    TextField username = new TextField("Username");
+    TextField username = new TextField();
     EmailField email = new EmailField("Email");
     IntegerField ageGraterThen = new IntegerField("Age >=");
     IntegerField ageLessThen = new IntegerField("Age <=");
@@ -24,7 +26,7 @@ public class UserFilter implements FilterDivComponent {
 
     @Override
     public Collection<Component> getComponents() {
-        return List.of(username, email, new HorizontalLayout(ageGraterThen, ageLessThen), dateOfBirth);
+        return List.of(getFieldWithFilterType(username, "Username"), email, new HorizontalLayout(ageGraterThen, ageLessThen), dateOfBirth);
     }
 
     @Override
@@ -36,6 +38,13 @@ public class UserFilter implements FilterDivComponent {
         var dateOfBirthFilter = new SearchRequest.Filter("dateOfBirth", FilterType.EQUAL, dateOfBirth.getValue());
 
         return List.of(idFilter, emailFilter, ageGraterThenFilter, ageLessThenFilter, dateOfBirthFilter);
+    }
+
+    private HorizontalLayout getFieldWithFilterType(Component component, String label) {
+        ComboBox<FilterType> comboBox = new ComboBox<>();
+        comboBox.setItems(FilterType.values());
+
+        return new HorizontalLayout(new Span(label), comboBox, component);
     }
 
 }

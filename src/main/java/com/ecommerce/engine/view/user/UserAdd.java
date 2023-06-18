@@ -15,15 +15,13 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.RegexpValidator;
-import com.vaadin.flow.router.PageTitle;
 import org.springframework.stereotype.Component;
 
 @Component
-@PageTitle("User create")
 public class UserAdd extends AddForm<User, Integer> {
 
-    public UserAdd(GroupRepository groupRepository, UserRepository saveDeleteService) {
-        super(saveDeleteService, User::getId, User.class, UserEdit.class);
+    public UserAdd(GroupRepository groupRepository, UserRepository userRepository) {
+        super(userRepository, User::getId, User.class, UserEdit.class);
 
         TextField username = new TextField("Username");
         PasswordField password = new PasswordField("Password");

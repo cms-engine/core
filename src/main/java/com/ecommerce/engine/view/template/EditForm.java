@@ -1,6 +1,5 @@
 package com.ecommerce.engine.view.template;
 
-import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -12,10 +11,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.Route;
 import org.springframework.data.repository.CrudRepository;
 
-@Route(layout = MainLayout.class)
 public abstract class EditForm<T, ID> extends NavigatedFormLayout<ID> {
 
     protected final Binder<T> binder;
@@ -23,15 +20,15 @@ public abstract class EditForm<T, ID> extends NavigatedFormLayout<ID> {
     private final FormLayout inputLayout;
     private final Paragraph idLabel;
 
-    public EditForm(CrudRepository<T, ID> crudRepository, Class<T> aClass, Class<? extends Component> gridNavigation) {
+    public EditForm(CrudRepository<T, ID> saveDeleteService, Class<T> aClass, Class<? extends Component> gridNavigation) {
         binder = new Binder<>(aClass);
         inputLayout = new FormLayout();
         idLabel = new Paragraph();
-        this.saveDeleteService = crudRepository;
+        this.saveDeleteService = saveDeleteService;
         Button saveButton = new Button("Save", VaadinIcon.PLUS.create(), buttonClickEvent -> saveEntity());
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        ConfirmDialog deleteConfirm = getConfirmDeleteDialog(crudRepository, gridNavigation);
+        ConfirmDialog deleteConfirm = getConfirmDeleteDialog(saveDeleteService, gridNavigation);
 
         Button deleteButton = new Button("Delete", VaadinIcon.MINUS.create(), buttonClickEvent -> deleteConfirm.open());
         deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);

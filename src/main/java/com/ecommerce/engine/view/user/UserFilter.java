@@ -11,11 +11,9 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class UserFilter extends FilterForm<User> {
 
     TextField username = new TextField("Username");

@@ -18,8 +18,10 @@ import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.stereotype.Component;
 
 @Route(value = "users", layout = MainLayout.class)
+@Component
 @PageTitle("User edit")
 public class UserEdit extends EditForm<User, Integer> {
 

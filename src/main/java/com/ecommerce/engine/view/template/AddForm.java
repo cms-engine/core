@@ -1,6 +1,5 @@
 package com.ecommerce.engine.view.template;
 
-import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -11,12 +10,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.router.Route;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.function.Function;
 
-@Route(layout = MainLayout.class)
 public abstract class AddForm<T, ID> extends VerticalLayout {
 
     protected final Binder<T> binder;

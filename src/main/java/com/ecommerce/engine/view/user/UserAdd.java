@@ -18,8 +18,10 @@ import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.stereotype.Component;
 
 @Route(value = "users/create", layout = MainLayout.class)
+@Component
 @PageTitle("User create")
 public class UserAdd extends AddForm<User, Integer> {
 

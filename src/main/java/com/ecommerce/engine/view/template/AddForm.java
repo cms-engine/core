@@ -12,7 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.function.Function;
 
@@ -20,15 +20,15 @@ import java.util.function.Function;
 public abstract class AddForm<T, ID> extends VerticalLayout {
 
     protected final Binder<T> binder;
-    protected final JpaRepository<T, ID> saveDeleteService;
+    protected final CrudRepository<T, ID> crudRepository;
     protected final Function<T, ID> identifierGetter;
     private final Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving;
     private final FormLayout inputLayout;
 
-    public AddForm(JpaRepository<T, ID> saveDeleteService, Function<T, ID> identifierGetter, Class<T> aClass, Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving) {
+    public AddForm(CrudRepository<T, ID> crudRepository, Function<T, ID> identifierGetter, Class<T> aClass, Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving) {
         binder = new Binder<>(aClass);
         inputLayout = new FormLayout();
-        this.saveDeleteService = saveDeleteService;
+        this.crudRepository = crudRepository;
         this.identifierGetter = identifierGetter;
         this.navigateAfterSaving = navigateAfterSaving;
 
@@ -56,7 +56,7 @@ public abstract class AddForm<T, ID> extends VerticalLayout {
             throw new RuntimeException(e);
         }
 
-        T savedEntity = saveDeleteService.save(newBean);
+        T savedEntity = crudRepository.save(newBean);
 
         Notification.show("Successful saved");
 

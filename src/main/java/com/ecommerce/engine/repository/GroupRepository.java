@@ -1,7 +1,7 @@
 package com.ecommerce.engine.repository;
 
 import com.ecommerce.engine.repository.entity.Group;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
-public interface GroupRepository extends JpaRepository<Group, Long> {
+public interface GroupRepository extends ListCrudRepository<Group, Long> {
 }

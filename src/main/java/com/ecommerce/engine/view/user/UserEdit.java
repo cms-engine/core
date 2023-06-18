@@ -1,9 +1,9 @@
 package com.ecommerce.engine.view.user;
 
 import com.ecommerce.engine.repository.GroupRepository;
-import com.ecommerce.engine.repository.User;
-import com.ecommerce.engine.repository.Group;
-import com.ecommerce.engine.service.SaveDeleteService;
+import com.ecommerce.engine.repository.UserRepository;
+import com.ecommerce.engine.repository.entity.Group;
+import com.ecommerce.engine.repository.entity.User;
 import com.ecommerce.engine.view.MainLayout;
 import com.ecommerce.engine.view.template.EditForm;
 import com.ecommerce.engine.view.template.FormatDatePicker;
@@ -21,9 +21,9 @@ import com.vaadin.flow.router.Route;
 
 @Route(value = "users", layout = MainLayout.class)
 @PageTitle("User edit")
-public class UserEdit extends EditForm<User> {
+public class UserEdit extends EditForm<User, Integer> {
 
-    public UserEdit(GroupRepository groupRepository, SaveDeleteService<User> saveDeleteService) {
+    public UserEdit(GroupRepository groupRepository, UserRepository saveDeleteService) {
         super(saveDeleteService, User.class, UserList.class);
 
         TextField username = new TextField("Username");

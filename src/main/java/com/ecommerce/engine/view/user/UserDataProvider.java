@@ -1,6 +1,6 @@
 package com.ecommerce.engine.view.user;
 
-import com.ecommerce.engine.repository.User;
+import com.ecommerce.engine.repository.entity.User;
 import com.ecommerce.engine.service.SearchService;
 import com.ecommerce.engine.view.template.EntityDataProvider;
 import org.springframework.stereotype.Component;

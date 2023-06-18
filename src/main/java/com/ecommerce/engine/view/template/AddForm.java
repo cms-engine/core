@@ -1,6 +1,5 @@
 package com.ecommerce.engine.view.template;
 
-import com.ecommerce.engine.service.SaveDeleteService;
 import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -13,19 +12,20 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.function.Function;
 
 @Route(layout = MainLayout.class)
-public abstract class AddForm<T> extends VerticalLayout {
+public abstract class AddForm<T, ID> extends VerticalLayout {
 
     protected final Binder<T> binder;
-    protected final SaveDeleteService<T> saveDeleteService;
-    protected final Function<T, Integer> identifierGetter;
-    private final Class<? extends NavigatedFormLayout> navigateAfterSaving;
+    protected final JpaRepository<T, ID> saveDeleteService;
+    protected final Function<T, ID> identifierGetter;
+    private final Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving;
     private final FormLayout inputLayout;
 
-    public AddForm(SaveDeleteService<T> saveDeleteService, Function<T, Integer> identifierGetter, Class<T> aClass, Class<? extends NavigatedFormLayout> navigateAfterSaving) {
+    public AddForm(JpaRepository<T, ID> saveDeleteService, Function<T, ID> identifierGetter, Class<T> aClass, Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving) {
         binder = new Binder<>(aClass);
         inputLayout = new FormLayout();
         this.saveDeleteService = saveDeleteService;

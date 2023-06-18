@@ -1,9 +1,10 @@
-package com.ecommerce.engine.repository;
+package com.ecommerce.engine.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -12,19 +13,35 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_group")
-public class Group {
+@Table(name = "e_user")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Integer id;
-    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @ToString.Exclude
+    private String password;
+
+    private String email;
+
+    private Integer age;
+
+    private LocalDate dateOfBirth;
+
+    @ManyToOne
+    @JoinColumn
+    private Group group;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Group that = (Group) o;
+        User that = (User) o;
         return id != null && Objects.equals(id, that.id);
     }
 
@@ -32,4 +49,5 @@ public class Group {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

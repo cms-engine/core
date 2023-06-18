@@ -1,6 +1,5 @@
 package com.ecommerce.engine.view.template;
 
-import com.ecommerce.engine.service.SaveDeleteService;
 import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -14,16 +13,17 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.Route;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 @Route(layout = MainLayout.class)
-public abstract class EditForm<T> extends NavigatedFormLayout {
+public abstract class EditForm<T, ID> extends NavigatedFormLayout<ID> {
 
     protected final Binder<T> binder;
-    protected final SaveDeleteService<T> saveDeleteService;
+    protected final JpaRepository<T, ID> saveDeleteService;
     private final FormLayout inputLayout;
     private final Paragraph idLabel;
 
-    public EditForm(SaveDeleteService<T> saveDeleteService, Class<T> aClass, Class<? extends Component> gridNavigation) {
+    public EditForm(JpaRepository<T, ID> saveDeleteService, Class<T> aClass, Class<? extends Component> gridNavigation) {
         binder = new Binder<>(aClass);
         inputLayout = new FormLayout();
         idLabel = new Paragraph();
@@ -49,7 +49,7 @@ public abstract class EditForm<T> extends NavigatedFormLayout {
         add(menuTop, inputLayout);
     }
 
-    private ConfirmDialog getConfirmDeleteDialog(SaveDeleteService<T> saveDeleteService, Class<? extends Component> gridNavigation) {
+    private ConfirmDialog getConfirmDeleteDialog(JpaRepository<T, ID> saveDeleteService, Class<? extends Component> gridNavigation) {
         ConfirmDialog deleteConfirm = new ConfirmDialog();
 
         deleteConfirm.setHeader("Confirm delete");
@@ -68,7 +68,7 @@ public abstract class EditForm<T> extends NavigatedFormLayout {
     }
 
     @Override
-    public void setParameter(BeforeEvent event, Integer parameter) {
+    public void setParameter(BeforeEvent event, ID parameter) {
         binder.setBean(saveDeleteService.findById(parameter).orElseThrow());
         idLabel.setText("Id: %s".formatted(parameter));
     }

@@ -1,8 +1,8 @@
 package com.ecommerce.engine.view.user;
 
 import com.ecommerce.engine.model.SearchRequest;
-import com.ecommerce.engine.repository.User;
 import com.ecommerce.engine.repository.UserRepository;
+import com.ecommerce.engine.repository.entity.User;
 import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;

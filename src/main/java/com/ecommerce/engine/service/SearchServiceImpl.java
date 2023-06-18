@@ -1,8 +1,7 @@
-package com.ecommerce.engine.service.impl;
+package com.ecommerce.engine.service;
 
 import com.ecommerce.engine.model.FilterType;
 import com.ecommerce.engine.model.SearchRequest;
-import com.ecommerce.engine.service.SearchService;
 import com.vaadin.flow.data.provider.SortDirection;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -126,9 +125,9 @@ public class SearchServiceImpl<T> implements SearchService<T> {
                 case EQUAL -> predicate = builder.and(predicate, builder.equal(getPath(param), param.getValue()));
                 case NOT_EQUAL -> predicate =
                         builder.and(predicate, builder.notEqual(getPath(param), param.getValue()));
-                case IN -> predicate = getPath(param).in((Collection<?>) param.getValue());
+                case IN -> predicate = builder.and(predicate, getPath(param).in((Collection<?>) param.getValue()));
                 case NOT_IN -> predicate =
-                        getPath(param).in((Collection<?>) param.getValue()).not();
+                        builder.and(predicate, getPath(param).in((Collection<?>) param.getValue()).not());
                 case LIKE -> predicate =
                         builder.and(predicate, builder.like(getPath(param), "%" + param.getValue() + "%"));
                 case NOT_LIKE -> predicate =

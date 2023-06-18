@@ -2,7 +2,7 @@ package com.ecommerce.engine.view.user;
 
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.repository.User;
-import com.ecommerce.engine.service.UserService;
+import com.ecommerce.engine.repository.UserRepository;
 import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -27,7 +27,7 @@ import java.util.List;
 @PageTitle("Users")
 public class UserList extends VerticalLayout {
 
-    public UserList(UserService userService, UserDataProvider userDataProvider) {
+    public UserList(UserRepository userService, UserDataProvider userDataProvider) {
         setHeightFull();
 
         Grid<User> grid = new Grid<>(User.class);
@@ -94,7 +94,7 @@ public class UserList extends VerticalLayout {
         return textField;
     }
 
-    private ConfirmDialog confirm(UserService userService, Grid<User> grid) {
+    private ConfirmDialog confirm(UserRepository userService, Grid<User> grid) {
         ConfirmDialog dialog = new ConfirmDialog();
 
         dialog.setHeader("Confirm delete");
@@ -112,7 +112,7 @@ public class UserList extends VerticalLayout {
         return dialog;
     }
 
-    private Dialog addNew(UserAdd userAdd, UserService userService, Grid<User> grid) {
+    private Dialog addNew(UserAdd userAdd, UserRepository userService, Grid<User> grid) {
         Dialog dialog = new Dialog();
 
         /*dialog.setHeaderTitle("New item");
@@ -147,7 +147,7 @@ public class UserList extends VerticalLayout {
         return dialog;
     }
 
-    private Dialog edit(UserService userService, Grid<User> grid, User user) {
+    private Dialog edit(UserRepository userService, Grid<User> grid, User user) {
         Dialog dialog = new Dialog();
 
         dialog.setHeaderTitle("New item");

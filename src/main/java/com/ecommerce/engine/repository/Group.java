@@ -12,7 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_user_group")
+@Table(name = "e_group")
 public class Group {
 
     @Id

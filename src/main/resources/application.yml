@@ -14,19 +14,8 @@ spring:
     rest:
       base-path: /api/v1/repo
 
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
-
 vaadin:
   launch-browser: false
-  excludeUrls:
-    - /swagger-ui/**
-    - /api/v1/**
 
 server:
   port: 8080

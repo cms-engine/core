@@ -4,7 +4,6 @@ import com.ecommerce.engine.repository.GroupRepository;
 import com.ecommerce.engine.repository.UserRepository;
 import com.ecommerce.engine.repository.entity.Group;
 import com.ecommerce.engine.repository.entity.User;
-import com.ecommerce.engine.view.MainLayout;
 import com.ecommerce.engine.view.template.AddForm;
 import com.ecommerce.engine.view.template.FormatDatePicker;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -17,10 +16,8 @@ import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import org.springframework.stereotype.Component;
 
-@Route(value = "users/create", layout = MainLayout.class)
 @Component
 @PageTitle("User create")
 public class UserAdd extends AddForm<User, Integer> {

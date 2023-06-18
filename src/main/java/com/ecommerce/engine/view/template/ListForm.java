@@ -3,6 +3,7 @@ package com.ecommerce.engine.view.template;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridMultiSelectionModel;
@@ -45,8 +46,8 @@ public class ListForm<T, ID> extends VerticalLayout {
         });
         delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
 
-        Button create = new Button("Add", VaadinIcon.PLUS.create(), buttonClickEvent -> getUI().ifPresent(ui -> ui.navigate(
-                addForm.getClass())));
+        Dialog addNew = addNew(addForm, grid);
+        Button create = new Button("Add", VaadinIcon.PLUS.create(), buttonClickEvent -> addNew.open());
         create.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         HorizontalLayout horizontalLayout = new HorizontalLayout(delete, create, filter);
         //horizontalLayout.setWidthFull();
@@ -72,6 +73,40 @@ public class ListForm<T, ID> extends VerticalLayout {
             crudRepository.deleteAll(grid.getSelectedItems());
             grid.getDataProvider().refreshAll();
             grid.deselectAll();
+        });
+
+        return dialog;
+    }
+
+    private Dialog addNew(AddForm<T, ID> userAdd, Grid<T> grid) {
+        Dialog dialog = new Dialog();
+
+        dialog.setHeaderTitle("New item");
+
+        dialog.add(userAdd);
+
+        Button closeButton = new Button(VaadinIcon.CLOSE.create(), event -> {
+            userAdd.refreshForm();
+            dialog.close();
+        });
+        dialog.getHeader().add(closeButton);
+
+        Button saveButton = new Button("Save", buttonClickEvent -> {
+            userAdd.saveEntity();
+
+            userAdd.refreshForm();
+
+            dialog.close();
+            grid.getDataProvider().refreshAll();
+        });
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
+        dialog.getFooter().add(saveButton);
+
+        userAdd.saveButtonActiveListener(saveButton);
+
+        dialog.addDialogCloseActionListener(event -> {
+            userAdd.refreshForm();
+            dialog.close();
         });
 
         return dialog;

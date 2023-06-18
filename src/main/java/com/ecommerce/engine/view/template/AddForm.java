@@ -1,6 +1,7 @@
 package com.ecommerce.engine.view.template;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -36,13 +37,26 @@ public abstract class AddForm<T, ID> extends VerticalLayout {
         setAlignSelf(Alignment.END, mainButtonsLayout);
 
         add(mainButtonsLayout, inputLayout);
+
+        refreshForm();
     }
 
     public void addComponents(Component... components) {
         inputLayout.add(components);
     }
 
+    public void refreshForm() {
+        binder.readBean(getNewBean());
+    }
+
     public abstract T getNewBean();
+
+    public void saveButtonActiveListener(Button saveButton) {
+        saveButton.setEnabled(binder.isValid());
+        binder.addValueChangeListener((HasValue.ValueChangeListener<HasValue.ValueChangeEvent<?>>) event -> {
+            saveButton.setEnabled(binder.isValid());
+        });
+    }
 
     public void saveEntity() {
         T newBean = getNewBean();
@@ -56,6 +70,8 @@ public abstract class AddForm<T, ID> extends VerticalLayout {
         T savedEntity = crudRepository.save(newBean);
 
         Notification.show("Successful saved");
+
+        refreshForm();
 
         getUI().ifPresent(ui -> ui.navigate(
                 navigateAfterSaving, identifierGetter.apply(savedEntity)));

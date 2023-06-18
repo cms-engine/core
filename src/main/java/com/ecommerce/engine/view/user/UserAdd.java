@@ -1,8 +1,8 @@
 package com.ecommerce.engine.view.user;
 
-import com.ecommerce.engine.repository.UserGroupRepository;
-import com.ecommerce.engine.repository.entity.User;
-import com.ecommerce.engine.repository.entity.UserGroup;
+import com.ecommerce.engine.repository.GroupRepository;
+import com.ecommerce.engine.repository.User;
+import com.ecommerce.engine.repository.Group;
 import com.ecommerce.engine.service.SaveDeleteService;
 import com.ecommerce.engine.view.MainLayout;
 import com.ecommerce.engine.view.template.AddForm;
@@ -23,7 +23,7 @@ import com.vaadin.flow.router.Route;
 @PageTitle("User create")
 public class UserAdd extends AddForm<User> {
 
-    public UserAdd(UserGroupRepository userGroupRepository, SaveDeleteService<User> saveDeleteService) {
+    public UserAdd(GroupRepository groupRepository, SaveDeleteService<User> saveDeleteService) {
         super(saveDeleteService, User::getId, User.class, UserEdit.class);
 
         TextField username = new TextField("Username");
@@ -31,9 +31,9 @@ public class UserAdd extends AddForm<User> {
         EmailField email = new EmailField("Email");
         IntegerField age = new IntegerField("Age");
         DatePicker dateOfBirth = new FormatDatePicker("Date of birth");
-        ComboBox<UserGroup> group = new ComboBox<>();
+        ComboBox<Group> group = new ComboBox<>();
         group.setLabel("Group");
-        group.setItems(userGroupRepository.findAll());
+        group.setItems(groupRepository.findAll());
         group.setItemLabelGenerator(userGroup -> "%s (%d)".formatted(userGroup.getName(), userGroup.getId()));
 
         binder.forField(username).asRequired()

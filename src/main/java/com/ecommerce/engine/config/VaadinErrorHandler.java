@@ -7,7 +7,7 @@ import com.vaadin.flow.server.ErrorHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CustomErrorHandler implements ErrorHandler {
+public class VaadinErrorHandler implements ErrorHandler {
 
     @Override
     public void error(ErrorEvent errorEvent) {

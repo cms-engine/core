@@ -1,8 +1,8 @@
 package com.ecommerce.engine.view.user;
 
-import com.ecommerce.engine.repository.UserGroupRepository;
-import com.ecommerce.engine.repository.entity.User;
-import com.ecommerce.engine.repository.entity.UserGroup;
+import com.ecommerce.engine.repository.GroupRepository;
+import com.ecommerce.engine.repository.User;
+import com.ecommerce.engine.repository.Group;
 import com.ecommerce.engine.service.SaveDeleteService;
 import com.ecommerce.engine.view.MainLayout;
 import com.ecommerce.engine.view.template.EditForm;
@@ -23,7 +23,7 @@ import com.vaadin.flow.router.Route;
 @PageTitle("User edit")
 public class UserEdit extends EditForm<User> {
 
-    public UserEdit(UserGroupRepository userGroupRepository, SaveDeleteService<User> saveDeleteService) {
+    public UserEdit(GroupRepository groupRepository, SaveDeleteService<User> saveDeleteService) {
         super(saveDeleteService, User.class, UserList.class);
 
         TextField username = new TextField("Username");
@@ -31,9 +31,9 @@ public class UserEdit extends EditForm<User> {
         EmailField email = new EmailField("Email");
         IntegerField age = new IntegerField("Age");
         DatePicker dateOfBirth = new FormatDatePicker("Date of birth");
-        ComboBox<UserGroup> group = new ComboBox<>();
+        ComboBox<Group> group = new ComboBox<>();
         group.setLabel("Group");
-        group.setItems(userGroupRepository.findAll());
+        group.setItems(groupRepository.findAll());
         group.setItemLabelGenerator(userGroup -> "%s (%d)".formatted(userGroup.getName(), userGroup.getId()));
 
         binder.forField(username).asRequired()

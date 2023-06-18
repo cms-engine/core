@@ -1,4 +1,4 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.repository;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,26 +12,19 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "e_product_additional_image")
-public class ProductAdditionalImage {
+@Table(name = "e_user_group")
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne
-    @JoinColumn
-    private Product product;
-    @OneToOne
-    @JoinColumn
-    private Image image;
-    private Boolean video;
-    private String videoUrl;
+    private String name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ProductAdditionalImage that = (ProductAdditionalImage) o;
+        Group that = (Group) o;
         return id != null && Objects.equals(id, that.id);
     }
 
@@ -39,5 +32,4 @@ public class ProductAdditionalImage {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 }

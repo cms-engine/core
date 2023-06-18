@@ -2,7 +2,7 @@ package com.ecommerce.engine.service.impl;
 
 
 import com.ecommerce.engine.repository.UserRepository;
-import com.ecommerce.engine.repository.entity.User;
+import com.ecommerce.engine.repository.User;
 import com.ecommerce.engine.service.SaveDeleteService;
 import com.ecommerce.engine.service.UserService;
 import lombok.AccessLevel;

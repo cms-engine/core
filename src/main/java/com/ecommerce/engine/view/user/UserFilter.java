@@ -2,7 +2,7 @@ package com.ecommerce.engine.view.user;
 
 import com.ecommerce.engine.model.FilterType;
 import com.ecommerce.engine.model.SearchRequest;
-import com.ecommerce.engine.repository.entity.User;
+import com.ecommerce.engine.repository.User;
 import com.ecommerce.engine.view.template.FilterForm;
 import com.ecommerce.engine.view.template.FormatDatePicker;
 import com.vaadin.flow.component.datepicker.DatePicker;

@@ -7,14 +7,21 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.dom.ThemeList;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.Lumo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainLayout extends AppLayout {
 
@@ -45,17 +52,45 @@ public class MainLayout extends AppLayout {
         HorizontalLayout banner = new HorizontalLayout(leftLayout, rightLayout);
         banner.setWidthFull();
 
+        RouteTabs routeTabs = new RouteTabs();
+        routeTabs.add(VaadinIcon.DASHBOARD.create(), new RouterLink("Dashboard", DashboardView.class));
+        routeTabs.add(VaadinIcon.USERS.create(), new RouterLink("Users", UserList.class));
+
         Tab dashboard = new Tab(VaadinIcon.DASHBOARD.create(), new RouterLink("Dashboard", DashboardView.class));
         Tab orders = new Tab(VaadinIcon.LIST.create(), new Span("Orders"));
         orders.setEnabled(false);
         Tab users = new Tab(VaadinIcon.USERS.create(), new RouterLink("Users", UserList.class));
 
-        Tabs tabs = new Tabs(dashboard, orders, users);
-        tabs.setOrientation(Tabs.Orientation.VERTICAL);
+        HighlightConditions.sameLocation();
 
-        addToDrawer(tabs);
+        Tabs tabs = new Tabs(dashboard, orders, users);
+
+        routeTabs.setOrientation(Tabs.Orientation.VERTICAL);
+
+        addToDrawer(routeTabs);
         addToNavbar(toggle, banner);
 
         //setPrimarySection(Section.DRAWER);
+    }
+
+    private static class RouteTabs extends Tabs implements BeforeEnterObserver {
+        private final Map<RouterLink, Tab> routerLinkTabMap = new HashMap<>();
+
+        public void add(Icon icon, RouterLink routerLink) {
+            routerLink.setHighlightCondition(HighlightConditions.sameLocation());
+            routerLink.setHighlightAction(
+                    (link, shouldHighlight) -> {
+                        if (shouldHighlight) setSelectedTab(routerLinkTabMap.get(routerLink));
+                    }
+            );
+            routerLinkTabMap.put(routerLink, new Tab(icon, routerLink));
+            add(routerLinkTabMap.get(routerLink));
+        }
+
+        @Override
+        public void beforeEnter(BeforeEnterEvent event) {
+            // In case no tabs will match
+            setSelectedTab(null);
+        }
     }
 }

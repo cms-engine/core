@@ -1,6 +1,6 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.repository.entity.User;
+import com.ecommerce.engine.repository.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

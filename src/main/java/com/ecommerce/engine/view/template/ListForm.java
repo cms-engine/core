@@ -99,7 +99,7 @@ public class ListForm<T, ID> extends VerticalLayout {
             dialog.close();
             grid.getDataProvider().refreshAll();
         });
-        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         dialog.getFooter().add(saveButton);
 
         userAdd.saveButtonActiveListener(saveButton);

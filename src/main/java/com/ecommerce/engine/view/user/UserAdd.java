@@ -1,21 +1,20 @@
 package com.ecommerce.engine.view.user;
 
+import com.ecommerce.engine.model.InputClassMapping;
 import com.ecommerce.engine.repository.GroupRepository;
 import com.ecommerce.engine.repository.UserRepository;
-import com.ecommerce.engine.repository.entity.Group;
 import com.ecommerce.engine.repository.entity.User;
+import com.ecommerce.engine.view.TextUtils;
 import com.ecommerce.engine.view.template.AddForm;
-import com.ecommerce.engine.view.template.FormatDatePicker;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.validator.EmailValidator;
-import com.vaadin.flow.data.validator.IntegerRangeValidator;
-import com.vaadin.flow.data.validator.RegexpValidator;
+import com.vaadin.flow.component.HasValue;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class UserAdd extends AddForm<User, Integer> {
@@ -23,7 +22,19 @@ public class UserAdd extends AddForm<User, Integer> {
     public UserAdd(GroupRepository groupRepository, UserRepository userRepository) {
         super(userRepository, User::getId, User.class, UserEdit.class);
 
-        TextField username = new TextField("Username");
+        List<HasValue<?, ?>> createdFields = new ArrayList<>();
+
+        Field[] declaredFields = User.class.getDeclaredFields();
+        Arrays.stream(declaredFields).forEach(field -> {
+            HasValue<?, ?> inputFromClass = createInputFromClass(field);
+            if (inputFromClass != null) {
+                binder.bind(inputFromClass, field.getName());
+                createdFields.add(inputFromClass);
+            }
+        });
+
+        addComponents(createdFields.stream().map(hasValue -> (com.vaadin.flow.component.Component) hasValue).toList());
+        /*TextField username = new TextField("Username");
         PasswordField password = new PasswordField("Password");
         EmailField email = new EmailField("Email");
         IntegerField age = new IntegerField("Age");
@@ -43,8 +54,21 @@ public class UserAdd extends AddForm<User, Integer> {
         binder.bind(dateOfBirth, "dateOfBirth");
         binder.bind(group, "group");
 
-        addComponents(username, password, email, age, dateOfBirth, group);
+        addComponents(username, password, email, age, dateOfBirth, group);*/
         //binder.bindInstanceFields(this);
+    }
+
+    private static HasValue<?, ?> createInputFromClass(Field field) {
+        try {
+        Class<? extends HasValue<?, ?>> inputClass = InputClassMapping.getInputClass(field.getType());
+        if (inputClass == null) {
+            return null;
+        }
+        Constructor<? extends HasValue<?, ?>> constructor = inputClass.getConstructor(String.class);
+        return constructor.newInstance(TextUtils.convertCamelCaseToNormalText(field.getName()));
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

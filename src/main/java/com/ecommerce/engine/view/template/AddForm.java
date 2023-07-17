@@ -3,16 +3,14 @@ package com.ecommerce.engine.view.template;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 import java.util.function.Function;
 
 public abstract class AddForm<T, ID> extends VerticalLayout {
@@ -30,15 +28,13 @@ public abstract class AddForm<T, ID> extends VerticalLayout {
         this.identifierGetter = identifierGetter;
         this.navigateAfterSaving = navigateAfterSaving;
 
-        Button saveButton = new Button("Save", VaadinIcon.PLUS.create(), buttonClickEvent -> saveEntity());
-        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        HorizontalLayout mainButtonsLayout = new HorizontalLayout(saveButton);
-        setAlignSelf(Alignment.END, mainButtonsLayout);
-
-        add(mainButtonsLayout, inputLayout);
+        add(inputLayout);
 
         refreshForm();
+    }
+
+    public void addComponents(List<Component> components) {
+        inputLayout.add(components);
     }
 
     public void addComponents(Component... components) {

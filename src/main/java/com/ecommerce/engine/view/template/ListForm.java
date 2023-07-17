@@ -10,13 +10,13 @@ import com.vaadin.flow.component.grid.GridMultiSelectionModel;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.function.Function;
 
 public class ListForm<T, ID> extends VerticalLayout {
 
-    public ListForm(CrudRepository<T, ID> crudRepository, Class<T> aClass, Function<T, ID> identifierGetter, EntityDataProvider<T> dataProvider, AddForm<T, ID> addForm, EditForm<T, ID> editForm, FilterDivComponent filterDivComponent) {
+    public ListForm(ListCrudRepository<T, ID> ListCrudRepository, Class<T> aClass, Function<T, ID> identifierGetter, EntityDataProvider<T> dataProvider, AddForm<T, ID> addForm, EditForm<T, ID> editForm, FilterDivComponent filterDivComponent) {
         setHeightFull();
 
         Grid<T> grid = new Grid<>(aClass);
@@ -39,7 +39,7 @@ public class ListForm<T, ID> extends VerticalLayout {
         filterDiv.setVisible(false);
         Button filter = new Button("Filter", VaadinIcon.FILTER.create(), event -> filterDiv.setVisible(!filterDiv.isVisible()));
 
-        ConfirmDialog deleteConfirm = confirm(crudRepository, grid);
+        ConfirmDialog deleteConfirm = confirm(ListCrudRepository, grid);
         Button delete = new Button("Delete", VaadinIcon.MINUS.create(), buttonClickEvent -> {
             deleteConfirm.setText(String.format("%s items will be deleted. Are you sure?", grid.getSelectedItems().size()));
             deleteConfirm.open();
@@ -60,7 +60,7 @@ public class ListForm<T, ID> extends VerticalLayout {
         add(horizontalLayout, gridLayout);
     }
 
-    private ConfirmDialog confirm(CrudRepository<T, ID> crudRepository, Grid<T> grid) {
+    private ConfirmDialog confirm(ListCrudRepository<T, ID> ListCrudRepository, Grid<T> grid) {
         ConfirmDialog dialog = new ConfirmDialog();
 
         dialog.setHeader("Confirm delete");
@@ -70,7 +70,7 @@ public class ListForm<T, ID> extends VerticalLayout {
         dialog.setConfirmText("Delete");
         dialog.setConfirmButtonTheme("error primary");
         dialog.addConfirmListener(buttonClickEvent -> {
-            crudRepository.deleteAll(grid.getSelectedItems());
+            ListCrudRepository.deleteAll(grid.getSelectedItems());
             grid.getDataProvider().refreshAll();
             grid.deselectAll();
         });

@@ -1,12 +1,12 @@
 package com.ecommerce.engine.view.user;
 
 import com.ecommerce.engine.model.InputClassMapping;
-import com.ecommerce.engine.repository.GroupRepository;
-import com.ecommerce.engine.repository.UserRepository;
+import com.ecommerce.engine.repository.entity.Group;
 import com.ecommerce.engine.repository.entity.User;
 import com.ecommerce.engine.view.TextUtils;
 import com.ecommerce.engine.view.template.AddForm;
 import com.vaadin.flow.component.HasValue;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Constructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class UserAdd extends AddForm<User, Integer> {
 
-    public UserAdd(GroupRepository groupRepository, UserRepository userRepository) {
+    public UserAdd(ListCrudRepository<Group, Integer> groupRepository, ListCrudRepository<User, Integer> userRepository) {
         super(userRepository, User::getId, User.class, UserEdit.class);
 
         List<HasValue<?, ?>> createdFields = new ArrayList<>();

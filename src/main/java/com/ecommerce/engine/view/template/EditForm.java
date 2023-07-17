@@ -11,16 +11,16 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.BeforeEvent;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
 public abstract class EditForm<T, ID> extends NavigatedFormLayout<ID> {
 
     protected final Binder<T> binder;
-    protected final CrudRepository<T, ID> saveDeleteService;
+    protected final ListCrudRepository<T, ID> saveDeleteService;
     private final FormLayout inputLayout;
     private final Paragraph idLabel;
 
-    public EditForm(CrudRepository<T, ID> saveDeleteService, Class<T> aClass, Class<? extends Component> gridNavigation) {
+    public EditForm(ListCrudRepository<T, ID> saveDeleteService, Class<T> aClass, Class<? extends Component> gridNavigation) {
         binder = new Binder<>(aClass);
         inputLayout = new FormLayout();
         idLabel = new Paragraph();
@@ -46,7 +46,7 @@ public abstract class EditForm<T, ID> extends NavigatedFormLayout<ID> {
         add(menuTop, inputLayout);
     }
 
-    private ConfirmDialog getConfirmDeleteDialog(CrudRepository<T, ID> saveDeleteService, Class<? extends Component> gridNavigation) {
+    private ConfirmDialog getConfirmDeleteDialog(ListCrudRepository<T, ID> saveDeleteService, Class<? extends Component> gridNavigation) {
         ConfirmDialog deleteConfirm = new ConfirmDialog();
 
         deleteConfirm.setHeader("Confirm delete");

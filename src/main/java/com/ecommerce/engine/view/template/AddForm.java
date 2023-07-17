@@ -8,7 +8,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
 import java.util.function.Function;
@@ -16,15 +16,15 @@ import java.util.function.Function;
 public abstract class AddForm<T, ID> extends VerticalLayout {
 
     protected final Binder<T> binder;
-    protected final CrudRepository<T, ID> crudRepository;
+    protected final ListCrudRepository<T, ID> ListCrudRepository;
     protected final Function<T, ID> identifierGetter;
     private final Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving;
     private final FormLayout inputLayout;
 
-    public AddForm(CrudRepository<T, ID> crudRepository, Function<T, ID> identifierGetter, Class<T> aClass, Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving) {
+    public AddForm(ListCrudRepository<T, ID> ListCrudRepository, Function<T, ID> identifierGetter, Class<T> aClass, Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving) {
         binder = new Binder<>(aClass);
         inputLayout = new FormLayout();
-        this.crudRepository = crudRepository;
+        this.ListCrudRepository = ListCrudRepository;
         this.identifierGetter = identifierGetter;
         this.navigateAfterSaving = navigateAfterSaving;
 
@@ -63,7 +63,7 @@ public abstract class AddForm<T, ID> extends VerticalLayout {
             throw new RuntimeException(e);
         }
 
-        T savedEntity = crudRepository.save(newBean);
+        T savedEntity = ListCrudRepository.save(newBean);
 
         Notification.show("Successful saved");
 

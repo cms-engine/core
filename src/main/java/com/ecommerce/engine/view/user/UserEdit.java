@@ -1,7 +1,5 @@
 package com.ecommerce.engine.view.user;
 
-import com.ecommerce.engine.repository.GroupRepository;
-import com.ecommerce.engine.repository.UserRepository;
 import com.ecommerce.engine.repository.entity.Group;
 import com.ecommerce.engine.repository.entity.User;
 import com.ecommerce.engine.view.MainLayout;
@@ -18,6 +16,7 @@ import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Component;
 
 @Route(value = "users", layout = MainLayout.class)
@@ -25,8 +24,8 @@ import org.springframework.stereotype.Component;
 @PageTitle("User edit")
 public class UserEdit extends EditForm<User, Integer> {
 
-    public UserEdit(GroupRepository groupRepository, UserRepository saveDeleteService) {
-        super(saveDeleteService, User.class, UserList.class);
+    public UserEdit(ListCrudRepository<Group, Integer> groupRepository, ListCrudRepository<User, Integer> userRepository) {
+        super(userRepository, User.class, UserList.class);
 
         TextField username = new TextField("Username");
         PasswordField password = new PasswordField("Password");

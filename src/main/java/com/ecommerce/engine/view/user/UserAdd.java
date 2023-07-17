@@ -6,6 +6,9 @@ import com.ecommerce.engine.repository.entity.User;
 import com.ecommerce.engine.view.TextUtils;
 import com.ecommerce.engine.view.template.AddForm;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.combobox.ComboBox;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Component;
 
@@ -15,21 +18,38 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class UserAdd extends AddForm<User, Integer> {
 
-    public UserAdd(ListCrudRepository<Group, Integer> groupRepository, ListCrudRepository<User, Integer> userRepository) {
+    private final ApplicationContext applicationContext;
+
+    public UserAdd(ListCrudRepository<Group, Integer> groupRepository, ListCrudRepository<User, Integer> userRepository, ApplicationContext applicationContext) {
         super(userRepository, User::getId, User.class, UserEdit.class);
+        this.applicationContext = applicationContext;
 
         List<HasValue<?, ?>> createdFields = new ArrayList<>();
 
         Field[] declaredFields = User.class.getDeclaredFields();
+
+
         Arrays.stream(declaredFields).forEach(field -> {
             HasValue<?, ?> inputFromClass = createInputFromClass(field);
             if (inputFromClass != null) {
                 binder.bind(inputFromClass, field.getName());
                 createdFields.add(inputFromClass);
+            } else {
+                var listCrudRepositoryByGenericType = findListCrudRepositoryByGenericType(applicationContext, field.getType());
+                if (listCrudRepositoryByGenericType != null) {
+                    ComboBox comboBox = new ComboBox<>();
+                    comboBox.setLabel(TextUtils.convertCamelCaseToNormalText(field.getName()));
+                    comboBox.setItems(listCrudRepositoryByGenericType.findAll());
+                    comboBox.setItemLabelGenerator(Object::toString);
+
+                    binder.bind(comboBox, field.getName());
+                    createdFields.add(comboBox);
+                }
             }
         });
 
@@ -56,6 +76,22 @@ public class UserAdd extends AddForm<User, Integer> {
 
         addComponents(username, password, email, age, dateOfBirth, group);*/
         //binder.bindInstanceFields(this);
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static ListCrudRepository<?, ?> findListCrudRepositoryByGenericType(ApplicationContext context, Class<?> entityType) {
+        Map<String, ListCrudRepository> beansOfType = context.getBeansOfType(ListCrudRepository.class);
+
+        for (ListCrudRepository<?, ?> bean : beansOfType.values()) {
+            Class<?>[] resolveTypeArguments = GenericTypeResolver.resolveTypeArguments(bean.getClass(), ListCrudRepository.class);
+            Class<?> entityGenericType = resolveTypeArguments[0];
+
+            if (entityGenericType != null && entityGenericType.equals(entityType)) {
+                return bean;
+            }
+        }
+
+        return null;
     }
 
     private static HasValue<?, ?> createInputFromClass(Field field) {

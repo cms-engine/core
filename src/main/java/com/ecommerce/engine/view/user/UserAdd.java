@@ -1,45 +1,44 @@
 package com.ecommerce.engine.view.user;
 
-import com.ecommerce.engine.model.InputClassMapping;
-import com.ecommerce.engine.repository.entity.Group;
+import com.ecommerce.engine.model.VaadinInputFactory;
 import com.ecommerce.engine.repository.entity.User;
 import com.ecommerce.engine.view.TextUtils;
 import com.ecommerce.engine.view.template.AddForm;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.combobox.ComboBox;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 @Component
 public class UserAdd extends AddForm<User, Integer> {
 
-    private final ApplicationContext applicationContext;
-
-    public UserAdd(ListCrudRepository<Group, Integer> groupRepository, ListCrudRepository<User, Integer> userRepository, ApplicationContext applicationContext) {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public UserAdd(ListCrudRepository<User, Integer> userRepository, ApplicationContext applicationContext) {
         super(userRepository, User::getId, User.class, UserEdit.class);
-        this.applicationContext = applicationContext;
 
         List<HasValue<?, ?>> createdFields = new ArrayList<>();
 
         Field[] declaredFields = User.class.getDeclaredFields();
 
-
-        Arrays.stream(declaredFields).forEach(field -> {
-            HasValue<?, ?> inputFromClass = createInputFromClass(field);
+        for (Field field : declaredFields) {
+            HasValue<?, ?> inputFromClass = VaadinInputFactory.createVaadinInput(field);
             if (inputFromClass != null) {
-                binder.bind(inputFromClass, field.getName());
+                if (field.getType().isPrimitive()) {
+                    binder.forField(inputFromClass).asRequired().bind(field.getName());
+                } else {
+                    binder.bind(inputFromClass, field.getName());
+                }
                 createdFields.add(inputFromClass);
-            } else {
+            } else if (field.isAnnotationPresent(OneToOne.class) || field.isAnnotationPresent(ManyToOne.class)) {
                 var listCrudRepositoryByGenericType = findListCrudRepositoryByGenericType(applicationContext, field.getType());
                 if (listCrudRepositoryByGenericType != null) {
                     ComboBox comboBox = new ComboBox<>();
@@ -51,7 +50,7 @@ public class UserAdd extends AddForm<User, Integer> {
                     createdFields.add(comboBox);
                 }
             }
-        });
+        }
 
         addComponents(createdFields.stream().map(hasValue -> (com.vaadin.flow.component.Component) hasValue).toList());
         /*TextField username = new TextField("Username");
@@ -84,7 +83,7 @@ public class UserAdd extends AddForm<User, Integer> {
 
         for (ListCrudRepository<?, ?> bean : beansOfType.values()) {
             Class<?>[] resolveTypeArguments = GenericTypeResolver.resolveTypeArguments(bean.getClass(), ListCrudRepository.class);
-            Class<?> entityGenericType = resolveTypeArguments[0];
+            Class<?> entityGenericType = resolveTypeArguments != null ? resolveTypeArguments[0] : null;
 
             if (entityGenericType != null && entityGenericType.equals(entityType)) {
                 return bean;
@@ -92,19 +91,6 @@ public class UserAdd extends AddForm<User, Integer> {
         }
 
         return null;
-    }
-
-    private static HasValue<?, ?> createInputFromClass(Field field) {
-        try {
-        Class<? extends HasValue<?, ?>> inputClass = InputClassMapping.getInputClass(field.getType());
-        if (inputClass == null) {
-            return null;
-        }
-        Constructor<? extends HasValue<?, ?>> constructor = inputClass.getConstructor(String.class);
-        return constructor.newInstance(TextUtils.convertCamelCaseToNormalText(field.getName()));
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.annotation.VaadinEmail;
+import com.ecommerce.engine.annotation.VaadinPassword;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -24,12 +26,16 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @VaadinPassword
     @ToString.Exclude
     private String password;
 
+    @VaadinEmail
     private String email;
 
     private Integer age;
+
+    private int timestamp;
 
     private LocalDate dateOfBirth;
 

@@ -2,7 +2,7 @@ package com.ecommerce.engine.model;
 
 import com.ecommerce.engine.annotation.VaadinEmail;
 import com.ecommerce.engine.annotation.VaadinPassword;
-import com.ecommerce.engine.view.TextUtils;
+import com.ecommerce.engine.util.TextUtils;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.textfield.*;
@@ -27,13 +27,13 @@ public class VaadinInputFactory {
     private static final Collection<FilterType> NUMBER_FILTERS =
             List.of(EQUAL, NOT_EQUAL, IN, NOT_IN, GRATER_THAN, LESS_THAN, GRATER_THAN_OR_EQUAL, LESS_THAN_OR_EQUAL);
 
-    private static final Map<Class<?>, JavaClassData> INPUT_CLASSES_DATA = new HashMap<>();
+    private static final Map<Class<?>, JavaClassVaadinData> INPUT_CLASSES_DATA = new HashMap<>();
 
     static {
-        INPUT_CLASSES_DATA.put(String.class, new JavaClassData(TextField.class, STRING_FILTERS));
-        INPUT_CLASSES_DATA.put(Integer.class, new JavaClassData(IntegerField.class, NUMBER_FILTERS));
-        INPUT_CLASSES_DATA.put(BigDecimal.class, new JavaClassData(BigDecimalField.class, NUMBER_FILTERS));
-        INPUT_CLASSES_DATA.put(LocalDate.class, new JavaClassData(DatePicker.class, NUMBER_FILTERS));
+        INPUT_CLASSES_DATA.put(String.class, new JavaClassVaadinData(TextField.class, STRING_FILTERS));
+        INPUT_CLASSES_DATA.put(Integer.class, new JavaClassVaadinData(IntegerField.class, NUMBER_FILTERS));
+        INPUT_CLASSES_DATA.put(BigDecimal.class, new JavaClassVaadinData(BigDecimalField.class, NUMBER_FILTERS));
+        INPUT_CLASSES_DATA.put(LocalDate.class, new JavaClassVaadinData(DatePicker.class, NUMBER_FILTERS));
     }
 
     @SneakyThrows
@@ -62,8 +62,8 @@ public class VaadinInputFactory {
             }
         }
 
-        JavaClassData javaClassData = INPUT_CLASSES_DATA.get(type);
-        return javaClassData == null ? null : javaClassData.getInputClass();
+        JavaClassVaadinData javaClassVaadinData = INPUT_CLASSES_DATA.get(type);
+        return javaClassVaadinData == null ? null : javaClassVaadinData.getInputClass();
     }
 
     private static Class<?> getWrapperIfPrimitive(Class<?> fieldType) {
@@ -88,7 +88,7 @@ public class VaadinInputFactory {
 
     @Data
     @AllArgsConstructor
-    public static class JavaClassData {
+    public static class JavaClassVaadinData {
         private Class<? extends HasValue<?, ?>> inputClass;
         private Collection<FilterType> filterTypes;
     }

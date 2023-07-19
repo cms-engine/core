@@ -8,6 +8,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import lombok.SneakyThrows;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
@@ -45,7 +46,12 @@ public abstract class AddForm<T, ID> extends VerticalLayout {
         binder.readBean(getNewBean());
     }
 
-    public abstract T getNewBean();
+    public abstract Class<T> getEntityClass();
+
+    @SneakyThrows
+    public T getNewBean() {
+        return getEntityClass().getConstructor().newInstance();
+    }
 
     public void saveButtonActiveListener(Button saveButton) {
         saveButton.setEnabled(binder.isValid());

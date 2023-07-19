@@ -3,6 +3,9 @@ package com.ecommerce.engine.repository.entity;
 import com.ecommerce.engine.annotation.VaadinEmail;
 import com.ecommerce.engine.annotation.VaadinPassword;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -24,6 +27,7 @@ public class User {
     private Integer id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank
     private String username;
 
     @VaadinPassword
@@ -31,8 +35,10 @@ public class User {
     private String password;
 
     @VaadinEmail
+    @Email
     private String email;
 
+    @NotNull
     private Integer age;
 
     private int timestamp;

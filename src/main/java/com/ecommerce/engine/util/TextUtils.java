@@ -1,4 +1,4 @@
-package com.ecommerce.engine.view;
+package com.ecommerce.engine.util;
 
 import lombok.experimental.UtilityClass;
 

@@ -2,99 +2,160 @@ package com.ecommerce.engine.view.user;
 
 import com.ecommerce.engine.model.VaadinInputFactory;
 import com.ecommerce.engine.repository.entity.User;
-import com.ecommerce.engine.view.TextUtils;
+import com.ecommerce.engine.util.ReflectionUtils;
+import com.ecommerce.engine.util.TextUtils;
 import com.ecommerce.engine.view.template.AddForm;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.combobox.ComboBox;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.GenericTypeResolver;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.ValidationResult;
+import com.vaadin.flow.data.binder.ValueContext;
+import com.vaadin.flow.data.validator.AbstractValidator;
+import com.vaadin.flow.data.validator.RegexpValidator;
+import com.vaadin.flow.data.validator.StringLengthValidator;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
+import lombok.SneakyThrows;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class UserAdd extends AddForm<User, Integer> {
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public UserAdd(ListCrudRepository<User, Integer> userRepository, ApplicationContext applicationContext) {
+
+    public UserAdd(ListCrudRepository<User, Integer> userRepository) {
         super(userRepository, User::getId, User.class, UserEdit.class);
 
-        List<HasValue<?, ?>> createdFields = new ArrayList<>();
+        List<HasValue<?, ?>> createdComponents = new ArrayList<>();
 
         Field[] declaredFields = User.class.getDeclaredFields();
 
         for (Field field : declaredFields) {
-            HasValue<?, ?> inputFromClass = VaadinInputFactory.createVaadinInput(field);
-            if (inputFromClass != null) {
-                if (field.getType().isPrimitive()) {
-                    binder.forField(inputFromClass).asRequired().bind(field.getName());
-                } else {
-                    binder.bind(inputFromClass, field.getName());
-                }
-                createdFields.add(inputFromClass);
-            } else if (field.isAnnotationPresent(OneToOne.class) || field.isAnnotationPresent(ManyToOne.class)) {
-                var listCrudRepositoryByGenericType = findListCrudRepositoryByGenericType(applicationContext, field.getType());
-                if (listCrudRepositoryByGenericType != null) {
-                    ComboBox comboBox = new ComboBox<>();
-                    comboBox.setLabel(TextUtils.convertCamelCaseToNormalText(field.getName()));
-                    comboBox.setItems(listCrudRepositoryByGenericType.findAll());
-                    comboBox.setItemLabelGenerator(Object::toString);
-
-                    binder.bind(comboBox, field.getName());
-                    createdFields.add(comboBox);
-                }
-            }
+            resolveAndAddVaadinComponent(createdComponents, field);
         }
 
-        addComponents(createdFields.stream().map(hasValue -> (com.vaadin.flow.component.Component) hasValue).toList());
-        /*TextField username = new TextField("Username");
-        PasswordField password = new PasswordField("Password");
-        EmailField email = new EmailField("Email");
-        IntegerField age = new IntegerField("Age");
-        DatePicker dateOfBirth = new FormatDatePicker("Date of birth");
-        ComboBox<Group> group = new ComboBox<>();
-        group.setLabel("Group");
-        group.setItems(groupRepository.findAll());
-        group.setItemLabelGenerator(userGroup -> "%s (%d)".formatted(userGroup.getName(), userGroup.getId()));
-
+        addComponents(createdComponents.stream().map(hasValue -> (com.vaadin.flow.component.Component) hasValue).toList());
+        /*
         binder.forField(username).asRequired()
                 .withValidator(new RegexpValidator("Username can contain only word character [a-zA-Z0-9_]", "^\\w+$")).bind("username");
-        binder.forField(password).asRequired().bind("password");
         binder.forField(email)
                 .withValidator(new EmailValidator(
                         "This doesn't look like a valid email address", true)).bind("email");
         binder.forField(age).withValidator(new IntegerRangeValidator("0-100", 0, 100)).bind("age");
-        binder.bind(dateOfBirth, "dateOfBirth");
-        binder.bind(group, "group");
-
-        addComponents(username, password, email, age, dateOfBirth, group);*/
-        //binder.bindInstanceFields(this);
+        */
     }
 
-    @SuppressWarnings("rawtypes")
-    public static ListCrudRepository<?, ?> findListCrudRepositoryByGenericType(ApplicationContext context, Class<?> entityType) {
-        Map<String, ListCrudRepository> beansOfType = context.getBeansOfType(ListCrudRepository.class);
+    @SneakyThrows
+    private static Binder.BindingBuilder<?, ?> bindJakartaValidations(Field field, Binder.BindingBuilder<?, ?> bindingBuilder) {
+        Annotation[] declaredAnnotations = field.getDeclaredAnnotations();
 
-        for (ListCrudRepository<?, ?> bean : beansOfType.values()) {
-            Class<?>[] resolveTypeArguments = GenericTypeResolver.resolveTypeArguments(bean.getClass(), ListCrudRepository.class);
-            Class<?> entityGenericType = resolveTypeArguments != null ? resolveTypeArguments[0] : null;
-
-            if (entityGenericType != null && entityGenericType.equals(entityType)) {
-                return bean;
+        for (Annotation declaredAnnotation : declaredAnnotations) {
+            Class<? extends Annotation> annotationClass = declaredAnnotation.annotationType();
+            if (!annotationClass.getPackageName().equals("jakarta.validation.constraints")) {
+                continue;
             }
+
+            Method declaredMethod = annotationClass.getDeclaredMethod("message");
+            String message = declaredMethod.invoke(declaredAnnotation).toString();
+
+            bindingBuilder = applyValidationToInput(bindingBuilder, declaredAnnotation, annotationClass, message);
         }
 
-        return null;
+        return bindingBuilder;
+    }
+
+    @SneakyThrows
+    private static Binder.BindingBuilder<?, ?> applyValidationToInput(Binder.BindingBuilder<?, ?> bindingBuilder, Annotation declaredAnnotation, Class<? extends Annotation> annotationClass, String message) {
+        if (annotationClass.equals(NotNull.class) || annotationClass.equals(NotEmpty.class)) {
+            bindingBuilder = bindingBuilder.asRequired(message);
+        }
+
+        if (annotationClass.equals(NotBlank.class)) {
+            Binder.BindingBuilder<?, String> bindingBuilderString = (Binder.BindingBuilder<?, String>) bindingBuilder;
+
+            bindingBuilder = bindingBuilderString.asRequired().withValidator(new AbstractValidator<>(message) {
+                @Override
+                public ValidationResult apply(String value, ValueContext context) {
+                    return toResult(value, StringUtils.hasText(value));
+                }
+            });
+        }
+
+        if (annotationClass.equals(Pattern.class)) {
+            Binder.BindingBuilder<?, String> bindingBuilderString = (Binder.BindingBuilder<?, String>) bindingBuilder;
+
+            Method declaredMethod = annotationClass.getDeclaredMethod("regexp");
+            String regexp = declaredMethod.invoke(declaredAnnotation).toString();
+
+            bindingBuilder = bindingBuilderString.asRequired().withValidator(new RegexpValidator(message, regexp));
+        }
+
+        if (annotationClass.equals(Size.class)) {
+            Binder.BindingBuilder<?, String> bindingBuilderString = (Binder.BindingBuilder<?, String>) bindingBuilder;
+
+            int min = (int) annotationClass.getDeclaredMethod("min").invoke(declaredAnnotation);
+            int max = (int) annotationClass.getDeclaredMethod("max").invoke(declaredAnnotation);
+
+            bindingBuilder = bindingBuilderString.asRequired().withValidator(new StringLengthValidator(message, min, max));
+        }
+
+        return bindingBuilder;
+    }
+
+    private void resolveAndAddVaadinComponent(List<HasValue<?, ?>> createdComponents, Field field) {
+        final String jakartaPackage = "jakarta.validation.constraints";
+
+        if (field.isAnnotationPresent(Id.class) && field.isAnnotationPresent(GeneratedValue.class)) {
+            return;
+        }
+
+        HasValue<?, ?> inputFromClass = VaadinInputFactory.createVaadinInput(field);
+        if (inputFromClass != null) {
+            Binder.BindingBuilder<?, ?> bindingBuilder = binder.forField(inputFromClass);
+
+            if (field.getType().isPrimitive()) {
+                bindingBuilder.asRequired().bind(field.getName());
+            } else {
+                bindingBuilder = bindJakartaValidations(field, bindingBuilder);
+                bindingBuilder.bind(field.getName());
+            }
+            createdComponents.add(inputFromClass);
+            return;
+        }
+
+        if (!ReflectionUtils.isToOneColumn(field)) {
+            return;
+        }
+
+        var listCrudRepositoryByGenericType = ReflectionUtils.findListCrudRepositoryByGenericType(field.getType());
+        if (listCrudRepositoryByGenericType == null) {
+            return;
+        }
+
+        createComboBoxInput(createdComponents, field, listCrudRepositoryByGenericType);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void createComboBoxInput(List<HasValue<?, ?>> createdFields, Field field, org.springframework.data.repository.ListCrudRepository<?, ?> listCrudRepositoryByGenericType) {
+        ComboBox comboBox = new ComboBox<>();
+        comboBox.setLabel(TextUtils.convertCamelCaseToNormalText(field.getName()));
+        comboBox.setItems(listCrudRepositoryByGenericType.findAll());
+        comboBox.setItemLabelGenerator(Object::toString);
+
+        binder.bind(comboBox, field.getName());
+        createdFields.add(comboBox);
     }
 
     @Override
-    public User getNewBean() {
-        return new User();
+    public Class<User> getEntityClass() {
+        return User.class;
     }
 }

@@ -1,5 +1,6 @@
 package com.ecommerce.engine.view.template;
 
+import com.ecommerce.engine.repository.entity.User;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -12,14 +13,15 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.springframework.data.repository.ListCrudRepository;
 
+import java.util.List;
 import java.util.function.Function;
 
 public class ListForm<T, ID> extends VerticalLayout {
 
-    public ListForm(ListCrudRepository<T, ID> ListCrudRepository, Class<T> aClass, Function<T, ID> identifierGetter, EntityDataProvider<T> dataProvider, AddForm<T, ID> addForm, EditForm<T, ID> editForm, FilterDivComponent filterDivComponent) {
+    public ListForm(ListCrudRepository<T, ID> ListCrudRepository, Class<T> entityClass, Function<T, ID> identifierGetter, EntityDataProvider<T> dataProvider, List<AddForm<User, Integer>> addForms, EditForm<T, ID> editForm, FilterDivComponent filterDivComponent) {
         setHeightFull();
 
-        Grid<T> grid = new Grid<>(aClass);
+        Grid<T> grid = new Grid<>(entityClass);
 
         ((GridMultiSelectionModel<?>) grid
                 .setSelectionMode(Grid.SelectionMode.MULTI))
@@ -46,6 +48,8 @@ public class ListForm<T, ID> extends VerticalLayout {
         });
         delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
 
+        AddForm<T, ID> addForm = resolveAddForm(addForms, entityClass);
+
         Dialog addNew = addNew(addForm, grid);
         Button create = new Button("Add", VaadinIcon.PLUS.create(), buttonClickEvent -> addNew.open());
         create.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -58,6 +62,17 @@ public class ListForm<T, ID> extends VerticalLayout {
         HorizontalLayout gridLayout = new HorizontalLayout(grid, filterDiv);
         gridLayout.setSizeFull();
         add(horizontalLayout, gridLayout);
+    }
+
+    @SuppressWarnings("unchecked")
+    private AddForm<T, ID> resolveAddForm(List<AddForm<User, Integer>> addForms, Class<T> aClass) {
+        for (AddForm<User, Integer> addForm : addForms) {
+            if (aClass.equals(addForm.getEntityClass())) {
+                return (AddForm<T, ID>) addForm;
+            }
+        }
+
+        return null;
     }
 
     private ConfirmDialog confirm(ListCrudRepository<T, ID> ListCrudRepository, Grid<T> grid) {

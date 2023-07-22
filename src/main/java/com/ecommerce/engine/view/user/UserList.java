@@ -8,11 +8,13 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.data.repository.ListCrudRepository;
 
+import java.util.List;
+
 @Route(value = "users", layout = MainLayout.class)
 @PageTitle("Users")
 public class UserList extends ListForm<User, Integer> {
 
-    public UserList(ListCrudRepository<User, Integer> userRepository, UserDataProvider userDataProvider, AddForm<User, Integer> userAdd, UserEdit userEdit) {
-        super(userRepository, User.class, User::getId, userDataProvider, userAdd, userEdit, new UserFilter());
+    public UserList(ListCrudRepository<User, Integer> userRepository, UserDataProvider userDataProvider, List<AddForm<User, Integer>> addForms, UserEdit userEdit) {
+        super(userRepository, User.class, User::getId, userDataProvider, addForms, userEdit, new UserFilter());
     }
 }

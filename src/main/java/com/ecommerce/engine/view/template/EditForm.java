@@ -9,11 +9,13 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import org.springframework.data.repository.ListCrudRepository;
 
-public abstract class EditForm<T, ID> extends NavigatedFormLayout<ID> {
+public abstract class EditForm<T, ID> extends VerticalLayout implements HasUrlParameter<ID> {
 
     protected final Binder<T> binder;
     protected final ListCrudRepository<T, ID> saveDeleteService;

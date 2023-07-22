@@ -19,15 +19,17 @@ public abstract class AddForm<T, ID> extends VerticalLayout {
     protected final Binder<T> binder;
     protected final ListCrudRepository<T, ID> ListCrudRepository;
     protected final Function<T, ID> identifierGetter;
-    private final Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving;
+    private final Class<? extends EditForm<T, ID>> navigateAfterSaving;
     private final FormLayout inputLayout;
+    private final Class<T> entityClass;
 
-    public AddForm(ListCrudRepository<T, ID> ListCrudRepository, Function<T, ID> identifierGetter, Class<T> aClass, Class<? extends NavigatedFormLayout<ID>> navigateAfterSaving) {
-        binder = new Binder<>(aClass);
+    public AddForm(ListCrudRepository<T, ID> ListCrudRepository, Function<T, ID> identifierGetter, Class<T> entityClass, Class<? extends EditForm<T, ID>> navigateAfterSaving) {
+        binder = new Binder<>(entityClass);
         inputLayout = new FormLayout();
         this.ListCrudRepository = ListCrudRepository;
         this.identifierGetter = identifierGetter;
         this.navigateAfterSaving = navigateAfterSaving;
+        this.entityClass = entityClass;
 
         add(inputLayout);
 
@@ -38,19 +40,13 @@ public abstract class AddForm<T, ID> extends VerticalLayout {
         inputLayout.add(components);
     }
 
-    public void addComponents(Component... components) {
-        inputLayout.add(components);
-    }
-
     public void refreshForm() {
         binder.readBean(getNewBean());
     }
 
-    public abstract Class<T> getEntityClass();
-
     @SneakyThrows
     public T getNewBean() {
-        return getEntityClass().getConstructor().newInstance();
+        return entityClass.getConstructor().newInstance();
     }
 
     public void saveButtonActiveListener(Button saveButton) {

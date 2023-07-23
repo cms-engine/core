@@ -1,6 +1,6 @@
 package com.ecommerce.engine.view;
 
-import com.ecommerce.engine.view.user.UserList;
+import com.ecommerce.engine.view.template.ListForm;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -53,12 +53,12 @@ public class MainLayout extends AppLayout {
 
         RouteTabs routeTabs = new RouteTabs();
         routeTabs.add(VaadinIcon.DASHBOARD.create(), new RouterLink("Dashboard", DashboardView.class));
-        routeTabs.add(VaadinIcon.USERS.create(), new RouterLink("Users", UserList.class));
+        routeTabs.add(VaadinIcon.USERS.create(), new RouterLink("Users", ListForm.class));
 
         Tab dashboard = new Tab(VaadinIcon.DASHBOARD.create(), new RouterLink("Dashboard", DashboardView.class));
         Tab orders = new Tab(VaadinIcon.LIST.create(), new Span("Orders"));
         orders.setEnabled(false);
-        Tab users = new Tab(VaadinIcon.USERS.create(), new RouterLink("Users", UserList.class));
+        Tab users = new Tab(VaadinIcon.USERS.create(), new RouterLink("Users", ListForm.class));
 
         HighlightConditions.sameLocation();
 

@@ -2,9 +2,9 @@ package com.ecommerce.engine.view.template;
 
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.service.SearchService;
+import com.ecommerce.engine.util.ReflectionUtils;
 import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.data.provider.Query;
-import com.vaadin.flow.function.ValueProvider;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,10 +12,10 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 import java.util.stream.Stream;
 
-public abstract class EntityDataProvider<T> extends CallbackDataProvider<T, List<SearchRequest.Filter>> {
+public class EntityDataProvider<T> extends CallbackDataProvider<T, List<SearchRequest.Filter>> {
 
-    public EntityDataProvider(SearchService<T> searchService, ValueProvider<T, Object> identifierGetter, Class<T> aClass) {
-        super(new EntityFetchCallback<>(searchService, aClass), new EntityCountCallback<>(searchService, aClass), identifierGetter);
+    public EntityDataProvider(SearchService<T> searchService, Class<T> entityClass, Class<?> idClass) {
+        super(new EntityFetchCallback<>(searchService, entityClass), new EntityCountCallback<>(searchService, entityClass), o -> ReflectionUtils.getEntityId(o, idClass));
     }
 
     @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public abstract class EntityDataProvider<T> extends CallbackDataProvider<T, List
     public static class EntityFetchCallback<T> implements FetchCallback<T, List<SearchRequest.Filter>> {
 
         SearchService<T> searchService;
-        Class<T> aClass;
+        Class<T> entityClass;
 
         @Override
         public Stream<T> fetch(Query<T, List<SearchRequest.Filter>> query) {
@@ -35,7 +35,7 @@ public abstract class EntityDataProvider<T> extends CallbackDataProvider<T, List
             searchRequest.setSorts(sorts);
             query.getFilter().ifPresent(searchRequest::setFilters);
 
-            return searchService.search(searchRequest, aClass).stream();
+            return searchService.search(searchRequest, entityClass).stream();
         }
     }
 
@@ -44,14 +44,14 @@ public abstract class EntityDataProvider<T> extends CallbackDataProvider<T, List
     public static class EntityCountCallback<T> implements CountCallback<T, List<SearchRequest.Filter>> {
 
         SearchService<T> searchService;
-        Class<T> aClass;
+        Class<T> entityClass;
 
         @Override
         public int count(Query<T, List<SearchRequest.Filter>> query) {
             SearchRequest searchRequest = new SearchRequest();
             query.getFilter().ifPresent(searchRequest::setFilters);
 
-            return searchService.totalCount(searchRequest, aClass);
+            return searchService.totalCount(searchRequest, entityClass);
         }
     }
 }

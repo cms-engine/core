@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 public class UserDataProvider extends EntityDataProvider<User> {
 
     public UserDataProvider(SearchService<User> searchService) {
-        super(searchService, User::getId, User.class);
+        super(searchService, user -> user.getId(), User.class);
     }
 }

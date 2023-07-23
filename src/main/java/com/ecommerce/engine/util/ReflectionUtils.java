@@ -1,5 +1,6 @@
 package com.ecommerce.engine.util;
 
+import com.ecommerce.engine.VaadinFormsRegistrar;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
@@ -9,7 +10,6 @@ import org.springframework.core.GenericTypeResolver;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 @UtilityClass
 public class ReflectionUtils {
@@ -19,8 +19,8 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("rawtypes")
-    public static ListCrudRepository<?, ?> findListCrudRepositoryByGenericType(Class<?> entityType, List<ListCrudRepository<?, ?>> allRepositories) {
-        for (ListCrudRepository<?, ?> bean : allRepositories) {
+    public static ListCrudRepository<?, ?> findListCrudRepositoryByGenericType(Class<?> entityType) {
+        for (ListCrudRepository<?, ?> bean : VaadinFormsRegistrar.getAllRepositories()) {
             Class<?>[] resolveTypeArguments = GenericTypeResolver.resolveTypeArguments(bean.getClass(), ListCrudRepository.class);
             Class<?> entityGenericType = resolveTypeArguments != null ? resolveTypeArguments[0] : null;
 

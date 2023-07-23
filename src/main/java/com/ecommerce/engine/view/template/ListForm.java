@@ -1,6 +1,7 @@
 package com.ecommerce.engine.view.template;
 
-import com.ecommerce.engine.repository.entity.User;
+import com.ecommerce.engine.util.ReflectionUtils;
+import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -11,14 +12,25 @@ import com.vaadin.flow.component.grid.GridMultiSelectionModel;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.repository.ListCrudRepository;
 
-import java.util.List;
-import java.util.function.Function;
-
+@Route(value = "users", layout = MainLayout.class)
+@PageTitle("Users")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ListForm<T, ID> extends VerticalLayout {
 
-    public ListForm(ListCrudRepository<T, ID> ListCrudRepository, Class<T> entityClass, Function<T, ID> identifierGetter, EntityDataProvider<T> dataProvider, List<AddForm<User, Integer>> addForms, EditForm<T, ID> editForm, FilterDivComponent filterDivComponent) {
+    public ListForm(ListCrudRepository<T, ID> listCrudRepository,
+                    EntityDataProvider<T> dataProvider,
+                    AddForm<T, ID> addForm,
+                    EditForm<T, ID> editForm,
+                    FilterDivComponent filterDivComponent,
+                    Class<T> entityClass,
+                    Class<ID> idClass) {
+
         setHeightFull();
 
         Grid<T> grid = new Grid<>(entityClass);
@@ -29,7 +41,7 @@ public class ListForm<T, ID> extends VerticalLayout {
         grid.setColumnReorderingAllowed(true);
 
         grid.addComponentColumn(entity -> new Button(VaadinIcon.EDIT.create(), event ->
-                getUI().ifPresent(ui -> ui.navigate(editForm.getClass(), identifierGetter.apply(entity))))).setFrozenToEnd(true).setTextAlign(ColumnTextAlign.CENTER);
+                getUI().ifPresent(ui -> ui.navigate(editForm.getClass(), ReflectionUtils.getEntityId(entity, idClass))))).setFrozenToEnd(true).setTextAlign(ColumnTextAlign.CENTER);
 
         grid.getColumns().forEach(column -> column.setResizable(true).setAutoWidth(true));
 
@@ -41,14 +53,12 @@ public class ListForm<T, ID> extends VerticalLayout {
         filterDiv.setVisible(false);
         Button filter = new Button("Filter", VaadinIcon.FILTER.create(), event -> filterDiv.setVisible(!filterDiv.isVisible()));
 
-        ConfirmDialog deleteConfirm = confirm(ListCrudRepository, grid);
+        ConfirmDialog deleteConfirm = confirm(listCrudRepository, grid);
         Button delete = new Button("Delete", VaadinIcon.MINUS.create(), buttonClickEvent -> {
             deleteConfirm.setText(String.format("%s items will be deleted. Are you sure?", grid.getSelectedItems().size()));
             deleteConfirm.open();
         });
         delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
-
-        AddForm<T, ID> addForm = resolveAddForm(addForms, entityClass);
 
         Dialog addNew = addNew(addForm, grid);
         Button create = new Button("Add", VaadinIcon.PLUS.create(), buttonClickEvent -> addNew.open());
@@ -62,17 +72,6 @@ public class ListForm<T, ID> extends VerticalLayout {
         HorizontalLayout gridLayout = new HorizontalLayout(grid, filterDiv);
         gridLayout.setSizeFull();
         add(horizontalLayout, gridLayout);
-    }
-
-    @SuppressWarnings("unchecked")
-    private AddForm<T, ID> resolveAddForm(List<AddForm<User, Integer>> addForms, Class<T> aClass) {
-        for (AddForm<User, Integer> addForm : addForms) {
-            if (aClass.equals(addForm.getEntityClass())) {
-                return (AddForm<T, ID>) addForm;
-            }
-        }
-
-        return null;
     }
 
     private ConfirmDialog confirm(ListCrudRepository<T, ID> ListCrudRepository, Grid<T> grid) {
@@ -93,23 +92,23 @@ public class ListForm<T, ID> extends VerticalLayout {
         return dialog;
     }
 
-    private Dialog addNew(AddForm<T, ID> userAdd, Grid<T> grid) {
+    private Dialog addNew(AddForm<T, ID> addForm, Grid<T> grid) {
         Dialog dialog = new Dialog();
 
         dialog.setHeaderTitle("New item");
 
-        dialog.add(userAdd);
+        dialog.add(addForm);
 
         Button closeButton = new Button(VaadinIcon.CLOSE.create(), event -> {
-            userAdd.refreshForm();
+            addForm.refreshForm();
             dialog.close();
         });
         dialog.getHeader().add(closeButton);
 
         Button saveButton = new Button("Save", buttonClickEvent -> {
-            userAdd.saveEntity();
+            addForm.saveEntity();
 
-            userAdd.refreshForm();
+            addForm.refreshForm();
 
             dialog.close();
             grid.getDataProvider().refreshAll();
@@ -117,10 +116,10 @@ public class ListForm<T, ID> extends VerticalLayout {
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         dialog.getFooter().add(saveButton);
 
-        userAdd.saveButtonActiveListener(saveButton);
+        addForm.saveButtonActiveListener(saveButton);
 
         dialog.addDialogCloseActionListener(event -> {
-            userAdd.refreshForm();
+            addForm.refreshForm();
             dialog.close();
         });
 

@@ -1,5 +1,6 @@
 package com.ecommerce.engine.view.template;
 
+import com.ecommerce.engine.util.ReflectionUtils;
 import com.ecommerce.engine.util.VaadinUtils;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
@@ -20,18 +21,17 @@ public class AddForm<T, ID> extends VerticalLayout {
 
     Binder<T> binder;
     ListCrudRepository<T, ID> listCrudRepository;
-    Class<? extends EditForm<T, ID>> navigateAfterSaving;
     Class<T> entityClass;
     Class<ID> idClass;
+    String tableName;
 
     public AddForm(ListCrudRepository<T, ID> listCrudRepository,
-                   Class<? extends EditForm<T, ID>> navigateAfterSaving,
                    Class<T> entityClass,
-                   Class<ID> idClass) {
+                   Class<ID> idClass, String tableName) {
         this.listCrudRepository = listCrudRepository;
-        this.navigateAfterSaving = navigateAfterSaving;
         this.entityClass = entityClass;
         this.idClass = idClass;
+        this.tableName = tableName;
         this.binder = new Binder<>(this.entityClass);
 
         FormLayout inputLayout = new FormLayout();
@@ -57,9 +57,7 @@ public class AddForm<T, ID> extends VerticalLayout {
 
     public void saveButtonActiveListener(Button saveButton) {
         saveButton.setEnabled(binder.isValid());
-        binder.addValueChangeListener((HasValue.ValueChangeListener<HasValue.ValueChangeEvent<?>>) event -> {
-            saveButton.setEnabled(binder.isValid());
-        });
+        binder.addValueChangeListener((HasValue.ValueChangeListener<HasValue.ValueChangeEvent<?>>) event -> saveButton.setEnabled(binder.isValid()));
     }
 
     public void saveEntity() {
@@ -77,7 +75,6 @@ public class AddForm<T, ID> extends VerticalLayout {
 
         refreshForm();
 
-        /*getUI().ifPresent(ui -> ui.navigate(
-                navigateAfterSaving, ReflectionUtils.getEntityId(savedEntity, idClass)));*/
+        getUI().ifPresent(ui -> ui.navigate(tableName + "/" + ReflectionUtils.getEntityId(savedEntity, idClass)));
     }
 }

@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class TextUtils {
 
-    public static String convertCamelCaseToNormalText(String camelCase) {
+    public static String camelToSpaceCase(String camelCase) {
         StringBuilder normalText = new StringBuilder();
 
         for (int i = 0; i < camelCase.length(); i++) {
@@ -25,5 +25,9 @@ public class TextUtils {
         normalText.setCharAt(0, Character.toUpperCase(normalText.charAt(0)));
 
         return normalText.toString();
+    }
+
+    public static String camelToSnakeCase(String camelCase) {
+        return camelCase.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
     }
 }

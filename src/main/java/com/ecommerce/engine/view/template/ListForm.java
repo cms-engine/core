@@ -1,28 +1,34 @@
 package com.ecommerce.engine.view.template;
 
+import com.ecommerce.engine.util.ReflectionUtils;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridMultiSelectionModel;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.repository.ListCrudRepository;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ListForm<T, ID> extends VerticalLayout {
 
+    @Getter
+    String tableName;
+
     public ListForm(ListCrudRepository<T, ID> listCrudRepository,
                     EntityDataProvider<T> dataProvider,
                     AddForm<T, ID> addForm,
-                    Class<? extends EditForm<T, ID>> editForm,
                     FilterDivComponent filterDivComponent,
                     Class<T> entityClass,
-                    Class<ID> idClass) {
+                    Class<ID> idClass, String tableName) {
+        this.tableName = tableName;
 
         setHeightFull();
 
@@ -33,8 +39,8 @@ public class ListForm<T, ID> extends VerticalLayout {
                 .setSelectionColumnFrozen(true);
         grid.setColumnReorderingAllowed(true);
 
-        /*grid.addComponentColumn(entity -> new Button(VaadinIcon.EDIT.create(), event ->
-                getUI().ifPresent(ui -> ui.navigate(editForm, ReflectionUtils.getEntityId(entity, idClass))))).setFrozenToEnd(true).setTextAlign(ColumnTextAlign.CENTER);*/
+        grid.addComponentColumn(entity -> new Button(VaadinIcon.EDIT.create(), event ->
+                getUI().ifPresent(ui -> ui.navigate(tableName + "/" + ReflectionUtils.getEntityId(entity, idClass))))).setFrozenToEnd(true).setTextAlign(ColumnTextAlign.CENTER);
 
         grid.getColumns().forEach(column -> column.setResizable(true).setAutoWidth(true));
 

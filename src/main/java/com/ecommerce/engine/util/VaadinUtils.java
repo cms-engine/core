@@ -59,7 +59,7 @@ public class VaadinUtils {
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static void createComboBoxInput(Field field, org.springframework.data.repository.ListCrudRepository<?, ?> listCrudRepositoryByGenericType, Binder<?> binder, FormLayout inputLayout) {
         ComboBox comboBox = new ComboBox<>();
-        comboBox.setLabel(TextUtils.convertCamelCaseToNormalText(field.getName()));
+        comboBox.setLabel(TextUtils.camelToSpaceCase(field.getName()));
         comboBox.setItems(listCrudRepositoryByGenericType.findAll());
         comboBox.setItemLabelGenerator(Object::toString);
 

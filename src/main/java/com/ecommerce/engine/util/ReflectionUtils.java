@@ -4,12 +4,14 @@ import com.ecommerce.engine.VaadinFormsRegistrar;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 @UtilityClass
 public class ReflectionUtils {
@@ -74,6 +76,15 @@ public class ReflectionUtils {
         }
 
         return null;
+    }
+
+    public static String getTableName(Class<?> entityClass) {
+        Table tableAnnotation = entityClass.getAnnotation(Table.class);
+
+        return Optional.ofNullable(tableAnnotation)
+                .map(Table::name)
+                .filter(name -> !name.isEmpty())
+                .orElseGet(() -> TextUtils.camelToSnakeCase(entityClass.getSimpleName()));
     }
 
 }

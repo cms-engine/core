@@ -52,8 +52,8 @@ public class VaadinFormsRegistrar implements VaadinServiceInitListener  {
                 initEvent -> LoggerFactory.getLogger(getClass())
                         .info("A new UI has been initialized!"));
 
-        LIST_FORMS.forEach(listForm -> RouteConfiguration.forApplicationScope().setRoute("users", listForm.getClass(), MainLayout.class));
-        EDIT_FORMS.forEach(editForm -> RouteConfiguration.forApplicationScope().setRoute("users/:id", editForm.getClass(), MainLayout.class));
+        LIST_FORMS.forEach(listForm -> RouteConfiguration.forApplicationScope().setRoute(listForm.getTableName(), listForm.getClass(), MainLayout.class));
+        EDIT_FORMS.forEach(editForm -> RouteConfiguration.forApplicationScope().setRoute(editForm.getTableName() + "/:id", editForm.getClass(), MainLayout.class));
     }
 
     public VaadinFormsRegistrar(ApplicationContext applicationContext, EntityManager entityManager, List<ListCrudRepository<?, ?>> listCrudRepositories) {
@@ -80,19 +80,19 @@ public class VaadinFormsRegistrar implements VaadinServiceInitListener  {
             return;
         }
 
+        String tableName = ReflectionUtils.getTableName(entityClass);
+
         var searchService = new SearchService<T>(entityManager);
 
         var entityDataProvider = new EntityDataProvider<>(searchService, entityClass, idClass);
-        beanFactory.registerSingleton("entityDataProvider_" + UUID.randomUUID(), entityDataProvider);
 
-        var editForm = new EditForm<>(listCrudRepository, null, entityClass, idClass);
+        var editForm = new EditForm<>(listCrudRepository, null, entityClass, idClass, tableName);
         beanFactory.registerSingleton("editForm_" + UUID.randomUUID(), editForm);
         EDIT_FORMS.add(editForm);
 
-        var addForm = new AddForm<>(listCrudRepository, null, entityClass, idClass);
-        beanFactory.registerSingleton("addForm_" + UUID.randomUUID(), addForm);
+        var addForm = new AddForm<>(listCrudRepository, entityClass, idClass, tableName);
 
-        var listForm = new ListForm<>(listCrudRepository, entityDataProvider, addForm, null, new UserFilter(), entityClass, idClass);
+        var listForm = new ListForm<>(listCrudRepository, entityDataProvider, addForm, new UserFilter(), entityClass, idClass, tableName);
         beanFactory.registerSingleton("listForm_" + UUID.randomUUID(), listForm);
         LIST_FORMS.add(listForm);
     }

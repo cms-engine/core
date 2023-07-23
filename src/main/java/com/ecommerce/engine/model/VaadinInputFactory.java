@@ -44,7 +44,7 @@ public class VaadinInputFactory {
         }
         Constructor<? extends HasValue<?, ?>> constructor = inputClass.getConstructor(String.class);
 
-        String inputLabel = TextUtils.convertCamelCaseToNormalText(field.getName());
+        String inputLabel = TextUtils.camelToSpaceCase(field.getName());
         return constructor.newInstance(inputLabel);
     }
 

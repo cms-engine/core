@@ -16,6 +16,7 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.repository.ListCrudRepository;
 
@@ -28,15 +29,18 @@ public class EditForm<T, ID> extends VerticalLayout implements BeforeEnterObserv
     ListCrudRepository<T, ID> listCrudRepository;
     Paragraph idLabel;
     Class<ID> idClass;
+    @Getter
+    String tableName;
 
     public EditForm(ListCrudRepository<T, ID> listCrudRepository,
                     Class<? extends Component> gridNavigation,
-                    Class<T> entityClass, Class<ID> idClass) {
+                    Class<T> entityClass, Class<ID> idClass, String tableName) {
 
         this.listCrudRepository = listCrudRepository;
         this.binder = new Binder<>(entityClass);
         this.idClass = idClass;
         this.idLabel = new Paragraph();
+        this.tableName = tableName;
 
         FormLayout inputLayout = new FormLayout();
 

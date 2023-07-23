@@ -53,7 +53,7 @@ public class VaadinFormsRegistrar implements VaadinServiceInitListener  {
                         .info("A new UI has been initialized!"));
 
         LIST_FORMS.forEach(listForm -> RouteConfiguration.forApplicationScope().setRoute("users", listForm.getClass(), MainLayout.class));
-        EDIT_FORMS.forEach(editForm -> RouteConfiguration.forApplicationScope().setRoute("users", editForm.getClass(), MainLayout.class));
+        EDIT_FORMS.forEach(editForm -> RouteConfiguration.forApplicationScope().setRoute("users/:id", editForm.getClass(), MainLayout.class));
     }
 
     public VaadinFormsRegistrar(ApplicationContext applicationContext, EntityManager entityManager, List<ListCrudRepository<?, ?>> listCrudRepositories) {
@@ -85,7 +85,7 @@ public class VaadinFormsRegistrar implements VaadinServiceInitListener  {
         var entityDataProvider = new EntityDataProvider<>(searchService, entityClass, idClass);
         beanFactory.registerSingleton("entityDataProvider_" + UUID.randomUUID(), entityDataProvider);
 
-        var editForm = new EditForm<>(listCrudRepository, null, entityClass);
+        var editForm = new EditForm<>(listCrudRepository, null, entityClass, idClass);
         beanFactory.registerSingleton("editForm_" + UUID.randomUUID(), editForm);
         EDIT_FORMS.add(editForm);
 

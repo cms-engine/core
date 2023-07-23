@@ -1,5 +1,6 @@
 package com.ecommerce.engine.view.template;
 
+import com.ecommerce.engine.util.ReflectionUtils;
 import com.ecommerce.engine.util.VaadinUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -12,8 +13,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.repository.ListCrudRepository;
@@ -21,18 +22,20 @@ import org.springframework.data.repository.ListCrudRepository;
 import java.lang.reflect.Field;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class EditForm<T, ID> extends VerticalLayout implements HasUrlParameter<ID> {
+public class EditForm<T, ID> extends VerticalLayout implements BeforeEnterObserver {
 
     Binder<T> binder;
     ListCrudRepository<T, ID> listCrudRepository;
     Paragraph idLabel;
+    Class<ID> idClass;
 
     public EditForm(ListCrudRepository<T, ID> listCrudRepository,
                     Class<? extends Component> gridNavigation,
-                    Class<T> entityClass) {
+                    Class<T> entityClass, Class<ID> idClass) {
 
         this.listCrudRepository = listCrudRepository;
         this.binder = new Binder<>(entityClass);
+        this.idClass = idClass;
         this.idLabel = new Paragraph();
 
         FormLayout inputLayout = new FormLayout();
@@ -82,16 +85,18 @@ public class EditForm<T, ID> extends VerticalLayout implements HasUrlParameter<I
         return deleteConfirm;
     }
 
-    @Override
-    public void setParameter(BeforeEvent event, ID parameter) {
-        binder.setBean(listCrudRepository.findById(parameter).orElseThrow());
-        idLabel.setText("Id: %s".formatted(parameter));
-    }
-
     public void saveEntity() {
         T savedEntity = listCrudRepository.save(binder.getBean());
         binder.readBean(savedEntity);
 
         Notification.show("Successful saved");
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        ID parameter = ReflectionUtils.castStringToIdType(event.getRouteParameters().get("id").get(), idClass);
+
+        binder.setBean(listCrudRepository.findById(parameter).orElseThrow());
+        idLabel.setText("Id: %s".formatted(parameter));
     }
 }

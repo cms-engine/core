@@ -1,32 +1,25 @@
 package com.ecommerce.engine.view.template;
 
-import com.ecommerce.engine.util.ReflectionUtils;
-import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridMultiSelectionModel;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.repository.ListCrudRepository;
 
-@Route(value = "users", layout = MainLayout.class)
-@PageTitle("Users")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ListForm<T, ID> extends VerticalLayout {
 
     public ListForm(ListCrudRepository<T, ID> listCrudRepository,
                     EntityDataProvider<T> dataProvider,
                     AddForm<T, ID> addForm,
-                    EditForm<T, ID> editForm,
+                    Class<? extends EditForm<T, ID>> editForm,
                     FilterDivComponent filterDivComponent,
                     Class<T> entityClass,
                     Class<ID> idClass) {
@@ -40,8 +33,8 @@ public class ListForm<T, ID> extends VerticalLayout {
                 .setSelectionColumnFrozen(true);
         grid.setColumnReorderingAllowed(true);
 
-        grid.addComponentColumn(entity -> new Button(VaadinIcon.EDIT.create(), event ->
-                getUI().ifPresent(ui -> ui.navigate(editForm.getClass(), ReflectionUtils.getEntityId(entity, idClass))))).setFrozenToEnd(true).setTextAlign(ColumnTextAlign.CENTER);
+        /*grid.addComponentColumn(entity -> new Button(VaadinIcon.EDIT.create(), event ->
+                getUI().ifPresent(ui -> ui.navigate(editForm, ReflectionUtils.getEntityId(entity, idClass))))).setFrozenToEnd(true).setTextAlign(ColumnTextAlign.CENTER);*/
 
         grid.getColumns().forEach(column -> column.setResizable(true).setAutoWidth(true));
 

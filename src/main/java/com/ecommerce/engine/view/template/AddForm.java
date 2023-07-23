@@ -1,6 +1,5 @@
 package com.ecommerce.engine.view.template;
 
-import com.ecommerce.engine.util.ReflectionUtils;
 import com.ecommerce.engine.util.VaadinUtils;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
@@ -21,12 +20,12 @@ public class AddForm<T, ID> extends VerticalLayout {
 
     Binder<T> binder;
     ListCrudRepository<T, ID> listCrudRepository;
-    EditForm<T, ID> navigateAfterSaving;
+    Class<? extends EditForm<T, ID>> navigateAfterSaving;
     Class<T> entityClass;
     Class<ID> idClass;
 
     public AddForm(ListCrudRepository<T, ID> listCrudRepository,
-                   EditForm<T, ID> navigateAfterSaving,
+                   Class<? extends EditForm<T, ID>> navigateAfterSaving,
                    Class<T> entityClass,
                    Class<ID> idClass) {
         this.listCrudRepository = listCrudRepository;
@@ -78,7 +77,7 @@ public class AddForm<T, ID> extends VerticalLayout {
 
         refreshForm();
 
-        getUI().ifPresent(ui -> ui.navigate(
-                navigateAfterSaving.getClass(), ReflectionUtils.getEntityId(savedEntity, idClass)));
+        /*getUI().ifPresent(ui -> ui.navigate(
+                navigateAfterSaving, ReflectionUtils.getEntityId(savedEntity, idClass)));*/
     }
 }

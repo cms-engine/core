@@ -61,4 +61,19 @@ public class ReflectionUtils {
         throw new IllegalArgumentException("No field annotated with @Id found.");
     }
 
+    @SuppressWarnings("unchecked")
+    public static <ID> ID castStringToIdType(String stringId, Class<ID> idClass) {
+        if (idClass.equals(String.class)) {
+            return (ID) stringId;
+        }
+        if (idClass.equals(Long.class)) {
+            return (ID) (Long) Long.parseLong(stringId);
+        }
+        if (idClass.equals(Integer.class)) {
+            return (ID) (Integer) Integer.parseInt(stringId);
+        }
+
+        return null;
+    }
+
 }

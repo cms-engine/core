@@ -1,7 +1,6 @@
 package com.ecommerce.engine.view.template;
 
 import com.ecommerce.engine.util.VaadinUtils;
-import com.ecommerce.engine.view.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -15,32 +14,24 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.lang.reflect.Field;
 
-@Route(value = "users", layout = MainLayout.class)
-@PageTitle("User edit")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EditForm<T, ID> extends VerticalLayout implements HasUrlParameter<ID> {
 
     Binder<T> binder;
     ListCrudRepository<T, ID> listCrudRepository;
     Paragraph idLabel;
-    @Getter
-    Class<T> entityClass;
 
     public EditForm(ListCrudRepository<T, ID> listCrudRepository,
                     Class<? extends Component> gridNavigation,
                     Class<T> entityClass) {
 
         this.listCrudRepository = listCrudRepository;
-        this.entityClass = entityClass;
         this.binder = new Binder<>(entityClass);
         this.idLabel = new Paragraph();
 

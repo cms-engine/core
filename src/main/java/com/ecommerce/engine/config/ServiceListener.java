@@ -1,11 +1,14 @@
 package com.ecommerce.engine.config;
 
+import com.vaadin.flow.server.ServiceInitEvent;
+import com.vaadin.flow.server.VaadinServiceInitListener;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ServiceListener {
+public class ServiceListener implements VaadinServiceInitListener {
 
-    /*@Override
+    @Override
     public void serviceInit(ServiceInitEvent event) {
 
         event.getSource().addSessionInitListener(
@@ -21,5 +24,8 @@ public class ServiceListener {
         event.getSource().addUIInitListener(
                 initEvent -> LoggerFactory.getLogger(getClass())
                         .info("A new UI has been initialized!"));
-    }*/
+
+        /*LIST_FORMS.forEach(listForm -> RouteConfiguration.forApplicationScope().setRoute(listForm.getTableName(), listForm.getClass(), MainLayout.class));
+        EDIT_FORMS.forEach(editForm -> RouteConfiguration.forApplicationScope().setRoute(editForm.getTableName() + "/:id", editForm.getClass(), MainLayout.class));*/
+    }
 }

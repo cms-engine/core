@@ -78,6 +78,26 @@ public class ReflectionUtils {
         return null;
     }
 
+    public static boolean isSupportedId(Class<?> entityClass) {
+        Field[] fields = entityClass.getDeclaredFields();
+
+        Field idField = null;
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Id.class)) {
+                idField = field;
+                break;
+            }
+        }
+
+        if (idField == null) {
+            return false;
+        }
+
+        Class<?> idClass = idField.getDeclaringClass();
+
+        return idClass.equals(String.class) || idClass.equals(Long.class) || idClass.equals(Integer.class);
+    }
+
     public static String getTableName(Class<?> entityClass) {
         Table tableAnnotation = entityClass.getAnnotation(Table.class);
 

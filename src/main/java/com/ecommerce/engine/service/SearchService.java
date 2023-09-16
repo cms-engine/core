@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -34,6 +35,8 @@ public class SearchService {
     private final EntityManager entityManager;
 
     public SearchResponse search(SearchEntity searchEntity, SearchRequest searchRequest) {
+        searchRequest.validateSearchFieldsExisting(searchEntity.getSearchFields());
+
         List<?> entities = fetchEntities(searchEntity, searchRequest);
         int totalNumber = totalNumber(searchEntity, searchRequest);
 
@@ -79,7 +82,7 @@ public class SearchService {
         Predicate predicate = criteriaBuilder.conjunction();
 
         var filters = searchRequest.filters();
-        if (filters == null || filters.isEmpty()) {
+        if (CollectionUtils.isEmpty(filters)) {
             return;
         }
 
@@ -95,7 +98,7 @@ public class SearchService {
             CriteriaQuery<?> criteriaQuery,
             Root<?> root) {
         var sorts = searchRequest.sorts();
-        if (sorts == null || sorts.isEmpty()) {
+        if (CollectionUtils.isEmpty(sorts)) {
             return;
         }
 
@@ -160,10 +163,6 @@ public class SearchService {
 
         private SearchField getSearchField(SearchRequest.Filter param) {
             SearchField searchField = searchEntity.getSearchFields().get(param.field());
-            if (searchField == null) {
-                throw new ApplicationException(
-                        ErrorCode.SEARCH_FIELD_NOT_FOUND, "Search field %s was not found!".formatted(param.field()));
-            }
             if (!searchField.allowedFilterTypes().contains(param.type())) {
                 throw new ApplicationException(
                         ErrorCode.NOT_ALLOWED_FILTER, "Not allowed filter type for field %s!".formatted(param.field()));

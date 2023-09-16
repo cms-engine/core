@@ -1,43 +1,13 @@
 package com.ecommerce.engine.model;
 
-import com.vaadin.flow.data.provider.SortDirection;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
+import com.ecommerce.engine.enums.FilterType;
+import com.ecommerce.engine.enums.SortDirection;
 
 import java.util.List;
-import java.util.function.Function;
 
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class SearchRequest {
+public record SearchRequest(int page, int size, List<Sort> sorts, List<Filter> filters) {
 
-    int page;
-    int size;
-    List<Sort> sorts;
-    List<Filter> filters;
+    public record Sort(String field, SortDirection order) {}
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @AllArgsConstructor
-    public static class Sort {
-        String field;
-        SortDirection order;
-    }
-
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @AllArgsConstructor
-    public static class Filter {
-        String field;
-        FilterType type;
-        Object value;
-        Function<Object, Object> convertFunction = Function.identity();
-        public Filter(String field, FilterType type, Object value) {
-            this.field = field;
-            this.type = type;
-            this.value = value;
-        }
-    }
+    public record Filter(String field, FilterType type, Object value) {}
 }

@@ -10,6 +10,6 @@ RUN mvn clean install
 
 # Second stage: minimal runtime environment
 FROM openjdk:17-oracle as production
-COPY --from=build app/target/*engine*.jar engine.jar
+COPY --from=build app/target/*.jar engine.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/engine.jar"]

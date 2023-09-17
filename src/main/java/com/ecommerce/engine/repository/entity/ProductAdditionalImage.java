@@ -6,6 +6,8 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -13,9 +15,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.proxy.HibernateProxy;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 @Getter
 @Setter

@@ -8,16 +8,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
-
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter

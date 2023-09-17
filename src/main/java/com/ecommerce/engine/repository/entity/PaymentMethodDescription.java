@@ -5,6 +5,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.Locale;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -12,10 +15,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
-
-import java.io.Serializable;
-import java.util.Locale;
-import java.util.Objects;
 
 @Getter
 @Setter

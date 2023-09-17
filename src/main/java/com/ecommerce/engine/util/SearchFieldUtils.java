@@ -1,14 +1,5 @@
 package com.ecommerce.engine.util;
 
-import com.ecommerce.engine.enums.FilterType;
-import lombok.experimental.UtilityClass;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
-
 import static com.ecommerce.engine.enums.FilterType.EQUAL;
 import static com.ecommerce.engine.enums.FilterType.GRATER_THAN;
 import static com.ecommerce.engine.enums.FilterType.GRATER_THAN_OR_EQUAL;
@@ -19,6 +10,14 @@ import static com.ecommerce.engine.enums.FilterType.LIKE;
 import static com.ecommerce.engine.enums.FilterType.NOT_EQUAL;
 import static com.ecommerce.engine.enums.FilterType.NOT_IN;
 import static com.ecommerce.engine.enums.FilterType.NOT_LIKE;
+
+import com.ecommerce.engine.enums.FilterType;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class SearchFieldUtils {

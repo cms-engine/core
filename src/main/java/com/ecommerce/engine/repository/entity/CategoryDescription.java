@@ -6,15 +6,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.Locale;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-
-import java.io.Serializable;
-import java.util.Locale;
 
 @Getter
 @Setter

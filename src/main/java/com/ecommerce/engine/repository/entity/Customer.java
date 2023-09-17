@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
+import java.util.Locale;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,10 +19,6 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.Instant;
-import java.util.Locale;
-import java.util.Objects;
 
 @Getter
 @Setter

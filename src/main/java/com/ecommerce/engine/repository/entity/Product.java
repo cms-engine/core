@@ -16,6 +16,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Currency;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,13 +30,6 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Currency;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter

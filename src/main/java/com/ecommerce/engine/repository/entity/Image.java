@@ -3,6 +3,8 @@ package com.ecommerce.engine.repository.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Objects;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +13,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
-
-import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter

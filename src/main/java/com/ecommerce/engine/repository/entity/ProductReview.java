@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import java.time.Instant;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,9 +20,6 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.Instant;
-import java.util.Objects;
 
 @Getter
 @Setter

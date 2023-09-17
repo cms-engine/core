@@ -1,9 +1,8 @@
 package com.ecommerce.engine.util;
 
+import java.util.Locale;
 import lombok.experimental.UtilityClass;
 import org.springframework.context.support.ResourceBundleMessageSource;
-
-import java.util.Locale;
 
 @UtilityClass
 public class TranslationUtils {

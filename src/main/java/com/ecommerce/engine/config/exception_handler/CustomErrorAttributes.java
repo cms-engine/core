@@ -1,21 +1,20 @@
 package com.ecommerce.engine.config.exception_handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
-import org.springframework.web.context.request.WebRequest;
+import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.BINDING_ERRORS;
+import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
+import static org.springframework.boot.web.error.ErrorAttributeOptions.of;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.BINDING_ERRORS;
-import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
-import static org.springframework.boot.web.error.ErrorAttributeOptions.of;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 @Slf4j
 public class CustomErrorAttributes extends DefaultErrorAttributes {

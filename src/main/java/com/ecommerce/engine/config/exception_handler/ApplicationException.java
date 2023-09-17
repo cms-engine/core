@@ -1,11 +1,11 @@
 package com.ecommerce.engine.config.exception_handler;
 
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatusCode;
-
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)

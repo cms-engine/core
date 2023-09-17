@@ -5,14 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
-
-import java.util.Objects;
 
 @Getter
 @Setter

@@ -1,0 +1,62 @@
+package com.ecommerce.engine.repository.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.Hibernate;
+
+import java.io.Serializable;
+import java.util.Locale;
+import java.util.Objects;
+
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "payment_method_description")
+@IdClass(PaymentMethodDescription.EntityId.class)
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PaymentMethodDescription {
+
+    @Id
+    Locale locale;
+
+    @Id
+    @ManyToOne
+    @JoinColumn
+    PaymentMethod deliveryMethod;
+
+    String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        PaymentMethodDescription that = (PaymentMethodDescription) o;
+        return locale != null
+                && Objects.equals(locale, that.locale)
+                && deliveryMethod != null
+                && Objects.equals(deliveryMethod, that.deliveryMethod);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(locale, deliveryMethod);
+    }
+
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class EntityId implements Serializable {
+        Locale locale;
+        PaymentMethod deliveryMethod;
+    }
+}

@@ -1,10 +1,9 @@
 package com.ecommerce.engine.repository.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -25,23 +24,23 @@ import java.util.Objects;
 @Entity
 @Table(name = "page_description")
 @IdClass(PageDescription.EntityId.class)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PageDescription {
 
     @Id
-    private Locale locale;
+    Locale locale;
 
     @Id
     @ManyToOne
-    @JoinColumn
-    private Page page;
+    Page page;
 
-    private String title;
+    String title;
 
-    @Lob
-    private String description;
+    @Column(columnDefinition = "text")
+    String description;
 
-    private String metaTitle;
-    private String metaDescription;
+    String metaTitle;
+    String metaDescription;
 
     @Override
     public boolean equals(Object o) {

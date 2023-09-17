@@ -2,15 +2,18 @@ package com.ecommerce.engine.repository.entity;
 
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -23,9 +26,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.Currency;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -87,12 +92,20 @@ public class Product {
     BigDecimal weight;
 
     @CreationTimestamp
-    LocalDate created;
+    Instant created;
 
     @UpdateTimestamp
-    LocalDate updated;
+    Instant updated;
 
     boolean enabled;
+
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    Set<ProductDescription> descriptions = new HashSet<>();
+
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    Set<ProductAdditionalImage> additionalImages = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

@@ -1,19 +1,20 @@
 package com.ecommerce.engine.repository.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -22,30 +23,46 @@ import java.util.Objects;
 @Entity
 @Table(name = "product_additional_image")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@IdClass(ProductAdditionalImage.EntityId.class)
 public class ProductAdditionalImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
     @ManyToOne
     @JoinColumn
     Product product;
 
+    @Id
     @ManyToOne
     @JoinColumn
     Image image;
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+                ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
         ProductAdditionalImage that = (ProductAdditionalImage) o;
-        return id != null && Objects.equals(id, that.id);
+        return getProduct() != null
+                && Objects.equals(getProduct(), that.getProduct())
+                && getImage() != null
+                && Objects.equals(getImage(), that.getImage());
     }
 
     @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public final int hashCode() {
+        return Objects.hash(product, image);
+    }
+
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class EntityId implements Serializable {
+        Product product;
+        Image image;
     }
 }

@@ -17,7 +17,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -58,10 +58,10 @@ public class Customer {
     PaymentMethod mainPaymentMethod;
 
     @CreationTimestamp
-    LocalDate created;
+    Instant created;
 
     @UpdateTimestamp
-    LocalDate updated;
+    Instant updated;
 
     boolean enabled;
 

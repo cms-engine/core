@@ -3,7 +3,6 @@ package com.ecommerce.engine.repository.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -32,8 +31,7 @@ public class PaymentMethodDescription {
 
     @Id
     @ManyToOne
-    @JoinColumn
-    PaymentMethod deliveryMethod;
+    PaymentMethod paymentMethod;
 
     String name;
 
@@ -44,13 +42,13 @@ public class PaymentMethodDescription {
         PaymentMethodDescription that = (PaymentMethodDescription) o;
         return locale != null
                 && Objects.equals(locale, that.locale)
-                && deliveryMethod != null
-                && Objects.equals(deliveryMethod, that.deliveryMethod);
+                && paymentMethod != null
+                && Objects.equals(paymentMethod, that.paymentMethod);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(locale, deliveryMethod);
+        return Objects.hash(locale, paymentMethod);
     }
 
     @Data

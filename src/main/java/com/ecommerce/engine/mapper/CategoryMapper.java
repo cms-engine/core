@@ -14,6 +14,9 @@ public interface CategoryMapper {
     @Mapping(target = "parentId", source = "parent.id")
     CategoryResponseDto toDto(Category category);
 
+    @Mapping(target = "updated", ignore = true)
+    @Mapping(target = "created", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "parent.id", source = "parentId")
     Category toEntity(CategoryRequestDto categoryRequestDto);
 

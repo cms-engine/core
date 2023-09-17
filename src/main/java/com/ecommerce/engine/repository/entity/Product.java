@@ -1,7 +1,11 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.enums.LengthClass;
+import com.ecommerce.engine.enums.WeightClass;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,6 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Currency;
 import java.util.Objects;
 
 @Getter
@@ -38,6 +43,10 @@ public class Product {
     @JoinColumn
     @NotNull Category category;
 
+    @ManyToOne
+    @JoinColumn
+    Image image;
+
     @Column(unique = true, length = 64)
     String sku;
 
@@ -51,13 +60,16 @@ public class Product {
     @JoinColumn
     Brand brand;
 
-    String currency;
+    Currency currency;
 
     @Column(precision = 15, scale = 2)
     BigDecimal price;
 
     @Column(precision = 15, scale = 3)
     BigDecimal quantity;
+
+    @Enumerated(EnumType.STRING)
+    LengthClass lengthClass;
 
     @Column(precision = 15, scale = 8)
     BigDecimal length;
@@ -68,10 +80,11 @@ public class Product {
     @Column(precision = 15, scale = 8)
     BigDecimal height;
 
+    @Enumerated(EnumType.STRING)
+    WeightClass weightClass;
+
     @Column(precision = 15, scale = 8)
     BigDecimal weight;
-
-    Integer sortOrder;
 
     @CreationTimestamp
     LocalDate created;

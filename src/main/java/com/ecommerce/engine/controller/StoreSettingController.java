@@ -2,7 +2,6 @@ package com.ecommerce.engine.controller;
 
 import com.ecommerce.engine.dto.common.StoreSettingDto;
 import com.ecommerce.engine.service.StoreSettingService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/settings")
 @RequiredArgsConstructor
-@Valid
 public class StoreSettingController {
 
     private final StoreSettingService storeSettingService;

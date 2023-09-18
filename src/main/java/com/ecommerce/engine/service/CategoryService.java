@@ -18,43 +18,43 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CategoryService {
 
-    private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
+    private final CategoryRepository repository;
+    private final CategoryMapper mapper;
     private final SearchService<Category, CategoryGridResponseDto> searchService;
 
     public CategoryResponseDto get(long id) {
         Category category = findById(id);
-        return categoryMapper.toDto(category);
+        return mapper.toDto(category);
     }
 
-    public CategoryResponseDto save(CategoryRequestDto categoryRequestDto) {
-        Category category = categoryMapper.toEntity(categoryRequestDto);
-        Category saved = categoryRepository.save(category);
-        return categoryMapper.toDto(saved);
+    public CategoryResponseDto save(CategoryRequestDto requestDto) {
+        Category category = mapper.toEntity(requestDto);
+        Category saved = repository.save(category);
+        return mapper.toDto(saved);
     }
 
-    public CategoryResponseDto update(long id, CategoryRequestDto categoryRequestDto) {
+    public CategoryResponseDto update(long id, CategoryRequestDto requestDto) {
         findById(id);
 
-        Category category = categoryMapper.toEntity(categoryRequestDto);
+        Category category = mapper.toEntity(requestDto);
         category.setId(id);
-        Category saved = categoryRepository.save(category);
-        return categoryMapper.toDto(saved);
+        Category saved = repository.save(category);
+        return mapper.toDto(saved);
     }
 
     public void delete(long id) {
-        categoryRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     public void deleteMany(Set<Long> ids) {
-        categoryRepository.deleteAllById(ids);
+        repository.deleteAllById(ids);
     }
 
     private Category findById(long id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("category", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("category", id));
     }
 
     public SearchResponse<CategoryGridResponseDto> search(SearchRequest searchRequest) {
-        return searchService.search(searchRequest, SearchEntity.CATEGORIES, Category.class, categoryMapper::toGridDto);
+        return searchService.search(searchRequest, SearchEntity.CATEGORY, Category.class, mapper::toGridDto);
     }
 }

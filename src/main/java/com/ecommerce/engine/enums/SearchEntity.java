@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SearchEntity {
-    BRANDS(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
-    CATEGORIES(Collections.emptyMap()),
-    PRODUCTS(Collections.emptyMap()),
-    IMAGES(Collections.emptyMap());
+    BRAND(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
+    CATEGORY(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
+    PRODUCT(Collections.emptyMap()),
+    IMAGE(Collections.emptyMap());
 
     private final Map<String, SearchField> searchFields;
 }

@@ -1,11 +1,10 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.request.CategoryRequestDto;
-import com.ecommerce.engine.dto.response.CategoryGridResponseDto;
-import com.ecommerce.engine.dto.response.CategoryResponseDto;
+import com.ecommerce.engine.dto.request.BrandRequestDto;
+import com.ecommerce.engine.dto.response.BrandResponseDto;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
-import com.ecommerce.engine.service.CategoryService;
+import com.ecommerce.engine.service.BrandService;
 import jakarta.validation.Valid;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -19,39 +18,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/brands")
 @RequiredArgsConstructor
-public class CategoryController {
+public class BrandController {
 
-    private final CategoryService categoryService;
+    private final BrandService brandService;
 
     @PostMapping("/search")
-    public SearchResponse<CategoryGridResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return categoryService.search(searchRequest);
+    public SearchResponse<BrandResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
+        return brandService.search(searchRequest);
     }
 
     @GetMapping("/{id}")
-    public CategoryResponseDto get(@PathVariable long id) {
-        return categoryService.get(id);
+    public BrandResponseDto get(@PathVariable long id) {
+        return brandService.get(id);
     }
 
     @PostMapping
-    public CategoryResponseDto create(@Valid @RequestBody CategoryRequestDto requestDto) {
-        return categoryService.save(requestDto);
+    public BrandResponseDto create(@Valid @RequestBody BrandRequestDto requestDto) {
+        return brandService.save(requestDto);
     }
 
     @PutMapping("/{id}")
-    public CategoryResponseDto update(@PathVariable long id, @Valid @RequestBody CategoryRequestDto requestDto) {
-        return categoryService.update(id, requestDto);
+    public BrandResponseDto update(@PathVariable long id, @Valid @RequestBody BrandRequestDto requestDto) {
+        return brandService.update(id, requestDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id) {
-        categoryService.delete(id);
+        brandService.delete(id);
     }
 
     @DeleteMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
-        categoryService.deleteMany(ids);
+        brandService.deleteMany(ids);
     }
 }

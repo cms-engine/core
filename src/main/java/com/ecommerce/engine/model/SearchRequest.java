@@ -4,10 +4,12 @@ import com.ecommerce.engine.config.exception_handler.ApplicationException;
 import com.ecommerce.engine.config.exception_handler.ErrorCode;
 import com.ecommerce.engine.enums.FilterType;
 import com.ecommerce.engine.enums.SortDirection;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
 
-public record SearchRequest(int page, int size, List<Sort> sorts, List<Filter> filters) {
+public record SearchRequest(@Min(0) int page, @Min(0) @Max(100) int size, List<Sort> sorts, List<Filter> filters) {
 
     public void validateSearchFieldsExisting(Map<String, SearchField> searchFields) {
         if (sorts != null) {

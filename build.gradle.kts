@@ -61,7 +61,6 @@ spotless {
 
 		palantirJavaFormat()
 		removeUnusedImports()
-		importOrder()
 		formatAnnotations()
 	}
 }

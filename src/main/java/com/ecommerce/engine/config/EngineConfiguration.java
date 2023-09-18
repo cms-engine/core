@@ -17,8 +17,8 @@ public class EngineConfiguration {
     public static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
             .addModule(new JavaTimeModule())
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
-            .enable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
-            .enable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
+            .disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
+            .disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .build();
 

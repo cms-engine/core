@@ -2,11 +2,10 @@ package com.ecommerce.engine.enums;
 
 import com.ecommerce.engine.model.SearchField;
 import com.ecommerce.engine.util.SearchFieldUtils;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.util.Collections;
 import java.util.Map;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor

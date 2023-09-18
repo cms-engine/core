@@ -1,5 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.util.TranslationUtils;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -52,6 +53,14 @@ public class Category {
     @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<CategoryDescription> descriptions = new HashSet<>();
+
+    public String getLocaleTitle() {
+        return descriptions.stream()
+                .filter(description -> description.getLocale().equals(TranslationUtils.getUserLocale()))
+                .findFirst()
+                .map(CategoryDescription::getTitle)
+                .orElse(null);
+    }
 
     @Override
     public boolean equals(Object o) {

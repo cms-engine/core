@@ -25,6 +25,7 @@ import lombok.experimental.FieldDefaults;
 public class CategoryDescription {
 
     @Id
+    @Column(length = 5)
     Locale locale;
 
     @Id

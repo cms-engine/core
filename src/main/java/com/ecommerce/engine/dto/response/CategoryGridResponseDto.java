@@ -4,10 +4,10 @@ import java.time.Instant;
 
 public record CategoryGridResponseDto(
         long id,
+        String title,
         Long parentId,
-        String parentName,
+        String parentTitle,
         int sortOrder,
         Instant created,
         Instant updated,
-        boolean enabled,
-        String title) {}
+        boolean enabled) {}

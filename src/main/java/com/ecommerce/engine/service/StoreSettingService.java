@@ -26,6 +26,10 @@ public class StoreSettingService {
         storeSetting.updateSettingsHolder();
     }
 
+    public StoreSettingDto get() {
+        return storeSettingMapper.toDto(storeSetting);
+    }
+
     public StoreSettingDto update(StoreSettingDto storeSettingDto) {
         storeSettingMapper.mapUpdate(storeSetting, storeSettingDto);
 

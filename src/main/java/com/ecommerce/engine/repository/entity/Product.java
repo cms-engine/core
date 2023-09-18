@@ -64,6 +64,7 @@ public class Product {
     @JoinColumn
     Brand brand;
 
+    @Column(length = 3)
     Currency currency;
 
     @Column(precision = 15, scale = 2)

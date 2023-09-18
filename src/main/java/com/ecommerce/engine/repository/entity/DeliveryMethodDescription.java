@@ -1,5 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -26,6 +27,7 @@ import org.hibernate.Hibernate;
 public class DeliveryMethodDescription {
 
     @Id
+    @Column(length = 5)
     Locale locale;
 
     @Id

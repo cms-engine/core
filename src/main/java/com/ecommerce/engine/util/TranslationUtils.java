@@ -11,10 +11,14 @@ public class TranslationUtils {
     static {
         MESSAGE_SOURCE = new ResourceBundleMessageSource();
         MESSAGE_SOURCE.setBasenames("translation/messages");
-        MESSAGE_SOURCE.setDefaultLocale(Locale.ENGLISH);
+        MESSAGE_SOURCE.setDefaultEncoding("UTF-8");
+    }
+
+    public Locale getUserLocale() {
+        return StoreSettings.adminLocale;
     }
 
     public String getMessage(String key, Object... args) {
-        return MESSAGE_SOURCE.getMessage(key, args, Locale.ENGLISH);
+        return MESSAGE_SOURCE.getMessage(key, args, getUserLocale());
     }
 }

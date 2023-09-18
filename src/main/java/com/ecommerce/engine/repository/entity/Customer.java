@@ -36,7 +36,9 @@ public class Customer {
     @JoinColumn
     CustomerGroup customerGroup;
 
+    @Column(length = 5)
     Locale locale;
+
     String firstName;
     String lastName;
     String middleName;

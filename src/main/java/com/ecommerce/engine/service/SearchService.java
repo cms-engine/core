@@ -16,52 +16,57 @@ import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 @Service
 @RequiredArgsConstructor
-public class SearchService {
+public class SearchService<E, D> {
 
     private final EntityManager entityManager;
 
-    public SearchResponse search(SearchEntity searchEntity, SearchRequest searchRequest) {
+    public SearchResponse<D> search(
+            SearchRequest searchRequest, SearchEntity searchEntity, Class<E> entityClass, Function<E, D> mapper) {
         searchRequest.validateSearchFieldsExisting(searchEntity.getSearchFields());
 
-        List<?> entities = fetchEntities(searchEntity, searchRequest);
-        int totalNumber = totalNumber(searchEntity, searchRequest);
+        List<E> entities = fetchEntities(searchRequest, searchEntity, entityClass);
+        int totalNumber = totalNumber(searchRequest, searchEntity, entityClass);
 
-        return new SearchResponse(searchRequest.page(), entities.size(), totalNumber, entities);
+        List<D> mappedEntities = entities.stream().map(mapper).toList();
+
+        return new SearchResponse<>(searchRequest.page(), entities.size(), totalNumber, mappedEntities);
     }
 
-    public List<?> fetchEntities(SearchEntity searchEntity, SearchRequest searchRequest) {
+    public List<E> fetchEntities(SearchRequest searchRequest, SearchEntity searchEntity, Class<E> entityClass) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<?> criteriaQuery = criteriaBuilder.createQuery(searchEntity.getEntityClass());
-        Root<?> root = criteriaQuery.from(searchEntity.getEntityClass());
+        CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        Root<E> root = criteriaQuery.from(entityClass);
 
         addFilters(searchEntity, searchRequest, criteriaBuilder, criteriaQuery, root);
 
         addSorts(searchRequest, criteriaBuilder, criteriaQuery, root);
 
-        TypedQuery<?> query = entityManager.createQuery(criteriaQuery);
+        TypedQuery<E> query = entityManager.createQuery(criteriaQuery);
         query.setFirstResult(searchRequest.page() * searchRequest.size());
         query.setMaxResults(searchRequest.size());
 
         return query.getResultList();
     }
 
-    public int totalNumber(SearchEntity searchEntity, SearchRequest searchRequest) {
+    public int totalNumber(SearchRequest searchRequest, SearchEntity searchEntity, Class<E> entityClass) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        Root<?> root = criteriaQuery.from(searchEntity.getEntityClass());
+        Root<E> root = criteriaQuery.from(entityClass);
 
         criteriaQuery.select(criteriaBuilder.count(root));
 

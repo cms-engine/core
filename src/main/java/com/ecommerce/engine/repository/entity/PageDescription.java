@@ -27,6 +27,7 @@ import org.hibernate.Hibernate;
 public class PageDescription {
 
     @Id
+    @Column(length = 5)
     Locale locale;
 
     @Id

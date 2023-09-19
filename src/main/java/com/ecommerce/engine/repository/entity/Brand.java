@@ -1,5 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.dto.request.BrandRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +9,7 @@ import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +20,7 @@ import org.hibernate.Hibernate;
 @ToString
 @Entity
 @Table(name = "brand")
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Brand {
 
@@ -26,6 +29,10 @@ public class Brand {
     Long id;
 
     String name;
+
+    public Brand(BrandRequestDto requestDto) {
+        name = requestDto.name();
+    }
 
     @Override
     public boolean equals(Object o) {

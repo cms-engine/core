@@ -1,7 +1,6 @@
 package com.ecommerce.engine.service;
 
 import com.ecommerce.engine.dto.common.StoreSettingDto;
-import com.ecommerce.engine.mapper.StoreSettingMapper;
 import com.ecommerce.engine.repository.StoreSettingRepository;
 import com.ecommerce.engine.repository.entity.StoreSetting;
 import java.util.Optional;
@@ -11,14 +10,10 @@ import org.springframework.stereotype.Service;
 public class StoreSettingService {
 
     private final StoreSettingRepository storeSettingRepository;
-
-    private final StoreSettingMapper storeSettingMapper;
-
     private final StoreSetting storeSetting;
 
-    public StoreSettingService(StoreSettingRepository storeSettingRepository, StoreSettingMapper storeSettingMapper) {
+    public StoreSettingService(StoreSettingRepository storeSettingRepository) {
         this.storeSettingRepository = storeSettingRepository;
-        this.storeSettingMapper = storeSettingMapper;
 
         Optional<StoreSetting> settingOptional = storeSettingRepository.findById(1);
 
@@ -27,15 +22,15 @@ public class StoreSettingService {
     }
 
     public StoreSettingDto get() {
-        return storeSettingMapper.toDto(storeSetting);
+        return new StoreSettingDto(storeSetting);
     }
 
     public StoreSettingDto update(StoreSettingDto storeSettingDto) {
-        storeSettingMapper.mapUpdate(storeSetting, storeSettingDto);
+        storeSetting.update(storeSettingDto);
 
         storeSettingRepository.save(storeSetting);
         storeSetting.updateSettingsHolder();
 
-        return storeSettingMapper.toDto(storeSetting);
+        return new StoreSettingDto(storeSetting);
     }
 }

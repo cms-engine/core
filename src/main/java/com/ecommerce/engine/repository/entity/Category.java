@@ -1,5 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.dto.request.CategoryRequestDto;
 import com.ecommerce.engine.util.TranslationUtils;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -15,8 +16,10 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -29,6 +32,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString
 @Entity
 @Table(name = "category")
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Category {
 
@@ -54,12 +58,20 @@ public class Category {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<CategoryDescription> descriptions = new HashSet<>();
 
-    public String getLocaleTitle() {
-        return descriptions.stream()
-                .filter(description -> description.getLocale().equals(TranslationUtils.getUserLocale()))
-                .findFirst()
-                .map(CategoryDescription::getTitle)
-                .orElse(null);
+    public Category(CategoryRequestDto requestDto) {
+        if (requestDto.parentId() != null) {
+            parent = new Category(requestDto.parentId());
+        }
+        sortOrder = requestDto.sortOrder();
+        enabled = requestDto.enabled();
+        descriptions = requestDto.descriptions().stream()
+                .map(CategoryDescription::new)
+                .peek(desc -> desc.setCategory(this))
+                .collect(Collectors.toSet());
+    }
+
+    public Category(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -73,5 +85,21 @@ public class Category {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public String getLocaleTitle() {
+        return descriptions.stream()
+                .filter(description -> description.getLocale().equals(TranslationUtils.getUserLocale()))
+                .findFirst()
+                .map(CategoryDescription::getTitle)
+                .orElse(null);
+    }
+
+    public String getParentLocaleTitle() {
+        return parent == null ? null : parent.getLocaleTitle();
+    }
+
+    public Long getParentId() {
+        return parent == null ? null : parent.getId();
     }
 }

@@ -1,5 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.dto.common.StoreSettingDto;
 import com.ecommerce.engine.util.StoreSettings;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -31,6 +32,11 @@ public class StoreSetting {
     public void updateSettingsHolder() {
         StoreSettings.storeLocale = adminLocale;
         StoreSettings.adminLocale = storeLocale;
+    }
+
+    public void update(StoreSettingDto storeSettingDto) {
+        adminLocale = storeSettingDto.adminLocale();
+        storeLocale = storeSettingDto.storeLocale();
     }
 
     @Override

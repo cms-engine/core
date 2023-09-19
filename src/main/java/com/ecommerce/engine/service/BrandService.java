@@ -4,7 +4,6 @@ import com.ecommerce.engine.dto.request.BrandRequestDto;
 import com.ecommerce.engine.dto.response.BrandResponseDto;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.exception.NotFoundException;
-import com.ecommerce.engine.mapper.BrandMapper;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
 import com.ecommerce.engine.repository.BrandRepository;
@@ -18,27 +17,26 @@ import org.springframework.stereotype.Service;
 public class BrandService {
 
     private final BrandRepository repository;
-    private final BrandMapper mapper;
     private final SearchService<Brand, BrandResponseDto> searchService;
 
     public BrandResponseDto get(long id) {
         Brand brand = findById(id);
-        return mapper.toDto(brand);
+        return new BrandResponseDto(brand);
     }
 
     public BrandResponseDto save(BrandRequestDto requestDto) {
-        Brand brand = mapper.toEntity(requestDto);
+        Brand brand = new Brand(requestDto);
         Brand saved = repository.save(brand);
-        return mapper.toDto(saved);
+        return new BrandResponseDto(saved);
     }
 
     public BrandResponseDto update(long id, BrandRequestDto requestDto) {
         findById(id);
 
-        Brand brand = mapper.toEntity(requestDto);
+        Brand brand = new Brand(requestDto);
         brand.setId(id);
         Brand saved = repository.save(brand);
-        return mapper.toDto(saved);
+        return new BrandResponseDto(saved);
     }
 
     public void delete(long id) {
@@ -54,6 +52,6 @@ public class BrandService {
     }
 
     public SearchResponse<BrandResponseDto> search(SearchRequest searchRequest) {
-        return searchService.search(searchRequest, SearchEntity.BRAND, Brand.class, mapper::toDto);
+        return searchService.search(searchRequest, SearchEntity.BRAND, Brand.class, BrandResponseDto::new);
     }
 }

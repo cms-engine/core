@@ -1,5 +1,6 @@
 package com.ecommerce.engine.dto.response;
 
+import com.ecommerce.engine.repository.entity.Category;
 import java.time.Instant;
 
 public record CategoryGridResponseDto(
@@ -10,4 +11,17 @@ public record CategoryGridResponseDto(
         int sortOrder,
         Instant created,
         Instant updated,
-        boolean enabled) {}
+        boolean enabled) {
+
+    public CategoryGridResponseDto(Category category) {
+        this(
+                category.getId(),
+                category.getLocaleTitle(),
+                category.getParentId(),
+                category.getParentLocaleTitle(),
+                category.getSortOrder(),
+                category.getCreated(),
+                category.getUpdated(),
+                category.isEnabled());
+    }
+}

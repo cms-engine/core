@@ -5,7 +5,6 @@ import com.ecommerce.engine.dto.response.CategoryGridResponseDto;
 import com.ecommerce.engine.dto.response.CategoryResponseDto;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.exception.NotFoundException;
-import com.ecommerce.engine.mapper.CategoryMapper;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
 import com.ecommerce.engine.repository.CategoryRepository;
@@ -19,27 +18,26 @@ import org.springframework.stereotype.Service;
 public class CategoryService {
 
     private final CategoryRepository repository;
-    private final CategoryMapper mapper;
     private final SearchService<Category, CategoryGridResponseDto> searchService;
 
     public CategoryResponseDto get(long id) {
         Category category = findById(id);
-        return mapper.toDto(category);
+        return new CategoryResponseDto(category);
     }
 
     public CategoryResponseDto save(CategoryRequestDto requestDto) {
-        Category category = mapper.toEntity(requestDto);
+        Category category = new Category(requestDto);
         Category saved = repository.save(category);
-        return mapper.toDto(saved);
+        return new CategoryResponseDto(saved);
     }
 
     public CategoryResponseDto update(long id, CategoryRequestDto requestDto) {
         findById(id);
 
-        Category category = mapper.toEntity(requestDto);
+        Category category = new Category(requestDto);
         category.setId(id);
         Category saved = repository.save(category);
-        return mapper.toDto(saved);
+        return new CategoryResponseDto(saved);
     }
 
     public void delete(long id) {
@@ -55,6 +53,6 @@ public class CategoryService {
     }
 
     public SearchResponse<CategoryGridResponseDto> search(SearchRequest searchRequest) {
-        return searchService.search(searchRequest, SearchEntity.CATEGORY, Category.class, mapper::toGridDto);
+        return searchService.search(searchRequest, SearchEntity.CATEGORY, Category.class, CategoryGridResponseDto::new);
     }
 }

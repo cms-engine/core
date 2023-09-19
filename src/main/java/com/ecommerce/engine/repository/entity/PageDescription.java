@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
-import jakarta.persistence.Column;
+import com.ecommerce.engine.dto.common.DescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -12,47 +12,28 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "page_description")
 @IdClass(PageDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PageDescription {
-
-    @Id
-    @Column(length = 5)
-    Locale locale;
+public class PageDescription extends DescriptionSuperclass {
 
     @Id
     @ManyToOne
     Page page;
 
-    String title;
-
-    @Column(columnDefinition = "text")
-    String description;
-
-    String metaTitle;
-    String metaDescription;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        PageDescription that = (PageDescription) o;
-        return locale != null && Objects.equals(locale, that.locale) && page != null && Objects.equals(page, that.page);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(locale, page);
+    public PageDescription(DescriptionDto descriptionDto) {
+        super(descriptionDto);
     }
 
     @Data
@@ -60,5 +41,28 @@ public class PageDescription {
     public static class EntityId implements Serializable {
         Locale locale;
         Page page;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+                ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        PageDescription that = (PageDescription) o;
+        return getPage() != null
+                && Objects.equals(getPage(), that.getPage())
+                && getLocale() != null
+                && Objects.equals(getLocale(), that.getLocale());
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(getPage(), getLocale());
     }
 }

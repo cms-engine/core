@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
-import jakarta.persistence.Column;
+import com.ecommerce.engine.dto.common.DescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -12,50 +12,28 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "product_description")
 @IdClass(ProductDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductDescription {
-
-    @Id
-    @Column(length = 5)
-    Locale locale;
+public class ProductDescription extends DescriptionSuperclass {
 
     @Id
     @ManyToOne
     Product product;
 
-    String title;
-
-    @Column(columnDefinition = "text")
-    String description;
-
-    String metaTitle;
-    String metaDescription;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ProductDescription that = (ProductDescription) o;
-        return locale != null
-                && Objects.equals(locale, that.locale)
-                && product != null
-                && Objects.equals(product, that.product);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(locale, product);
+    public ProductDescription(DescriptionDto descriptionDto) {
+        super(descriptionDto);
     }
 
     @Data
@@ -63,5 +41,28 @@ public class ProductDescription {
     public static class EntityId implements Serializable {
         Locale locale;
         Product product;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+                ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        ProductDescription that = (ProductDescription) o;
+        return getProduct() != null
+                && Objects.equals(getProduct(), that.getProduct())
+                && getLocale() != null
+                && Objects.equals(getLocale(), that.getLocale());
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(getProduct(), getLocale());
     }
 }

@@ -2,7 +2,6 @@ package com.ecommerce.engine.enums;
 
 import com.ecommerce.engine.model.SearchField;
 import com.ecommerce.engine.util.SearchFieldUtils;
-import java.util.Collections;
 import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 public enum SearchEntity {
     BRAND(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
     CATEGORY(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
-    PRODUCT(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
-    IMAGE(Collections.emptyMap());
+    PRODUCT(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction())));
 
     private final Map<String, SearchField> searchFields;
 }

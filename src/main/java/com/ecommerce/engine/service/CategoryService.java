@@ -10,6 +10,7 @@ import com.ecommerce.engine.model.SearchResponse;
 import com.ecommerce.engine.repository.CategoryRepository;
 import com.ecommerce.engine.repository.entity.Category;
 import java.util.Set;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,7 @@ public class CategoryService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("category", id));
     }
 
-    public SearchResponse<CategoryGridDto> search(SearchRequest searchRequest) {
-        return searchService.search(searchRequest, SearchEntity.CATEGORY, Category.class, CategoryGridDto::new);
+    public SearchResponse<CategoryGridDto> search(UUID id, SearchRequest searchRequest) {
+        return searchService.search(id, searchRequest, SearchEntity.CATEGORY, Category.class, CategoryGridDto::new);
     }
 }

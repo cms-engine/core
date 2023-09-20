@@ -8,6 +8,7 @@ import com.ecommerce.engine.model.SearchResponse;
 import com.ecommerce.engine.service.CategoryService;
 import jakarta.validation.Valid;
 import java.util.Set;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +26,14 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @PostMapping("/search/{id}")
+    public SearchResponse<CategoryGridDto> getGridPageCache(@PathVariable UUID id) {
+        return categoryService.search(id, null);
+    }
+
     @PostMapping("/search")
     public SearchResponse<CategoryGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return categoryService.search(searchRequest);
+        return categoryService.search(null, searchRequest);
     }
 
     @GetMapping("/{id}")

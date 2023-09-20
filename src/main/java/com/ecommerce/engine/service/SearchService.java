@@ -9,6 +9,7 @@ import com.ecommerce.engine.model.Filter;
 import com.ecommerce.engine.model.SearchField;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -20,6 +21,7 @@ import jakarta.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
@@ -34,6 +36,32 @@ public class SearchService<E, D> {
     private final EntityManager entityManager;
 
     public SearchResponse<D> search(
+            @Nullable UUID id,
+            @Nullable SearchRequest searchRequest,
+            SearchEntity searchEntity,
+            Class<E> entityClass,
+            Function<E, D> mapper) {
+        if (id == null && searchRequest == null) {
+            throw new NullPointerException();
+        }
+        return id == null
+                ? search(searchRequest, searchEntity, entityClass, mapper)
+                : search(id, searchEntity, entityClass, mapper);
+    }
+
+    public SearchResponse<D> search(UUID id, SearchEntity searchEntity, Class<E> entityClass, Function<E, D> mapper) {
+        /*searchRequest.validateSearchFieldsExisting(searchEntity.getSearchFields());
+
+        List<E> entities = fetchEntities(searchRequest, searchEntity, entityClass);
+        int totalNumber = totalNumber(searchRequest, searchEntity, entityClass);
+
+        List<D> mappedEntities = entities.stream().map(mapper).toList();
+
+        return new SearchResponse<>(null, searchRequest, entities.size(), totalNumber, mappedEntities);*/
+        return null;
+    }
+
+    public SearchResponse<D> search(
             SearchRequest searchRequest, SearchEntity searchEntity, Class<E> entityClass, Function<E, D> mapper) {
         searchRequest.validateSearchFieldsExisting(searchEntity.getSearchFields());
 
@@ -42,7 +70,7 @@ public class SearchService<E, D> {
 
         List<D> mappedEntities = entities.stream().map(mapper).toList();
 
-        return new SearchResponse<>(searchRequest, entities.size(), totalNumber, mappedEntities);
+        return new SearchResponse<>(null, searchRequest, entities.size(), totalNumber, mappedEntities);
     }
 
     public List<E> fetchEntities(SearchRequest searchRequest, SearchEntity searchEntity, Class<E> entityClass) {

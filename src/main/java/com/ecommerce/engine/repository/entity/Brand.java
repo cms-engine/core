@@ -34,6 +34,10 @@ public class Brand {
         name = requestDto.name();
     }
 
+    public Brand(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

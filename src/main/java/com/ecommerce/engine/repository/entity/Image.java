@@ -30,6 +30,10 @@ public class Image {
     String src;
     String name;
 
+    public Image(UUID id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,5 +1,8 @@
 package com.ecommerce.engine.repository.entity;
 
+import static com.ecommerce.engine.util.NullUtils.nullable;
+
+import com.ecommerce.engine.dto.request.ProductRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -8,9 +11,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +25,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "product_additional_image")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @IdClass(ProductAdditionalImage.EntityId.class)
@@ -34,6 +40,13 @@ public class ProductAdditionalImage {
     @ManyToOne
     @JoinColumn
     Image image;
+
+    int sortOrder;
+
+    public ProductAdditionalImage(ProductRequestDto.AdditionalImage additionalImage) {
+        image = new Image(additionalImage.id());
+        sortOrder = additionalImage.sortOrder();
+    }
 
     @Override
     public final boolean equals(Object o) {
@@ -56,6 +69,14 @@ public class ProductAdditionalImage {
     @Override
     public final int hashCode() {
         return Objects.hash(product, image);
+    }
+
+    public UUID getImageId() {
+        return nullable(image, Image::getId);
+    }
+
+    public String getImageSrc() {
+        return nullable(image, Image::getSrc);
     }
 
     @Data

@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public enum SearchEntity {
     BRAND(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
     CATEGORY(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
-    PRODUCT(Collections.emptyMap()),
+    PRODUCT(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, SearchFieldUtils.toLongFunction()))),
     IMAGE(Collections.emptyMap());
 
     private final Map<String, SearchField> searchFields;

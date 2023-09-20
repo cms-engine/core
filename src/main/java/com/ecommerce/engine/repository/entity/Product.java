@@ -1,5 +1,8 @@
 package com.ecommerce.engine.repository.entity;
 
+import static com.ecommerce.engine.util.NullUtils.nullable;
+
+import com.ecommerce.engine.dto.request.ProductRequestDto;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
 import jakarta.persistence.CascadeType;
@@ -18,12 +21,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Currency;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -35,6 +40,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "product")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
@@ -64,14 +70,14 @@ public class Product {
     @JoinColumn
     Brand brand;
 
-    @Column(length = 3)
+    /*@Column(length = 3)
     Currency currency;
 
     @Column(precision = 15, scale = 2)
     BigDecimal price;
 
     @Column(precision = 15, scale = 3)
-    BigDecimal quantity;
+    BigDecimal quantity;*/
 
     @Enumerated(EnumType.STRING)
     LengthClass lengthClass;
@@ -107,6 +113,38 @@ public class Product {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<ProductAdditionalImage> additionalImages = new HashSet<>();
 
+    public Product(ProductRequestDto requestDto) {
+        if (requestDto.categoryId() != null) {
+            category = new Category(requestDto.categoryId());
+        }
+        if (requestDto.imageId() != null) {
+            image = new Image(requestDto.imageId());
+        }
+        if (requestDto.brandId() != null) {
+            brand = new Brand(requestDto.brandId());
+        }
+        sku = requestDto.sku();
+        ean = requestDto.ean();
+        barcode = requestDto.barcode();
+        lengthClass = requestDto.lengthClass();
+        length = requestDto.length();
+        width = requestDto.width();
+        height = requestDto.height();
+        weightClass = requestDto.weightClass();
+        weight = requestDto.weight();
+        enabled = requestDto.enabled();
+
+        descriptions = requestDto.descriptions().stream()
+                .map(ProductDescription::new)
+                .peek(desc -> desc.setProduct(this))
+                .collect(Collectors.toSet());
+
+        additionalImages = requestDto.additionalImages().stream()
+                .map(ProductAdditionalImage::new)
+                .peek(img -> img.setProduct(this))
+                .collect(Collectors.toSet());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,5 +156,33 @@ public class Product {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public String getLocaleTitle() {
+        return DescriptionSuperclass.getLocaleTitle(descriptions);
+    }
+
+    public Long getCategoryId() {
+        return nullable(category, Category::getId);
+    }
+
+    public String getCategoryLocaleTitle() {
+        return nullable(category, Category::getLocaleTitle);
+    }
+
+    public Long getBrandId() {
+        return nullable(brand, Brand::getId);
+    }
+
+    public String getBrandName() {
+        return nullable(brand, Brand::getName);
+    }
+
+    public UUID getImageId() {
+        return nullable(image, Image::getId);
+    }
+
+    public String getImageSrc() {
+        return nullable(image, Image::getSrc);
     }
 }

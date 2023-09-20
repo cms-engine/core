@@ -1,7 +1,8 @@
 package com.ecommerce.engine.repository.entity;
 
+import static com.ecommerce.engine.util.NullUtils.nullable;
+
 import com.ecommerce.engine.dto.request.CategoryRequestDto;
-import com.ecommerce.engine.util.TranslationUtils;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +17,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,6 +46,10 @@ public class Category {
     @JoinColumn
     Category parent;
 
+    @ManyToOne
+    @JoinColumn
+    Image image;
+
     int sortOrder;
 
     @CreationTimestamp
@@ -61,6 +67,9 @@ public class Category {
     public Category(CategoryRequestDto requestDto) {
         if (requestDto.parentId() != null) {
             parent = new Category(requestDto.parentId());
+        }
+        if (requestDto.imageId() != null) {
+            image = new Image(requestDto.imageId());
         }
         sortOrder = requestDto.sortOrder();
         enabled = requestDto.enabled();
@@ -88,18 +97,22 @@ public class Category {
     }
 
     public String getLocaleTitle() {
-        return descriptions.stream()
-                .filter(description -> description.getLocale().equals(TranslationUtils.getUserLocale()))
-                .findFirst()
-                .map(CategoryDescription::getTitle)
-                .orElse(null);
-    }
-
-    public String getParentLocaleTitle() {
-        return parent == null ? null : parent.getLocaleTitle();
+        return DescriptionSuperclass.getLocaleTitle(descriptions);
     }
 
     public Long getParentId() {
-        return parent == null ? null : parent.getId();
+        return nullable(parent, Category::getId);
+    }
+
+    public String getParentLocaleTitle() {
+        return nullable(parent, Category::getLocaleTitle);
+    }
+
+    public UUID getImageId() {
+        return nullable(image, Image::getId);
+    }
+
+    public String getImageSrc() {
+        return nullable(image, Image::getSrc);
     }
 }

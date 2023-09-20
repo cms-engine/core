@@ -1,7 +1,7 @@
 package com.ecommerce.engine.controller;
 
+import com.ecommerce.engine.dto.grid.ProductGridDto;
 import com.ecommerce.engine.dto.request.ProductRequestDto;
-import com.ecommerce.engine.dto.response.ProductGridResponseDto;
 import com.ecommerce.engine.dto.response.ProductResponseDto;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
@@ -26,7 +26,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/search")
-    public SearchResponse<ProductGridResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
+    public SearchResponse<ProductGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return productService.search(searchRequest);
     }
 

@@ -1,7 +1,7 @@
 package com.ecommerce.engine.service;
 
+import com.ecommerce.engine.dto.grid.ProductGridDto;
 import com.ecommerce.engine.dto.request.ProductRequestDto;
-import com.ecommerce.engine.dto.response.ProductGridResponseDto;
 import com.ecommerce.engine.dto.response.ProductResponseDto;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.exception.NotFoundException;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepository repository;
-    private final SearchService<Product, ProductGridResponseDto> searchService;
+    private final SearchService<Product, ProductGridDto> searchService;
 
     public ProductResponseDto get(long id) {
         Product category = findById(id);
@@ -52,7 +52,7 @@ public class ProductService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("product", id));
     }
 
-    public SearchResponse<ProductGridResponseDto> search(SearchRequest searchRequest) {
-        return searchService.search(searchRequest, SearchEntity.PRODUCT, Product.class, ProductGridResponseDto::new);
+    public SearchResponse<ProductGridDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, SearchEntity.PRODUCT, Product.class, ProductGridDto::new);
     }
 }

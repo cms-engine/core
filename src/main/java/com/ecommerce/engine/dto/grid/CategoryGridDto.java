@@ -1,9 +1,9 @@
-package com.ecommerce.engine.dto.response;
+package com.ecommerce.engine.dto.grid;
 
 import com.ecommerce.engine.repository.entity.Category;
 import java.time.Instant;
 
-public record CategoryGridResponseDto(
+public record CategoryGridDto(
         long id,
         String title,
         Long parentId,
@@ -14,7 +14,7 @@ public record CategoryGridResponseDto(
         Instant updated,
         boolean enabled) {
 
-    public CategoryGridResponseDto(Category category) {
+    public CategoryGridDto(Category category) {
         this(
                 category.getId(),
                 category.getLocaleTitle(),

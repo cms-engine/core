@@ -1,4 +1,4 @@
-package com.ecommerce.engine.dto.response;
+package com.ecommerce.engine.dto.grid;
 
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
@@ -6,7 +6,7 @@ import com.ecommerce.engine.repository.entity.Product;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public record ProductGridResponseDto(
+public record ProductGridDto(
         long id,
         String title,
         Long categoryId,
@@ -27,7 +27,7 @@ public record ProductGridResponseDto(
         Instant updated,
         boolean enabled) {
 
-    public ProductGridResponseDto(Product product) {
+    public ProductGridDto(Product product) {
         this(
                 product.getId(),
                 product.getLocaleTitle(),

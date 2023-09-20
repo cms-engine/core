@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.function.Function;
 
 public record SearchField(
-        String path, Collection<FilterType> allowedFilterTypes, Function<Object, Object> convertFunction) {
+        String path, Collection<FilterType> allowedFilterTypes, Function<String, Object> convertFunction) {
     public SearchField(String path, Collection<FilterType> allowedFilterTypes) {
-        this(path, allowedFilterTypes, Function.identity());
+        this(path, allowedFilterTypes, s -> s);
     }
 }

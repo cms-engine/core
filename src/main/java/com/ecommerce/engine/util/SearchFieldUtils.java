@@ -27,19 +27,19 @@ public class SearchFieldUtils {
     public Collection<FilterType> NUMBER_FILTERS =
             List.of(EQUAL, NOT_EQUAL, IN, NOT_IN, GRATER_THAN, LESS_THAN, GRATER_THAN_OR_EQUAL, LESS_THAN_OR_EQUAL);
 
-    public <T extends Enum<T>> Function<Object, Object> toEnumFunction(Class<T> enumClass) {
-        return value -> Enum.valueOf(enumClass, value.toString().toUpperCase());
+    public <T extends Enum<T>> Function<String, Object> toEnumFunction(Class<T> enumClass) {
+        return value -> Enum.valueOf(enumClass, value.toUpperCase());
     }
 
-    public Function<Object, Object> toBigDecimalFunction() {
-        return value -> new BigDecimal(value.toString());
+    public Function<String, Object> toBigDecimalFunction() {
+        return BigDecimal::new;
     }
 
-    public Function<Object, Object> toLongFunction() {
-        return value -> Long.parseLong(value.toString());
+    public Function<String, Object> toLongFunction() {
+        return Long::parseLong;
     }
 
-    public Function<Object, Object> toInstantFunction() {
-        return value -> Instant.ofEpochMilli(Long.parseLong(value.toString()));
+    public Function<String, Object> toInstantFunction() {
+        return value -> Instant.ofEpochMilli(Long.parseLong(value));
     }
 }

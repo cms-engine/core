@@ -5,6 +5,7 @@ import com.ecommerce.engine.config.exception_handler.ErrorCode;
 import com.ecommerce.engine.enums.FilterType;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.enums.SortDirection;
+import com.ecommerce.engine.model.Filter;
 import com.ecommerce.engine.model.SearchField;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
@@ -18,7 +19,6 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +42,7 @@ public class SearchService<E, D> {
 
         List<D> mappedEntities = entities.stream().map(mapper).toList();
 
-        return new SearchResponse<>(searchRequest.page(), entities.size(), totalNumber, mappedEntities);
+        return new SearchResponse<>(searchRequest, entities.size(), totalNumber, mappedEntities);
     }
 
     public List<E> fetchEntities(SearchRequest searchRequest, SearchEntity searchEntity, Class<E> entityClass) {
@@ -85,7 +84,7 @@ public class SearchService<E, D> {
         Predicate predicate = criteriaBuilder.conjunction();
 
         var filters = searchRequest.filters();
-        if (CollectionUtils.isEmpty(filters)) {
+        if (filters.isEmpty()) {
             return;
         }
 
@@ -101,12 +100,12 @@ public class SearchService<E, D> {
             CriteriaQuery<?> criteriaQuery,
             Root<?> root) {
         var sorts = searchRequest.sorts();
-        if (CollectionUtils.isEmpty(sorts)) {
+        if (sorts.isEmpty()) {
             return;
         }
 
         List<Order> orders = sorts.stream()
-                .map(sort -> sort.order() == SortDirection.DESCENDING
+                .map(sort -> sort.order() == SortDirection.DESC
                         ? criteriaBuilder.desc(getPath(root, sort.field()))
                         : criteriaBuilder.asc(getPath(root, sort.field())))
                 .toList();
@@ -127,7 +126,7 @@ public class SearchService<E, D> {
 
     @Data
     @AllArgsConstructor
-    private class FilterQueryCriteriaConsumer implements Consumer<SearchRequest.Filter> {
+    private class FilterQueryCriteriaConsumer implements Consumer<Filter> {
 
         private final CriteriaBuilder builder;
         private final Root<?> root;
@@ -135,36 +134,34 @@ public class SearchService<E, D> {
         private SearchEntity searchEntity;
 
         @Override
-        public void accept(SearchRequest.Filter param) {
-            if (param.value() == null) {
-                return;
-            }
-
+        public void accept(Filter param) {
             SearchField searchField = getSearchField(param);
 
-            Object value = getConvertedValue(param, searchField);
+            List<?> valueList = getConvertedValue(param, searchField);
+            Object singleValue = valueList.get(1);
 
             switch (param.type()) {
-                case EQUAL -> predicate = builder.and(predicate, builder.equal(getPath(searchField), param.value()));
+                case EQUAL -> predicate = builder.and(predicate, builder.equal(getPath(searchField), singleValue));
                 case NOT_EQUAL -> predicate =
-                        builder.and(predicate, builder.notEqual(getPath(searchField), param.value()));
+                        builder.and(predicate, builder.notEqual(getPath(searchField), singleValue));
                 case IN -> predicate =
-                        builder.and(predicate, getPath(searchField).in((Collection<?>) param.value()));
+                        builder.and(predicate, getPath(searchField).in(valueList));
                 case NOT_IN -> predicate = builder.and(
-                        predicate,
-                        getPath(searchField).in((Collection<?>) param.value()).not());
+                        predicate, getPath(searchField).in(valueList).not());
                 case LIKE -> predicate =
-                        builder.and(predicate, builder.like(getPath(searchField), "%" + param.value() + "%"));
+                        builder.and(predicate, builder.like(getPath(searchField), "%" + singleValue + "%"));
                 case NOT_LIKE -> predicate =
-                        builder.and(predicate, builder.notLike(getPath(searchField), "%" + param.value() + "%"));
-                case GRATER_THAN -> buildComparePredicate(FilterType.GRATER_THAN, searchField, value);
-                case GRATER_THAN_OR_EQUAL -> buildComparePredicate(FilterType.GRATER_THAN_OR_EQUAL, searchField, value);
-                case LESS_THAN -> buildComparePredicate(FilterType.LESS_THAN, searchField, value);
-                case LESS_THAN_OR_EQUAL -> buildComparePredicate(FilterType.LESS_THAN_OR_EQUAL, searchField, value);
+                        builder.and(predicate, builder.notLike(getPath(searchField), "%" + singleValue + "%"));
+                case GRATER_THAN -> buildComparePredicate(FilterType.GRATER_THAN, searchField, singleValue);
+                case GRATER_THAN_OR_EQUAL -> buildComparePredicate(
+                        FilterType.GRATER_THAN_OR_EQUAL, searchField, singleValue);
+                case LESS_THAN -> buildComparePredicate(FilterType.LESS_THAN, searchField, singleValue);
+                case LESS_THAN_OR_EQUAL -> buildComparePredicate(
+                        FilterType.LESS_THAN_OR_EQUAL, searchField, singleValue);
             }
         }
 
-        private SearchField getSearchField(SearchRequest.Filter param) {
+        private SearchField getSearchField(Filter param) {
             SearchField searchField = searchEntity.getSearchFields().get(param.field());
             if (!searchField.allowedFilterTypes().contains(param.type())) {
                 throw new ApplicationException(
@@ -204,16 +201,10 @@ public class SearchService<E, D> {
             }
         }
 
-        private Object getConvertedValue(SearchRequest.Filter param, SearchField searchField) {
-            return param.value() instanceof Collection<?> listParam
-                    ? listParam.stream()
-                            .map(originalValue -> getConvertedSimpleValue(searchField, originalValue))
-                            .toList()
-                    : getConvertedSimpleValue(searchField, param.value());
-        }
-
-        private Object getConvertedSimpleValue(SearchField searchField, Object originalValue) {
-            return searchField.convertFunction().apply(originalValue);
+        private List<Object> getConvertedValue(Filter param, SearchField searchField) {
+            return param.value().stream()
+                    .map(originalValue -> searchField.convertFunction().apply(originalValue))
+                    .toList();
         }
 
         private <Y> Path<Y> getPath(SearchField searchField) {

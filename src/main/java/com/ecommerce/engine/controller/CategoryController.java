@@ -26,7 +26,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping("/search/{id}")
+    @GetMapping("/search/{id}")
     public SearchResponse<CategoryGridDto> getGridPageCache(@PathVariable UUID id) {
         return categoryService.search(id, null);
     }

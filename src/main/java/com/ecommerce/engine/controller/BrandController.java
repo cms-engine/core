@@ -25,7 +25,7 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    @PostMapping("/search/{id}")
+    @GetMapping("/search/{id}")
     public SearchResponse<BrandResponseDto> getGridPageCache(@PathVariable UUID id) {
         return brandService.search(id, null);
     }

@@ -26,7 +26,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping("/search/{id}")
+    @GetMapping("/search/{id}")
     public SearchResponse<ProductGridDto> getGridPageCache(@PathVariable UUID id) {
         return productService.search(id, null);
     }

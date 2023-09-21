@@ -25,9 +25,9 @@ public class StoreSetting {
     @Id
     Integer id = 1;
 
-    Locale adminLocale = new Locale("en", "US");
+    Locale adminLocale = Locale.US;
 
-    Locale storeLocale = new Locale("en", "US");
+    Locale storeLocale = Locale.US;
 
     public void updateSettingsHolder() {
         StoreSettings.storeLocale = adminLocale;

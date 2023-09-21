@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.response;
 
-import com.ecommerce.engine.dto.common.DescriptionDto;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import com.ecommerce.engine.repository.entity.Category;
 import java.time.Instant;
 import java.util.Set;
@@ -16,7 +16,7 @@ public record CategoryResponseDto(
         Instant created,
         Instant updated,
         boolean enabled,
-        Set<DescriptionDto> descriptions) {
+        Set<MetaDescriptionDto> descriptions) {
     public CategoryResponseDto(Category category) {
         this(
                 category.getId(),
@@ -27,6 +27,6 @@ public record CategoryResponseDto(
                 category.getCreated(),
                 category.getUpdated(),
                 category.isEnabled(),
-                category.getDescriptions().stream().map(DescriptionDto::new).collect(Collectors.toSet()));
+                category.getDescriptions().stream().map(MetaDescriptionDto::new).collect(Collectors.toSet()));
     }
 }

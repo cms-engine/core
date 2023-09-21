@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Locale;
 
-public record DescriptionDto(
+public record MetaDescriptionDto(
         @NotNull Locale locale, @NotBlank String title, String description, String metaTitle, String metaDescription) {
-    public DescriptionDto(DescriptionSuperclass descriptionSuperclass) {
+    public MetaDescriptionDto(DescriptionSuperclass descriptionSuperclass) {
         this(
                 descriptionSuperclass.getLocale(),
                 descriptionSuperclass.getTitle(),

@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
-import com.ecommerce.engine.dto.common.DescriptionDto;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -32,8 +32,8 @@ public class PageDescription extends DescriptionSuperclass {
     @ManyToOne
     Page page;
 
-    public PageDescription(DescriptionDto descriptionDto) {
-        super(descriptionDto);
+    public PageDescription(MetaDescriptionDto metaDescriptionDto) {
+        super(metaDescriptionDto);
     }
 
     @Data

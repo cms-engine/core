@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.response;
 
-import com.ecommerce.engine.dto.common.DescriptionDto;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
 import com.ecommerce.engine.repository.entity.Product;
@@ -29,7 +29,7 @@ public record ProductResponseDto(
         Instant created,
         Instant updated,
         boolean enabled,
-        Set<DescriptionDto> descriptions,
+        Set<MetaDescriptionDto> descriptions,
         Set<AdditionalImage> additionalImages) {
 
     public ProductResponseDto(Product product) {
@@ -51,7 +51,7 @@ public record ProductResponseDto(
                 product.getCreated(),
                 product.getUpdated(),
                 product.isEnabled(),
-                product.getDescriptions().stream().map(DescriptionDto::new).collect(Collectors.toSet()),
+                product.getDescriptions().stream().map(MetaDescriptionDto::new).collect(Collectors.toSet()),
                 product.getAdditionalImages().stream().map(AdditionalImage::new).collect(Collectors.toSet()));
     }
 

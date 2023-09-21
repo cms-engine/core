@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
-import com.ecommerce.engine.dto.common.DescriptionDto;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -32,8 +32,8 @@ public class CategoryDescription extends DescriptionSuperclass {
     @ManyToOne
     Category category;
 
-    public CategoryDescription(DescriptionDto descriptionDto) {
-        super(descriptionDto);
+    public CategoryDescription(MetaDescriptionDto metaDescriptionDto) {
+        super(metaDescriptionDto);
     }
 
     @Override

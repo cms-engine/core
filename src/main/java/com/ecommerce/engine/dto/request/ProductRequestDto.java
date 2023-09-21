@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.request;
 
-import com.ecommerce.engine.dto.common.DescriptionDto;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -27,7 +27,7 @@ public record ProductRequestDto(
         WeightClass weightClass,
         @Digits(integer = 7, fraction = 8) BigDecimal weight,
         boolean enabled,
-        @NotNull @Size(min = 1) Set<@Valid DescriptionDto> descriptions,
+        @NotNull @Size(min = 1) Set<@Valid MetaDescriptionDto> descriptions,
         @JsonSetter(nulls = Nulls.AS_EMPTY) Set<AdditionalImage> additionalImages) {
 
     public record AdditionalImage(UUID id, int sortOrder) {}

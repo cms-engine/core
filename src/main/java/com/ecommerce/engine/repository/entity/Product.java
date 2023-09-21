@@ -159,7 +159,7 @@ public class Product {
     }
 
     public String getLocaleTitle() {
-        return DescriptionSuperclass.getLocaleTitle(descriptions);
+        return Localable.getLocaleTitle(descriptions);
     }
 
     public Long getCategoryId() {

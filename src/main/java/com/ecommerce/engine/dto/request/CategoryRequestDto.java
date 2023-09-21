@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.request;
 
-import com.ecommerce.engine.dto.common.DescriptionDto;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,4 +12,4 @@ public record CategoryRequestDto(
         UUID imageId,
         int sortOrder,
         boolean enabled,
-        @NotNull @Size(min = 1) Set<@Valid DescriptionDto> descriptions) {}
+        @NotNull @Size(min = 1) Set<@Valid MetaDescriptionDto> descriptions) {}

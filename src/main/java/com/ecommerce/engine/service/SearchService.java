@@ -5,10 +5,14 @@ import com.ecommerce.engine.config.exception_handler.ErrorCode;
 import com.ecommerce.engine.enums.FilterType;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.enums.SortDirection;
+import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.model.Filter;
 import com.ecommerce.engine.model.SearchField;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
+import com.ecommerce.engine.repository.SearchRequestCacheRepository;
+import com.ecommerce.engine.repository.entity.SearchRequestCache;
+import com.ecommerce.engine.util.TranslationUtils;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -34,6 +38,7 @@ import org.springframework.stereotype.Service;
 public class SearchService<E, D> {
 
     private final EntityManager entityManager;
+    private final SearchRequestCacheRepository searchRequestCacheRepository;
 
     public SearchResponse<D> search(
             @Nullable UUID id,
@@ -50,15 +55,25 @@ public class SearchService<E, D> {
     }
 
     public SearchResponse<D> search(UUID id, SearchEntity searchEntity, Class<E> entityClass, Function<E, D> mapper) {
-        /*searchRequest.validateSearchFieldsExisting(searchEntity.getSearchFields());
+        SearchRequest searchRequest = restoreSearchRequest(id);
 
-        List<E> entities = fetchEntities(searchRequest, searchEntity, entityClass);
-        int totalNumber = totalNumber(searchRequest, searchEntity, entityClass);
+        try {
+            searchRequest.validateSearchFieldsExisting(searchEntity.getSearchFields());
 
-        List<D> mappedEntities = entities.stream().map(mapper).toList();
+            List<E> entities = fetchEntities(searchRequest, searchEntity, entityClass);
+            int totalNumber = totalNumber(searchRequest, searchEntity, entityClass);
 
-        return new SearchResponse<>(null, searchRequest, entities.size(), totalNumber, mappedEntities);*/
-        return null;
+            List<D> mappedEntities = entities.stream().map(mapper).toList();
+
+            return new SearchResponse<>(id, searchRequest, entities.size(), totalNumber, mappedEntities);
+        } catch (Exception e) {
+            deleteSearchRequest(id);
+            throw new ApplicationException(
+                    ErrorCode.INVALID_SEARCH_REQUEST,
+                    TranslationUtils.getMessage("exception.invalidSearchRequest")
+                            .formatted(id),
+                    e);
+        }
     }
 
     public SearchResponse<D> search(
@@ -70,7 +85,10 @@ public class SearchService<E, D> {
 
         List<D> mappedEntities = entities.stream().map(mapper).toList();
 
-        return new SearchResponse<>(null, searchRequest, entities.size(), totalNumber, mappedEntities);
+        UUID id = UUID.randomUUID();
+        saveSearchRequest(id, searchRequest);
+
+        return new SearchResponse<>(id, searchRequest, entities.size(), totalNumber, mappedEntities);
     }
 
     public List<E> fetchEntities(SearchRequest searchRequest, SearchEntity searchEntity, Class<E> entityClass) {
@@ -150,6 +168,22 @@ public class SearchService<E, D> {
         }
 
         return path;
+    }
+
+    private SearchRequest restoreSearchRequest(UUID id) {
+        SearchRequestCache searchRequestCache = searchRequestCacheRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("search request", id));
+        return searchRequestCache.getSearchRequest();
+    }
+
+    private void saveSearchRequest(UUID id, SearchRequest searchRequest) {
+        SearchRequestCache searchRequestCache = new SearchRequestCache(id, searchRequest);
+        searchRequestCacheRepository.save(searchRequestCache);
+    }
+
+    private void deleteSearchRequest(UUID id) {
+        searchRequestCacheRepository.deleteById(id);
     }
 
     @Data

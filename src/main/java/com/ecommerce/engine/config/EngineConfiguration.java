@@ -1,7 +1,7 @@
 package com.ecommerce.engine.config;
 
-import com.ecommerce.engine.config.exception_handler.ApplicationExceptionResolver;
-import com.ecommerce.engine.config.exception_handler.CustomErrorAttributes;
+import com.ecommerce.engine.config.exception.ApplicationExceptionResolver;
+import com.ecommerce.engine.config.exception.CustomErrorAttributes;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

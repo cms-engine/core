@@ -1,4 +1,4 @@
-package com.ecommerce.engine.config.exception_handler;
+package com.ecommerce.engine.config.exception;
 
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.BINDING_ERRORS;
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;

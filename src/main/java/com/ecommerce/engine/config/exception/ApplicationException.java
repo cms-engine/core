@@ -1,4 +1,4 @@
-package com.ecommerce.engine.config.exception_handler;
+package com.ecommerce.engine.config.exception;
 
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 

@@ -1,4 +1,4 @@
-package com.ecommerce.engine.config.exception_handler;
+package com.ecommerce.engine.config.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

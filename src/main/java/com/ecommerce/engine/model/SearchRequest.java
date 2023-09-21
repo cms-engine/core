@@ -1,7 +1,7 @@
 package com.ecommerce.engine.model;
 
-import com.ecommerce.engine.config.exception_handler.ApplicationException;
-import com.ecommerce.engine.config.exception_handler.ErrorCode;
+import com.ecommerce.engine.config.exception.ApplicationException;
+import com.ecommerce.engine.config.exception.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import jakarta.validation.Valid;

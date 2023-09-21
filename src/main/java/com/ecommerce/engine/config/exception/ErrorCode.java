@@ -1,4 +1,4 @@
-package com.ecommerce.engine.config.exception_handler;
+package com.ecommerce.engine.config.exception;
 
 public enum ErrorCode {
     SEARCH_FIELD_NOT_FOUND,

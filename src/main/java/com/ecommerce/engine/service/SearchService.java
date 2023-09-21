@@ -1,7 +1,7 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.config.exception_handler.ApplicationException;
-import com.ecommerce.engine.config.exception_handler.ErrorCode;
+import com.ecommerce.engine.config.exception.ApplicationException;
+import com.ecommerce.engine.config.exception.ErrorCode;
 import com.ecommerce.engine.enums.FilterType;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.enums.SortDirection;

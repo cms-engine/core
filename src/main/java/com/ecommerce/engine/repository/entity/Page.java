@@ -6,36 +6,51 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
 @ToString
 @Entity
 @Table(name = "page")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Page {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    private boolean bottom;
-    private int sortOrder;
-    private boolean status;
+    boolean bottom;
+    int sortOrder;
+    boolean status;
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Page that = (Page) o;
-        return id != null && Objects.equals(id, that.id);
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+                ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Page page = (Page) o;
+        return getId() != null && Objects.equals(getId(), page.getId());
     }
 
     @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public final int hashCode() {
+        return this instanceof HibernateProxy
+                ? ((HibernateProxy) this)
+                        .getHibernateLazyInitializer()
+                        .getPersistentClass()
+                        .hashCode()
+                : getClass().hashCode();
     }
 }

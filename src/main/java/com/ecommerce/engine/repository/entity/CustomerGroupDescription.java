@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
@@ -39,26 +39,33 @@ public class CustomerGroupDescription {
     @Column(columnDefinition = "text")
     String description;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CustomerGroupDescription that = (CustomerGroupDescription) o;
-        return locale != null
-                && Objects.equals(locale, that.locale)
-                && customerGroup != null
-                && Objects.equals(customerGroup, that.customerGroup);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(locale, customerGroup);
-    }
-
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
         Locale locale;
         CustomerGroup customerGroup;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+                ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        CustomerGroupDescription that = (CustomerGroupDescription) o;
+        return getLocale() != null
+                && Objects.equals(getLocale(), that.getLocale())
+                && getCustomerGroup() != null
+                && Objects.equals(getCustomerGroup(), that.getCustomerGroup());
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(locale, customerGroup);
     }
 }

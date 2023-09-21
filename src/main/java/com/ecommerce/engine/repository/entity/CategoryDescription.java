@@ -36,6 +36,13 @@ public class CategoryDescription extends DescriptionSuperclass {
         super(metaDescriptionDto);
     }
 
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class EntityId implements Serializable {
+        Locale locale;
+        Category category;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -57,12 +64,5 @@ public class CategoryDescription extends DescriptionSuperclass {
     @Override
     public final int hashCode() {
         return Objects.hash(getCategory(), getLocale());
-    }
-
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class EntityId implements Serializable {
-        Locale locale;
-        Category category;
     }
 }

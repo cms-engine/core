@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
@@ -36,26 +36,33 @@ public class DeliveryMethodDescription {
 
     String name;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        DeliveryMethodDescription that = (DeliveryMethodDescription) o;
-        return locale != null
-                && Objects.equals(locale, that.locale)
-                && deliveryMethod != null
-                && Objects.equals(deliveryMethod, that.deliveryMethod);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(locale, deliveryMethod);
-    }
-
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
         Locale locale;
         DeliveryMethod deliveryMethod;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+                ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        DeliveryMethodDescription that = (DeliveryMethodDescription) o;
+        return getLocale() != null
+                && Objects.equals(getLocale(), that.getLocale())
+                && getDeliveryMethod() != null
+                && Objects.equals(getDeliveryMethod(), that.getDeliveryMethod());
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(locale, deliveryMethod);
     }
 }

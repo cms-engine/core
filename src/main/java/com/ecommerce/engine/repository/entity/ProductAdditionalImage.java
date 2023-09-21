@@ -48,6 +48,21 @@ public class ProductAdditionalImage {
         sortOrder = additionalImage.sortOrder();
     }
 
+    public UUID getImageId() {
+        return nullable(image, Image::getId);
+    }
+
+    public String getImageSrc() {
+        return nullable(image, Image::getSrc);
+    }
+
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class EntityId implements Serializable {
+        Product product;
+        Image image;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -69,20 +84,5 @@ public class ProductAdditionalImage {
     @Override
     public final int hashCode() {
         return Objects.hash(product, image);
-    }
-
-    public UUID getImageId() {
-        return nullable(image, Image::getId);
-    }
-
-    public String getImageSrc() {
-        return nullable(image, Image::getSrc);
-    }
-
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class EntityId implements Serializable {
-        Product product;
-        Image image;
     }
 }

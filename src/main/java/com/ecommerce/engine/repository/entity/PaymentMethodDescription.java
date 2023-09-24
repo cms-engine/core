@@ -1,6 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
-import com.ecommerce.engine.dto.common.PaymentMethodDescriptionDto;
+import com.ecommerce.engine.dto.common.NameDescriptionDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -40,7 +40,7 @@ public class PaymentMethodDescription implements Localable {
     @Column(nullable = false)
     String name;
 
-    public PaymentMethodDescription(PaymentMethodDescriptionDto descriptionDto) {
+    public PaymentMethodDescription(NameDescriptionDto descriptionDto) {
         locale = descriptionDto.locale();
         name = descriptionDto.name();
     }

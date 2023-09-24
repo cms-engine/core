@@ -1,5 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.dto.common.NameDescriptionDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -21,10 +23,11 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "delivery_method_description")
 @IdClass(DeliveryMethodDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DeliveryMethodDescription {
+public class DeliveryMethodDescription implements Localable {
 
     @Id
     @Column(length = 5)
@@ -35,6 +38,11 @@ public class DeliveryMethodDescription {
     DeliveryMethod deliveryMethod;
 
     String name;
+
+    public DeliveryMethodDescription(NameDescriptionDto descriptionDto) {
+        locale = descriptionDto.locale();
+        name = descriptionDto.name();
+    }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)

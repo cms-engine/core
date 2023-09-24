@@ -1,5 +1,6 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.dto.request.DeliveryMethodRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,8 +12,10 @@ import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +25,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "delivery_method")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DeliveryMethod {
@@ -35,6 +39,18 @@ public class DeliveryMethod {
     @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "deliveryMethod", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<DeliveryMethodDescription> descriptions = new HashSet<>();
+
+    public DeliveryMethod(DeliveryMethodRequestDto requestDto) {
+        enabled = requestDto.enabled();
+        descriptions = requestDto.descriptions().stream()
+                .map(DeliveryMethodDescription::new)
+                .peek(desc -> desc.setDeliveryMethod(this))
+                .collect(Collectors.toSet());
+    }
+
+    public String getLocaleName() {
+        return Localable.getLocaleTitle(descriptions);
+    }
 
     @Override
     public final boolean equals(Object o) {

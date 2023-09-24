@@ -6,5 +6,5 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.Set;
 
-public record PaymentMethodRequestDto(
+public record DeliveryMethodRequestDto(
         boolean enabled, @NotNull @Size(min = 1) Set<@Valid NameDescriptionDto> descriptions) {}

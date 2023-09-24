@@ -1,7 +1,7 @@
 package com.ecommerce.engine.dto.response;
 
 import com.ecommerce.engine.dto.common.NameDescriptionDto;
-import com.ecommerce.engine.repository.entity.DeliveryMethod;
+import com.ecommerce.engine.entity.DeliveryMethod;
 import java.util.Set;
 import java.util.stream.Collectors;
 

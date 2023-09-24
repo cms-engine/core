@@ -2,12 +2,12 @@ package com.ecommerce.engine.service;
 
 import com.ecommerce.engine.dto.request.DeliveryMethodRequestDto;
 import com.ecommerce.engine.dto.response.DeliveryMethodResponseDto;
+import com.ecommerce.engine.entity.DeliveryMethod;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
 import com.ecommerce.engine.repository.DeliveryMethodRepository;
-import com.ecommerce.engine.repository.entity.DeliveryMethod;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

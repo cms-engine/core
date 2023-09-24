@@ -1,9 +1,9 @@
 package com.ecommerce.engine.service;
 
 import com.ecommerce.engine.dto.response.ImageResponseDto;
+import com.ecommerce.engine.entity.Image;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ImageRepository;
-import com.ecommerce.engine.repository.entity.Image;
 import jakarta.annotation.Nullable;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -2,6 +2,7 @@ package com.ecommerce.engine.service;
 
 import com.ecommerce.engine.config.exception.ApplicationException;
 import com.ecommerce.engine.config.exception.ErrorCode;
+import com.ecommerce.engine.entity.SearchRequestCache;
 import com.ecommerce.engine.enums.FilterType;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.enums.SortDirection;
@@ -11,7 +12,6 @@ import com.ecommerce.engine.model.SearchField;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
 import com.ecommerce.engine.repository.SearchRequestCacheRepository;
-import com.ecommerce.engine.repository.entity.SearchRequestCache;
 import com.ecommerce.engine.util.TranslationUtils;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;

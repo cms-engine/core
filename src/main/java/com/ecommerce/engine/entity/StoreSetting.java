@@ -1,18 +1,14 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.common.MetaDescriptionDto;
+import com.ecommerce.engine.dto.common.StoreSettingDto;
+import com.ecommerce.engine.util.StoreSettings;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -22,25 +18,25 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = "category_description")
-@NoArgsConstructor
-@IdClass(CategoryDescription.EntityId.class)
+@Table(name = "store_setting")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryDescription extends DescriptionSuperclass {
+public class StoreSetting {
 
     @Id
-    @ManyToOne
-    Category category;
+    Integer id = 1;
 
-    public CategoryDescription(MetaDescriptionDto metaDescriptionDto) {
-        super(metaDescriptionDto);
+    Locale adminLocale = Locale.US;
+
+    Locale storeLocale = Locale.US;
+
+    public void updateSettingsHolder() {
+        StoreSettings.storeLocale = adminLocale;
+        StoreSettings.adminLocale = storeLocale;
     }
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class EntityId implements Serializable {
-        Locale locale;
-        Category category;
+    public void update(StoreSettingDto storeSettingDto) {
+        adminLocale = storeSettingDto.adminLocale();
+        storeLocale = storeSettingDto.storeLocale();
     }
 
     @Override
@@ -54,15 +50,17 @@ public class CategoryDescription extends DescriptionSuperclass {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        CategoryDescription that = (CategoryDescription) o;
-        return getCategory() != null
-                && Objects.equals(getCategory(), that.getCategory())
-                && getLocale() != null
-                && Objects.equals(getLocale(), that.getLocale());
+        StoreSetting that = (StoreSetting) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getCategory(), getLocale());
+        return this instanceof HibernateProxy
+                ? ((HibernateProxy) this)
+                        .getHibernateLazyInitializer()
+                        .getPersistentClass()
+                        .hashCode()
+                : getClass().hashCode();
     }
 }

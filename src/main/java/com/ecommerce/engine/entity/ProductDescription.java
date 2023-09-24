@@ -1,14 +1,18 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.common.StoreSettingDto;
-import com.ecommerce.engine.util.StoreSettings;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -18,25 +22,25 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = "store_setting")
+@NoArgsConstructor
+@Table(name = "product_description")
+@IdClass(ProductDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StoreSetting {
+public class ProductDescription extends DescriptionSuperclass {
 
     @Id
-    Integer id = 1;
+    @ManyToOne
+    Product product;
 
-    Locale adminLocale = Locale.US;
-
-    Locale storeLocale = Locale.US;
-
-    public void updateSettingsHolder() {
-        StoreSettings.storeLocale = adminLocale;
-        StoreSettings.adminLocale = storeLocale;
+    public ProductDescription(MetaDescriptionDto metaDescriptionDto) {
+        super(metaDescriptionDto);
     }
 
-    public void update(StoreSettingDto storeSettingDto) {
-        adminLocale = storeSettingDto.adminLocale();
-        storeLocale = storeSettingDto.storeLocale();
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class EntityId implements Serializable {
+        Locale locale;
+        Product product;
     }
 
     @Override
@@ -50,17 +54,15 @@ public class StoreSetting {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        StoreSetting that = (StoreSetting) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        ProductDescription that = (ProductDescription) o;
+        return getProduct() != null
+                && Objects.equals(getProduct(), that.getProduct())
+                && getLocale() != null
+                && Objects.equals(getLocale(), that.getLocale());
     }
 
     @Override
     public final int hashCode() {
-        return this instanceof HibernateProxy
-                ? ((HibernateProxy) this)
-                        .getHibernateLazyInitializer()
-                        .getPersistentClass()
-                        .hashCode()
-                : getClass().hashCode();
+        return Objects.hash(getProduct(), getLocale());
     }
 }

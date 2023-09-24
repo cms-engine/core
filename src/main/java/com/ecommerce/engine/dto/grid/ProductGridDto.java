@@ -1,8 +1,8 @@
 package com.ecommerce.engine.dto.grid;
 
+import com.ecommerce.engine.entity.Product;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
-import com.ecommerce.engine.repository.entity.Product;
 import java.math.BigDecimal;
 import java.time.Instant;
 

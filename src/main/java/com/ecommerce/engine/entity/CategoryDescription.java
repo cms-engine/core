@@ -1,17 +1,14 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.util.NullUtils.nullable;
-
-import com.ecommerce.engine.dto.request.ProductRequestDto;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -25,42 +22,25 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
+@Table(name = "category_description")
 @NoArgsConstructor
-@Table(name = "product_additional_image")
+@IdClass(CategoryDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@IdClass(ProductAdditionalImage.EntityId.class)
-public class ProductAdditionalImage {
+public class CategoryDescription extends DescriptionSuperclass {
 
     @Id
     @ManyToOne
-    @JoinColumn
-    Product product;
+    Category category;
 
-    @Id
-    @ManyToOne
-    @JoinColumn
-    Image image;
-
-    int sortOrder;
-
-    public ProductAdditionalImage(ProductRequestDto.AdditionalImage additionalImage) {
-        image = new Image(additionalImage.id());
-        sortOrder = additionalImage.sortOrder();
-    }
-
-    public UUID getImageId() {
-        return nullable(image, Image::getId);
-    }
-
-    public String getImageSrc() {
-        return nullable(image, Image::getSrc);
+    public CategoryDescription(MetaDescriptionDto metaDescriptionDto) {
+        super(metaDescriptionDto);
     }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Product product;
-        Image image;
+        Locale locale;
+        Category category;
     }
 
     @Override
@@ -74,15 +54,15 @@ public class ProductAdditionalImage {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        ProductAdditionalImage that = (ProductAdditionalImage) o;
-        return getProduct() != null
-                && Objects.equals(getProduct(), that.getProduct())
-                && getImage() != null
-                && Objects.equals(getImage(), that.getImage());
+        CategoryDescription that = (CategoryDescription) o;
+        return getCategory() != null
+                && Objects.equals(getCategory(), that.getCategory())
+                && getLocale() != null
+                && Objects.equals(getLocale(), that.getLocale());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(product, image);
+        return Objects.hash(getCategory(), getLocale());
     }
 }

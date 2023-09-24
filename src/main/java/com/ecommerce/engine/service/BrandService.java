@@ -2,12 +2,12 @@ package com.ecommerce.engine.service;
 
 import com.ecommerce.engine.dto.request.BrandRequestDto;
 import com.ecommerce.engine.dto.response.BrandResponseDto;
+import com.ecommerce.engine.entity.Brand;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
 import com.ecommerce.engine.repository.BrandRepository;
-import com.ecommerce.engine.repository.entity.Brand;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

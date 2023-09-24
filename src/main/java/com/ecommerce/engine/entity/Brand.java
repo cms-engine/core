@@ -1,16 +1,13 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.common.MetaDescriptionDto;
+import com.ecommerce.engine.dto.request.BrandRequestDto;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.io.Serializable;
-import java.util.Locale;
 import java.util.Objects;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,25 +19,23 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
+@Table(name = "brand")
 @NoArgsConstructor
-@Table(name = "product_description")
-@IdClass(ProductDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductDescription extends DescriptionSuperclass {
+public class Brand {
 
     @Id
-    @ManyToOne
-    Product product;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-    public ProductDescription(MetaDescriptionDto metaDescriptionDto) {
-        super(metaDescriptionDto);
+    String name;
+
+    public Brand(BrandRequestDto requestDto) {
+        name = requestDto.name();
     }
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class EntityId implements Serializable {
-        Locale locale;
-        Product product;
+    public Brand(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -54,15 +49,17 @@ public class ProductDescription extends DescriptionSuperclass {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        ProductDescription that = (ProductDescription) o;
-        return getProduct() != null
-                && Objects.equals(getProduct(), that.getProduct())
-                && getLocale() != null
-                && Objects.equals(getLocale(), that.getLocale());
+        Brand brand = (Brand) o;
+        return getId() != null && Objects.equals(getId(), brand.getId());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getProduct(), getLocale());
+        return this instanceof HibernateProxy
+                ? ((HibernateProxy) this)
+                        .getHibernateLazyInitializer()
+                        .getPersistentClass()
+                        .hashCode()
+                : getClass().hashCode();
     }
 }

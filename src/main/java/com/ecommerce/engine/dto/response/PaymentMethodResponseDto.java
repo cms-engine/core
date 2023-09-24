@@ -1,7 +1,7 @@
 package com.ecommerce.engine.dto.response;
 
 import com.ecommerce.engine.dto.common.NameDescriptionDto;
-import com.ecommerce.engine.repository.entity.PaymentMethod;
+import com.ecommerce.engine.entity.PaymentMethod;
 import java.util.Set;
 import java.util.stream.Collectors;
 

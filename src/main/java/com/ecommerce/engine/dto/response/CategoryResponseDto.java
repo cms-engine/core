@@ -1,7 +1,7 @@
 package com.ecommerce.engine.dto.response;
 
 import com.ecommerce.engine.dto.common.MetaDescriptionDto;
-import com.ecommerce.engine.repository.entity.Category;
+import com.ecommerce.engine.entity.Category;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;

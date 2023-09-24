@@ -1,4 +1,4 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine.dto.common.NameDescriptionDto;
 import jakarta.persistence.Column;

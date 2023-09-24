@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.grid;
 
-import com.ecommerce.engine.repository.entity.Page;
+import com.ecommerce.engine.entity.Page;
 import java.time.Instant;
 
 public record PageGridDto(

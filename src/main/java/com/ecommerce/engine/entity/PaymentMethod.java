@@ -1,39 +1,56 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.model.SearchRequest;
-import jakarta.persistence.Column;
+import com.ecommerce.engine.dto.request.PaymentMethodRequestDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.HashSet;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = "search_request_cache")
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "payment_method")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SearchRequestCache {
+public class PaymentMethod {
 
     @Id
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-    @Column(nullable = false)
-    @JdbcTypeCode(SqlTypes.JSON)
-    SearchRequest searchRequest;
+    boolean enabled;
+
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "paymentMethod", orphanRemoval = true, cascade = CascadeType.ALL)
+    Set<PaymentMethodDescription> descriptions = new HashSet<>();
+
+    public PaymentMethod(PaymentMethodRequestDto requestDto) {
+        enabled = requestDto.enabled();
+        descriptions = requestDto.descriptions().stream()
+                .map(PaymentMethodDescription::new)
+                .peek(desc -> desc.setPaymentMethod(this))
+                .collect(Collectors.toSet());
+    }
+
+    public String getLocaleName() {
+        return Localable.getLocaleTitle(descriptions);
+    }
 
     @Override
     public final boolean equals(Object o) {
@@ -46,7 +63,7 @@ public class SearchRequestCache {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        SearchRequestCache that = (SearchRequestCache) o;
+        PaymentMethod that = (PaymentMethod) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

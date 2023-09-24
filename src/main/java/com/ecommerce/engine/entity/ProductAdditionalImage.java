@@ -1,15 +1,17 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.common.NameDescriptionDto;
-import jakarta.persistence.Column;
+import static com.ecommerce.engine.util.NullUtils.nullable;
+
+import com.ecommerce.engine.dto.request.ProductRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -24,32 +26,41 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = "payment_method_description")
-@IdClass(PaymentMethodDescription.EntityId.class)
+@Table(name = "product_additional_image")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentMethodDescription implements Localable {
-
-    @Id
-    @Column(length = 5)
-    Locale locale;
+@IdClass(ProductAdditionalImage.EntityId.class)
+public class ProductAdditionalImage {
 
     @Id
     @ManyToOne
-    PaymentMethod paymentMethod;
+    @JoinColumn
+    Product product;
 
-    @Column(nullable = false)
-    String name;
+    @Id
+    @ManyToOne
+    @JoinColumn
+    Image image;
 
-    public PaymentMethodDescription(NameDescriptionDto descriptionDto) {
-        locale = descriptionDto.locale();
-        name = descriptionDto.name();
+    int sortOrder;
+
+    public ProductAdditionalImage(ProductRequestDto.AdditionalImage additionalImage) {
+        image = new Image(additionalImage.id());
+        sortOrder = additionalImage.sortOrder();
+    }
+
+    public UUID getImageId() {
+        return nullable(image, Image::getId);
+    }
+
+    public String getImageSrc() {
+        return nullable(image, Image::getSrc);
     }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Locale locale;
-        PaymentMethod paymentMethod;
+        Product product;
+        Image image;
     }
 
     @Override
@@ -63,15 +74,15 @@ public class PaymentMethodDescription implements Localable {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        PaymentMethodDescription that = (PaymentMethodDescription) o;
-        return getLocale() != null
-                && Objects.equals(getLocale(), that.getLocale())
-                && getPaymentMethod() != null
-                && Objects.equals(getPaymentMethod(), that.getPaymentMethod());
+        ProductAdditionalImage that = (ProductAdditionalImage) o;
+        return getProduct() != null
+                && Objects.equals(getProduct(), that.getProduct())
+                && getImage() != null
+                && Objects.equals(getImage(), that.getImage());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(locale, paymentMethod);
+        return Objects.hash(product, image);
     }
 }

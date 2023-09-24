@@ -1,10 +1,10 @@
 package com.ecommerce.engine.dto.response;
 
 import com.ecommerce.engine.dto.common.MetaDescriptionDto;
+import com.ecommerce.engine.entity.Product;
+import com.ecommerce.engine.entity.ProductAdditionalImage;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
-import com.ecommerce.engine.repository.entity.Product;
-import com.ecommerce.engine.repository.entity.ProductAdditionalImage;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;

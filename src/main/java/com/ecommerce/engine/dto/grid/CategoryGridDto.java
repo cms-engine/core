@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.grid;
 
-import com.ecommerce.engine.repository.entity.Category;
+import com.ecommerce.engine.entity.Category;
 import java.time.Instant;
 
 public record CategoryGridDto(

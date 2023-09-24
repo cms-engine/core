@@ -1,19 +1,12 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.request.DeliveryMethodRequestDto;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,32 +17,21 @@ import org.hibernate.proxy.HibernateProxy;
 @Getter
 @Setter
 @ToString
-@Entity
 @NoArgsConstructor
-@Table(name = "delivery_method")
+@AllArgsConstructor
+@Entity
+@Table(name = "image")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DeliveryMethod {
+public class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    UUID id;
 
-    boolean enabled;
+    String src;
+    String name;
 
-    @ToString.Exclude
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "deliveryMethod", orphanRemoval = true, cascade = CascadeType.ALL)
-    Set<DeliveryMethodDescription> descriptions = new HashSet<>();
-
-    public DeliveryMethod(DeliveryMethodRequestDto requestDto) {
-        enabled = requestDto.enabled();
-        descriptions = requestDto.descriptions().stream()
-                .map(DeliveryMethodDescription::new)
-                .peek(desc -> desc.setDeliveryMethod(this))
-                .collect(Collectors.toSet());
-    }
-
-    public String getLocaleName() {
-        return Localable.getLocaleTitle(descriptions);
+    public Image(UUID id) {
+        this.id = id;
     }
 
     @Override
@@ -63,8 +45,8 @@ public class DeliveryMethod {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        DeliveryMethod that = (DeliveryMethod) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        Image image = (Image) o;
+        return getId() != null && Objects.equals(getId(), image.getId());
     }
 
     @Override

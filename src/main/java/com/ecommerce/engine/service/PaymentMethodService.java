@@ -2,12 +2,12 @@ package com.ecommerce.engine.service;
 
 import com.ecommerce.engine.dto.request.PaymentMethodRequestDto;
 import com.ecommerce.engine.dto.response.PaymentMethodResponseDto;
+import com.ecommerce.engine.entity.PaymentMethod;
 import com.ecommerce.engine.enums.SearchEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.model.SearchRequest;
 import com.ecommerce.engine.model.SearchResponse;
 import com.ecommerce.engine.repository.PaymentMethodRepository;
-import com.ecommerce.engine.repository.entity.PaymentMethod;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

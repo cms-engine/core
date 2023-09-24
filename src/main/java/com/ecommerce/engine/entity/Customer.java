@@ -1,38 +1,70 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.UUID;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "image")
+@Table(name = "customer")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Image {
+public class Customer {
 
     @Id
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-    String src;
-    String name;
+    @ManyToOne
+    @JoinColumn
+    CustomerGroup customerGroup;
 
-    public Image(UUID id) {
-        this.id = id;
-    }
+    @Column(length = 5)
+    Locale locale;
+
+    String firstName;
+    String lastName;
+    String middleName;
+    String phone;
+
+    @Column(unique = true)
+    String email;
+
+    String password;
+    boolean newsletter;
+
+    @ManyToOne
+    @JoinColumn
+    DeliveryMethod mainDeliveryMethod;
+
+    @ManyToOne
+    @JoinColumn
+    PaymentMethod mainPaymentMethod;
+
+    @CreationTimestamp
+    Instant created;
+
+    @UpdateTimestamp
+    Instant updated;
+
+    boolean enabled;
 
     @Override
     public final boolean equals(Object o) {
@@ -45,8 +77,8 @@ public class Image {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Image image = (Image) o;
-        return getId() != null && Objects.equals(getId(), image.getId());
+        Customer customer = (Customer) o;
+        return getId() != null && Objects.equals(getId(), customer.getId());
     }
 
     @Override

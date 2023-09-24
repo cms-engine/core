@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.common;
 
-import com.ecommerce.engine.repository.entity.Localable;
+import com.ecommerce.engine.entity.Localable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Locale;

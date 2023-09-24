@@ -1,61 +1,39 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
+import com.ecommerce.engine.model.SearchRequest;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = "store_review")
+@Table(name = "search_request_cache")
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StoreReview {
+public class SearchRequestCache {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    UUID id;
 
-    @ManyToOne
-    @JoinColumn
-    Customer customer;
-
-    String author;
-
-    @Lob
-    String text;
-
-    @Lob
-    String reply;
-
-    @Min(1)
-    @Max(5)
-    int rating;
-
-    @CreationTimestamp
-    Instant created;
-
-    @UpdateTimestamp
-    Instant updated;
-
-    boolean enabled;
+    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.JSON)
+    SearchRequest searchRequest;
 
     @Override
     public final boolean equals(Object o) {
@@ -68,7 +46,7 @@ public class StoreReview {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        StoreReview that = (StoreReview) o;
+        SearchRequestCache that = (SearchRequestCache) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

@@ -1,4 +1,4 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

@@ -1,6 +1,7 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.common.MetaDescriptionDto;
+import com.ecommerce.engine.dto.common.NameDescriptionDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -23,24 +24,32 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = "page_description")
-@IdClass(PageDescription.EntityId.class)
+@Table(name = "payment_method_description")
+@IdClass(PaymentMethodDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PageDescription extends DescriptionSuperclass {
+public class PaymentMethodDescription implements Localable {
+
+    @Id
+    @Column(length = 5)
+    Locale locale;
 
     @Id
     @ManyToOne
-    Page page;
+    PaymentMethod paymentMethod;
 
-    public PageDescription(MetaDescriptionDto metaDescriptionDto) {
-        super(metaDescriptionDto);
+    @Column(nullable = false)
+    String name;
+
+    public PaymentMethodDescription(NameDescriptionDto descriptionDto) {
+        locale = descriptionDto.locale();
+        name = descriptionDto.name();
     }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
         Locale locale;
-        Page page;
+        PaymentMethod paymentMethod;
     }
 
     @Override
@@ -54,15 +63,15 @@ public class PageDescription extends DescriptionSuperclass {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        PageDescription that = (PageDescription) o;
-        return getPage() != null
-                && Objects.equals(getPage(), that.getPage())
-                && getLocale() != null
-                && Objects.equals(getLocale(), that.getLocale());
+        PaymentMethodDescription that = (PaymentMethodDescription) o;
+        return getLocale() != null
+                && Objects.equals(getLocale(), that.getLocale())
+                && getPaymentMethod() != null
+                && Objects.equals(getPaymentMethod(), that.getPaymentMethod());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getPage(), getLocale());
+        return Objects.hash(locale, paymentMethod);
     }
 }

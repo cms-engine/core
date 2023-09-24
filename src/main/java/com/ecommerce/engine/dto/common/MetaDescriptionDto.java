@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.common;
 
-import com.ecommerce.engine.repository.entity.DescriptionSuperclass;
+import com.ecommerce.engine.entity.DescriptionSuperclass;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Locale;

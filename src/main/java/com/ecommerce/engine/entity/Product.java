@@ -1,4 +1,4 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.util.NullUtils.nullable;
 

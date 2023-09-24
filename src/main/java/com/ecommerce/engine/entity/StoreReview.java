@@ -1,15 +1,16 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.time.Instant;
-import java.util.Locale;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,9 +25,9 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = "customer")
+@Table(name = "store_review")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Customer {
+public class StoreReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,29 +35,19 @@ public class Customer {
 
     @ManyToOne
     @JoinColumn
-    CustomerGroup customerGroup;
+    Customer customer;
 
-    @Column(length = 5)
-    Locale locale;
+    String author;
 
-    String firstName;
-    String lastName;
-    String middleName;
-    String phone;
+    @Lob
+    String text;
 
-    @Column(unique = true)
-    String email;
+    @Lob
+    String reply;
 
-    String password;
-    boolean newsletter;
-
-    @ManyToOne
-    @JoinColumn
-    DeliveryMethod mainDeliveryMethod;
-
-    @ManyToOne
-    @JoinColumn
-    PaymentMethod mainPaymentMethod;
+    @Min(1)
+    @Max(5)
+    int rating;
 
     @CreationTimestamp
     Instant created;
@@ -77,8 +68,8 @@ public class Customer {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Customer customer = (Customer) o;
-        return getId() != null && Objects.equals(getId(), customer.getId());
+        StoreReview that = (StoreReview) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

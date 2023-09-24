@@ -1,7 +1,7 @@
 package com.ecommerce.engine.dto.response;
 
 import com.ecommerce.engine.dto.common.MetaDescriptionDto;
-import com.ecommerce.engine.repository.entity.Page;
+import com.ecommerce.engine.entity.Page;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;

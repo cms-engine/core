@@ -1,42 +1,65 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.request.BrandRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import java.time.Instant;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = "brand")
-@NoArgsConstructor
+@Table(name = "product_review")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Brand {
+public class ProductReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String name;
+    @ManyToOne
+    @JoinColumn
+    Product product;
 
-    public Brand(BrandRequestDto requestDto) {
-        name = requestDto.name();
-    }
+    @ManyToOne
+    @JoinColumn
+    Customer customer;
 
-    public Brand(Long id) {
-        this.id = id;
-    }
+    String author;
+
+    @Lob
+    String text;
+
+    @Lob
+    String reply;
+
+    @Min(1)
+    @Max(5)
+    int rating;
+
+    @CreationTimestamp
+    Instant created;
+
+    @UpdateTimestamp
+    Instant updated;
+
+    boolean enabled;
 
     @Override
     public final boolean equals(Object o) {
@@ -49,8 +72,8 @@ public class Brand {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Brand brand = (Brand) o;
-        return getId() != null && Objects.equals(getId(), brand.getId());
+        ProductReview that = (ProductReview) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

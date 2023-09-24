@@ -1,6 +1,6 @@
-package com.ecommerce.engine.repository.entity;
+package com.ecommerce.engine.entity;
 
-import jakarta.persistence.Column;
+import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -12,6 +12,7 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -21,29 +22,25 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = "customer_group_description")
-@IdClass(CustomerGroupDescription.EntityId.class)
+@NoArgsConstructor
+@Table(name = "page_description")
+@IdClass(PageDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerGroupDescription {
-
-    @Id
-    @Column(length = 5)
-    Locale locale;
+public class PageDescription extends DescriptionSuperclass {
 
     @Id
     @ManyToOne
-    CustomerGroup customerGroup;
+    Page page;
 
-    String name;
-
-    @Column(columnDefinition = "text")
-    String description;
+    public PageDescription(MetaDescriptionDto metaDescriptionDto) {
+        super(metaDescriptionDto);
+    }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
         Locale locale;
-        CustomerGroup customerGroup;
+        Page page;
     }
 
     @Override
@@ -57,15 +54,15 @@ public class CustomerGroupDescription {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        CustomerGroupDescription that = (CustomerGroupDescription) o;
-        return getLocale() != null
-                && Objects.equals(getLocale(), that.getLocale())
-                && getCustomerGroup() != null
-                && Objects.equals(getCustomerGroup(), that.getCustomerGroup());
+        PageDescription that = (PageDescription) o;
+        return getPage() != null
+                && Objects.equals(getPage(), that.getPage())
+                && getLocale() != null
+                && Objects.equals(getLocale(), that.getLocale());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(locale, customerGroup);
+        return Objects.hash(getPage(), getLocale());
     }
 }

@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.grid;
 
-import com.ecommerce.engine.repository.entity.DeliveryMethod;
+import com.ecommerce.engine.entity.DeliveryMethod;
 
 public record DeliveryMethodGridDto(long id, String name, boolean enabled) {
 

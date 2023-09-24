@@ -11,6 +11,8 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +21,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.util.StringUtils;
 
 @Getter
 @Setter
@@ -65,6 +68,13 @@ public class Customer {
     Instant updated;
 
     boolean enabled;
+
+    public String getFullName() {
+        String collected =
+                Stream.of(firstName, lastName).filter(Objects::nonNull).collect(Collectors.joining(" "));
+
+        return StringUtils.hasLength(collected) ? collected : null;
+    }
 
     @Override
     public final boolean equals(Object o) {

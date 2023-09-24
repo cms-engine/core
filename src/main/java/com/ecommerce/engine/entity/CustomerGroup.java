@@ -1,5 +1,6 @@
 package com.ecommerce.engine.entity;
 
+import com.ecommerce.engine.dto.request.CustomerGroupRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,8 +12,10 @@ import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +25,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "customer_group")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerGroup {
@@ -33,6 +37,17 @@ public class CustomerGroup {
     @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customerGroup", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<CustomerGroupDescription> descriptions = new HashSet<>();
+
+    public CustomerGroup(CustomerGroupRequestDto requestDto) {
+        descriptions = requestDto.descriptions().stream()
+                .map(CustomerGroupDescription::new)
+                .peek(desc -> desc.setCustomerGroup(this))
+                .collect(Collectors.toSet());
+    }
+
+    public String getLocaleName() {
+        return Localable.getLocaleName(descriptions);
+    }
 
     @Override
     public final boolean equals(Object o) {

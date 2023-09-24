@@ -50,11 +50,11 @@ public class DeliveryMethodService {
     }
 
     private DeliveryMethod findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("category", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("delivery method", id));
     }
 
     public SearchResponse<DeliveryMethodResponseDto> search(UUID id, SearchRequest searchRequest) {
         return searchService.search(
-                id, searchRequest, SearchEntity.BRAND, DeliveryMethod.class, DeliveryMethodResponseDto::new);
+                id, searchRequest, SearchEntity.DELIVERY_METHOD, DeliveryMethod.class, DeliveryMethodResponseDto::new);
     }
 }

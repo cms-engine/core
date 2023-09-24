@@ -50,7 +50,7 @@ public class BrandService {
     }
 
     private Brand findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("category", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("brand", id));
     }
 
     public SearchResponse<BrandResponseDto> search(UUID id, SearchRequest searchRequest) {

@@ -50,11 +50,11 @@ public class PaymentMethodService {
     }
 
     private PaymentMethod findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("category", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("payment method", id));
     }
 
     public SearchResponse<PaymentMethodResponseDto> search(UUID id, SearchRequest searchRequest) {
         return searchService.search(
-                id, searchRequest, SearchEntity.BRAND, PaymentMethod.class, PaymentMethodResponseDto::new);
+                id, searchRequest, SearchEntity.PAYMENT_METHOD, PaymentMethod.class, PaymentMethodResponseDto::new);
     }
 }

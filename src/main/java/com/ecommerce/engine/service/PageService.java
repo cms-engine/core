@@ -55,6 +55,6 @@ public class PageService {
     }
 
     public SearchResponse<PageGridDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(id, searchRequest, SearchEntity.CATEGORY, Page.class, PageGridDto::new);
+        return searchService.search(id, searchRequest, SearchEntity.PAGE, Page.class, PageGridDto::new);
     }
 }

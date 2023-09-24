@@ -2,8 +2,8 @@ package com.ecommerce.engine.controller;
 
 import com.ecommerce.engine.dto.request.BrandRequestDto;
 import com.ecommerce.engine.dto.response.BrandResponseDto;
-import com.ecommerce.engine.model.SearchRequest;
-import com.ecommerce.engine.model.SearchResponse;
+import com.ecommerce.engine.search.SearchRequest;
+import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.BrandService;
 import jakarta.validation.Valid;
 import java.util.Set;

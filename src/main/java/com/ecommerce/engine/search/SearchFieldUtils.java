@@ -1,4 +1,4 @@
-package com.ecommerce.engine.util;
+package com.ecommerce.engine.search;
 
 import static com.ecommerce.engine.enums.FilterType.EQUAL;
 import static com.ecommerce.engine.enums.FilterType.GRATER_THAN;

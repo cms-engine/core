@@ -1,4 +1,4 @@
-package com.ecommerce.engine.model;
+package com.ecommerce.engine.search;
 
 import com.ecommerce.engine.enums.FilterType;
 import java.util.Collection;

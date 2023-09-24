@@ -1,4 +1,4 @@
-package com.ecommerce.engine.model;
+package com.ecommerce.engine.search;
 
 import java.util.List;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package com.ecommerce.engine.model;
+package com.ecommerce.engine.search;
 
 import com.ecommerce.engine.config.exception.ApplicationException;
 import com.ecommerce.engine.config.exception.ErrorCode;

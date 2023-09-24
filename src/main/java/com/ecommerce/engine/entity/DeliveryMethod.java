@@ -7,6 +7,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.HashSet;
@@ -34,6 +36,10 @@ public class DeliveryMethod {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @ManyToOne
+    @JoinColumn
+    Image image;
+
     boolean enabled;
 
     @ToString.Exclude
@@ -41,6 +47,9 @@ public class DeliveryMethod {
     Set<DeliveryMethodDescription> descriptions = new HashSet<>();
 
     public DeliveryMethod(DeliveryMethodRequestDto requestDto) {
+        if (requestDto.imageId() != null) {
+            image = new Image(requestDto.imageId());
+        }
         enabled = requestDto.enabled();
         descriptions = requestDto.descriptions().stream()
                 .map(DeliveryMethodDescription::new)

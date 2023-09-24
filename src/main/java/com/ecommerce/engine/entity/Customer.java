@@ -1,5 +1,9 @@
 package com.ecommerce.engine.entity;
 
+import com.ecommerce.engine.dto.admin.request.CustomerRequestDto;
+import com.ecommerce.engine.dto.store.request.CustomerInfoRequestDto;
+import com.ecommerce.engine.dto.store.request.CustomerRegisterRequestDto;
+import com.ecommerce.engine.util.NullUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,13 +13,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.Instant;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +31,7 @@ import org.springframework.util.StringUtils;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "customer")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Customer {
@@ -59,11 +63,46 @@ public class Customer {
 
     boolean enabled;
 
+    public Customer(CustomerRegisterRequestDto requestDto, String encryptedPassword) {
+        firstName = requestDto.firstName();
+        lastName = requestDto.lastName();
+        middleName = requestDto.middleName();
+        phone = requestDto.phone();
+        newsletter = requestDto.newsletter();
+        email = requestDto.email();
+        password = encryptedPassword;
+        enabled = true;
+    }
+
     public String getFullName() {
         String collected =
                 Stream.of(firstName, lastName).filter(Objects::nonNull).collect(Collectors.joining(" "));
 
         return StringUtils.hasLength(collected) ? collected : null;
+    }
+
+    public Long getCustomerGroupId() {
+        return NullUtils.nullable(customerGroup, CustomerGroup::getId);
+    }
+
+    public void update(CustomerRequestDto requestDto) {
+        if (requestDto.customerGroupId() != null) {
+            customerGroup = new CustomerGroup(requestDto.customerGroupId());
+        }
+        firstName = requestDto.firstName();
+        lastName = requestDto.lastName();
+        middleName = requestDto.middleName();
+        phone = requestDto.phone();
+        newsletter = requestDto.newsletter();
+        enabled = requestDto.enabled();
+    }
+
+    public void update(CustomerInfoRequestDto requestDto) {
+        firstName = requestDto.firstName();
+        lastName = requestDto.lastName();
+        middleName = requestDto.middleName();
+        phone = requestDto.phone();
+        newsletter = requestDto.newsletter();
     }
 
     @Override

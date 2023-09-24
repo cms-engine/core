@@ -9,5 +9,4 @@ public record CustomerRequestDto(
         @Size(max = 255) String middleName,
         @Size(max = 255) String phone,
         boolean newsletter,
-        boolean enabled
-) {}
+        boolean enabled) {}

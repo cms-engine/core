@@ -1,5 +1,6 @@
 package com.ecommerce.engine.controller;
 
+import com.ecommerce.engine.dto.admin.grid.PaymentMethodGridDto;
 import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
 import com.ecommerce.engine.dto.admin.response.PaymentMethodResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
@@ -26,12 +27,12 @@ public class PaymentMethodController {
     private final PaymentMethodService paymentMethodService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<PaymentMethodResponseDto> getGridPageCache(@PathVariable UUID id) {
+    public SearchResponse<PaymentMethodGridDto> getGridPageCache(@PathVariable UUID id) {
         return paymentMethodService.search(id, null);
     }
 
     @PostMapping("/search")
-    public SearchResponse<PaymentMethodResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
+    public SearchResponse<PaymentMethodGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return paymentMethodService.search(null, searchRequest);
     }
 

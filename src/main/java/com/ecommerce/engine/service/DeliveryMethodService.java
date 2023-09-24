@@ -1,5 +1,6 @@
 package com.ecommerce.engine.service;
 
+import com.ecommerce.engine.dto.admin.grid.DeliveryMethodGridDto;
 import com.ecommerce.engine.dto.admin.request.DeliveryMethodRequestDto;
 import com.ecommerce.engine.dto.admin.response.DeliveryMethodResponseDto;
 import com.ecommerce.engine.entity.DeliveryMethod;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class DeliveryMethodService {
 
     private final DeliveryMethodRepository repository;
-    private final SearchService<DeliveryMethod, DeliveryMethodResponseDto> searchService;
+    private final SearchService<DeliveryMethod, DeliveryMethodGridDto> searchService;
 
     public DeliveryMethodResponseDto get(long id) {
         DeliveryMethod deliveryMethod = findById(id);
@@ -53,8 +54,8 @@ public class DeliveryMethodService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("delivery method", id));
     }
 
-    public SearchResponse<DeliveryMethodResponseDto> search(UUID id, SearchRequest searchRequest) {
+    public SearchResponse<DeliveryMethodGridDto> search(UUID id, SearchRequest searchRequest) {
         return searchService.search(
-                id, searchRequest, SearchEntity.DELIVERY_METHOD, DeliveryMethod.class, DeliveryMethodResponseDto::new);
+                id, searchRequest, SearchEntity.DELIVERY_METHOD, DeliveryMethod.class, DeliveryMethodGridDto::new);
     }
 }

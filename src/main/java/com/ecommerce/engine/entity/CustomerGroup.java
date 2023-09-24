@@ -45,6 +45,10 @@ public class CustomerGroup {
                 .collect(Collectors.toSet());
     }
 
+    public CustomerGroup(Long id) {
+        this.id = id;
+    }
+
     public String getLocaleName() {
         return Localable.getLocaleName(descriptions);
     }

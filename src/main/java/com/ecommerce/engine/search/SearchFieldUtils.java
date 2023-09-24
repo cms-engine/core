@@ -12,7 +12,6 @@ import static com.ecommerce.engine.enums.FilterType.NOT_IN;
 import static com.ecommerce.engine.enums.FilterType.NOT_LIKE;
 
 import com.ecommerce.engine.enums.FilterType;
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
@@ -34,5 +33,4 @@ public class SearchFieldUtils {
     public Function<String, Object> toInstantFunction() {
         return value -> Instant.ofEpochMilli(Long.parseLong(value));
     }
-
 }

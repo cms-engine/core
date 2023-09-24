@@ -1,5 +1,6 @@
 package com.ecommerce.engine.controller;
 
+import com.ecommerce.engine.dto.admin.grid.DeliveryMethodGridDto;
 import com.ecommerce.engine.dto.admin.request.DeliveryMethodRequestDto;
 import com.ecommerce.engine.dto.admin.response.DeliveryMethodResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
@@ -26,12 +27,12 @@ public class DeliveryMethodController {
     private final DeliveryMethodService deliveryMethodService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<DeliveryMethodResponseDto> getGridPageCache(@PathVariable UUID id) {
+    public SearchResponse<DeliveryMethodGridDto> getGridPageCache(@PathVariable UUID id) {
         return deliveryMethodService.search(id, null);
     }
 
     @PostMapping("/search")
-    public SearchResponse<DeliveryMethodResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
+    public SearchResponse<DeliveryMethodGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return deliveryMethodService.search(null, searchRequest);
     }
 

@@ -2,6 +2,7 @@ package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine.dto.admin.common.StoreSettingDto;
 import com.ecommerce.engine.util.StoreSettings;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -25,8 +26,10 @@ public class StoreSetting {
     @Id
     Integer id = 1;
 
+    @Column(nullable = false)
     Locale adminLocale = Locale.US;
 
+    @Column(nullable = false)
     Locale storeLocale = Locale.US;
 
     boolean allowAnonymousUsersToReviewProducts;
@@ -37,6 +40,12 @@ public class StoreSetting {
 
     Long customerGroupIdByDefault;
 
+    @Column(nullable = false)
+    String adminPasswordRegex = "^(?=.*\\d)[^\\s]{8,}$";
+
+    @Column(nullable = false)
+    String storePasswordRegex = "^(?=.*\\d)[^\\s]{8,}$";
+
     public void updateSettingsHolder() {
         StoreSettings.storeLocale = adminLocale;
         StoreSettings.adminLocale = storeLocale;
@@ -44,6 +53,8 @@ public class StoreSetting {
         StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
         StoreSettings.useCustomerGroups = useCustomerGroups;
         StoreSettings.customerGroupIdByDefault = customerGroupIdByDefault;
+        StoreSettings.adminPasswordRegex = adminPasswordRegex;
+        StoreSettings.storePasswordRegex = storePasswordRegex;
     }
 
     public void update(StoreSettingDto storeSettingDto) {
@@ -53,6 +64,8 @@ public class StoreSetting {
         allowAnonymousUsersToReviewStore = storeSettingDto.allowAnonymousUsersToReviewStore();
         useCustomerGroups = storeSettingDto.useCustomerGroups();
         customerGroupIdByDefault = storeSettingDto.customerGroupIdByDefault();
+        adminPasswordRegex = storeSettingDto.adminPasswordRegex();
+        storePasswordRegex = storeSettingDto.storePasswordRegex();
     }
 
     @Override

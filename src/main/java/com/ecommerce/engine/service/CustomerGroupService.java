@@ -1,5 +1,6 @@
 package com.ecommerce.engine.service;
 
+import com.ecommerce.engine.dto.admin.grid.CustomerGroupGridDto;
 import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;
 import com.ecommerce.engine.dto.admin.response.CustomerGroupResponseDto;
 import com.ecommerce.engine.entity.CustomerGroup;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class CustomerGroupService {
 
     private final CustomerGroupRepository repository;
-    private final SearchService<CustomerGroup, CustomerGroupResponseDto> searchService;
+    private final SearchService<CustomerGroup, CustomerGroupGridDto> searchService;
 
     public CustomerGroupResponseDto get(long id) {
         CustomerGroup customerGroup = findById(id);
@@ -53,8 +54,8 @@ public class CustomerGroupService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("customer group", id));
     }
 
-    public SearchResponse<CustomerGroupResponseDto> search(UUID id, SearchRequest searchRequest) {
+    public SearchResponse<CustomerGroupGridDto> search(UUID id, SearchRequest searchRequest) {
         return searchService.search(
-                id, searchRequest, SearchEntity.CUSTOMER_GROUP, CustomerGroup.class, CustomerGroupResponseDto::new);
+                id, searchRequest, SearchEntity.CUSTOMER_GROUP, CustomerGroup.class, CustomerGroupGridDto::new);
     }
 }

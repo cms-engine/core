@@ -1,5 +1,6 @@
 package com.ecommerce.engine.service;
 
+import com.ecommerce.engine.dto.admin.grid.PaymentMethodGridDto;
 import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
 import com.ecommerce.engine.dto.admin.response.PaymentMethodResponseDto;
 import com.ecommerce.engine.entity.PaymentMethod;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class PaymentMethodService {
 
     private final PaymentMethodRepository repository;
-    private final SearchService<PaymentMethod, PaymentMethodResponseDto> searchService;
+    private final SearchService<PaymentMethod, PaymentMethodGridDto> searchService;
 
     public PaymentMethodResponseDto get(long id) {
         PaymentMethod paymentMethod = findById(id);
@@ -53,8 +54,8 @@ public class PaymentMethodService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("payment method", id));
     }
 
-    public SearchResponse<PaymentMethodResponseDto> search(UUID id, SearchRequest searchRequest) {
+    public SearchResponse<PaymentMethodGridDto> search(UUID id, SearchRequest searchRequest) {
         return searchService.search(
-                id, searchRequest, SearchEntity.PAYMENT_METHOD, PaymentMethod.class, PaymentMethodResponseDto::new);
+                id, searchRequest, SearchEntity.PAYMENT_METHOD, PaymentMethod.class, PaymentMethodGridDto::new);
     }
 }

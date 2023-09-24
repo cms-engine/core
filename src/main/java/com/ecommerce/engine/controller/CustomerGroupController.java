@@ -1,5 +1,6 @@
 package com.ecommerce.engine.controller;
 
+import com.ecommerce.engine.dto.admin.grid.CustomerGroupGridDto;
 import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;
 import com.ecommerce.engine.dto.admin.response.CustomerGroupResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
@@ -26,12 +27,12 @@ public class CustomerGroupController {
     private final CustomerGroupService customerGroupService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<CustomerGroupResponseDto> getGridPageCache(@PathVariable UUID id) {
+    public SearchResponse<CustomerGroupGridDto> getGridPageCache(@PathVariable UUID id) {
         return customerGroupService.search(id, null);
     }
 
     @PostMapping("/search")
-    public SearchResponse<CustomerGroupResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
+    public SearchResponse<CustomerGroupGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return customerGroupService.search(null, searchRequest);
     }
 

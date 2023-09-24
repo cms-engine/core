@@ -21,10 +21,10 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class SearchFieldUtils {
-    public Collection<FilterType> IN_FILTERS = List.of(NOT_IN, IN);
-    public Collection<FilterType> STRICT_FILTERS = List.of(EQUAL, NOT_EQUAL, IN, NOT_IN);
-    public Collection<FilterType> STRING_FILTERS = List.of(EQUAL, NOT_EQUAL, IN, NOT_IN, LIKE, NOT_LIKE);
-    public Collection<FilterType> NUMBER_FILTERS =
+    public final Collection<FilterType> IN_FILTERS = List.of(NOT_IN, IN);
+    public final Collection<FilterType> STRICT_FILTERS = List.of(EQUAL, NOT_EQUAL, IN, NOT_IN);
+    public final Collection<FilterType> STRING_FILTERS = List.of(EQUAL, NOT_EQUAL, IN, NOT_IN, LIKE, NOT_LIKE);
+    public final Collection<FilterType> NUMBER_FILTERS =
             List.of(EQUAL, NOT_EQUAL, IN, NOT_IN, GRATER_THAN, LESS_THAN, GRATER_THAN_OR_EQUAL, LESS_THAN_OR_EQUAL);
 
     public <T extends Enum<T>> Function<String, Object> toEnumFunction(Class<T> enumClass) {

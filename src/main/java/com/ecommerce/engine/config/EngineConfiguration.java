@@ -22,6 +22,7 @@ public class EngineConfiguration {
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .build();
 
+    @SuppressWarnings("SameReturnValue")
     @Bean
     public ObjectMapper objectMapper() {
         return OBJECT_MAPPER;

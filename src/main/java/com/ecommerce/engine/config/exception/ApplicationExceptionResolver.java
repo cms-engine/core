@@ -1,5 +1,6 @@
 package com.ecommerce.engine.config.exception;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ public class ApplicationExceptionResolver extends ResponseStatusExceptionResolve
 
     @Override
     protected ModelAndView doResolveException(
-            HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+            @Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, Object handler, @Nonnull Exception ex) {
 
         if (ex instanceof ApplicationException applicationException) {
             String exceptionMessage = applicationException.getMessage();

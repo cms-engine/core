@@ -4,6 +4,7 @@ import com.ecommerce.engine.util.TranslationUtils;
 import java.util.Collection;
 import java.util.Locale;
 
+@SuppressWarnings("SpellCheckingInspection")
 public interface Localable {
 
     Locale getLocale();

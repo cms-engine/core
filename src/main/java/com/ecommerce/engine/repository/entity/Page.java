@@ -1,22 +1,34 @@
 package com.ecommerce.engine.repository.entity;
 
+import com.ecommerce.engine.dto.request.PageRequestDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "page")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Page {
@@ -27,7 +39,32 @@ public class Page {
 
     boolean bottom;
     int sortOrder;
-    boolean status;
+
+    @CreationTimestamp
+    Instant created;
+
+    @UpdateTimestamp
+    Instant updated;
+
+    boolean enabled;
+
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "page", orphanRemoval = true, cascade = CascadeType.ALL)
+    Set<PageDescription> descriptions = new HashSet<>();
+
+    public Page(PageRequestDto requestDto) {
+        bottom = requestDto.bottom();
+        sortOrder = requestDto.sortOrder();
+        enabled = requestDto.enabled();
+        descriptions = requestDto.descriptions().stream()
+                .map(PageDescription::new)
+                .peek(desc -> desc.setPage(this))
+                .collect(Collectors.toSet());
+    }
+
+    public String getLocaleTitle() {
+        return Localable.getLocaleTitle(descriptions);
+    }
 
     @Override
     public final boolean equals(Object o) {

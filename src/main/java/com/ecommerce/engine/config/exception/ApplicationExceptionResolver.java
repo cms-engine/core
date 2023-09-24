@@ -13,7 +13,10 @@ public class ApplicationExceptionResolver extends ResponseStatusExceptionResolve
 
     @Override
     protected ModelAndView doResolveException(
-            @Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, Object handler, @Nonnull Exception ex) {
+            @Nonnull HttpServletRequest request,
+            @Nonnull HttpServletResponse response,
+            Object handler,
+            @Nonnull Exception ex) {
 
         if (ex instanceof ApplicationException applicationException) {
             String exceptionMessage = applicationException.getMessage();

@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -39,9 +40,6 @@ public class Customer {
     @JoinColumn
     CustomerGroup customerGroup;
 
-    @Column(length = 5)
-    Locale locale;
-
     String firstName;
     String lastName;
     String middleName;
@@ -52,14 +50,6 @@ public class Customer {
 
     String password;
     boolean newsletter;
-
-    @ManyToOne
-    @JoinColumn
-    DeliveryMethod mainDeliveryMethod;
-
-    @ManyToOne
-    @JoinColumn
-    PaymentMethod mainPaymentMethod;
 
     @CreationTimestamp
     Instant created;

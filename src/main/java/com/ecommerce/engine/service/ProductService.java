@@ -1,8 +1,8 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.dto.grid.ProductGridDto;
-import com.ecommerce.engine.dto.request.ProductRequestDto;
-import com.ecommerce.engine.dto.response.ProductResponseDto;
+import com.ecommerce.engine.dto.admin.grid.ProductGridDto;
+import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
+import com.ecommerce.engine.dto.admin.response.ProductResponseDto;
 import com.ecommerce.engine.entity.Product;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ProductRepository;

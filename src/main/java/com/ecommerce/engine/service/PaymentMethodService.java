@@ -1,7 +1,7 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.dto.request.PaymentMethodRequestDto;
-import com.ecommerce.engine.dto.response.PaymentMethodResponseDto;
+import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
+import com.ecommerce.engine.dto.admin.response.PaymentMethodResponseDto;
 import com.ecommerce.engine.entity.PaymentMethod;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.PaymentMethodRepository;

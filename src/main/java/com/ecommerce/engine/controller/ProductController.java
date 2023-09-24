@@ -1,8 +1,8 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.grid.ProductGridDto;
-import com.ecommerce.engine.dto.request.ProductRequestDto;
-import com.ecommerce.engine.dto.response.ProductResponseDto;
+import com.ecommerce.engine.dto.admin.grid.ProductGridDto;
+import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
+import com.ecommerce.engine.dto.admin.response.ProductResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.ProductService;

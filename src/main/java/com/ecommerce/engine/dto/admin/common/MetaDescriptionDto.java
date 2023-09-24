@@ -1,4 +1,4 @@
-package com.ecommerce.engine.dto.common;
+package com.ecommerce.engine.dto.admin.common;
 
 import com.ecommerce.engine.entity.DescriptionSuperclass;
 import jakarta.validation.constraints.NotBlank;

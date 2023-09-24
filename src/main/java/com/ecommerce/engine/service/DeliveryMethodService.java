@@ -1,7 +1,7 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.dto.request.DeliveryMethodRequestDto;
-import com.ecommerce.engine.dto.response.DeliveryMethodResponseDto;
+import com.ecommerce.engine.dto.admin.request.DeliveryMethodRequestDto;
+import com.ecommerce.engine.dto.admin.response.DeliveryMethodResponseDto;
 import com.ecommerce.engine.entity.DeliveryMethod;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.DeliveryMethodRepository;

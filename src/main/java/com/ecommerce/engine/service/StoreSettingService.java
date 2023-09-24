@@ -1,6 +1,6 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.dto.common.StoreSettingDto;
+import com.ecommerce.engine.dto.admin.common.StoreSettingDto;
 import com.ecommerce.engine.entity.StoreSetting;
 import com.ecommerce.engine.repository.StoreSettingRepository;
 import java.util.Optional;

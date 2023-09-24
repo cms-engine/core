@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.request.PaymentMethodRequestDto;
+import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

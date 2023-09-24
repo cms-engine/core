@@ -1,7 +1,7 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.dto.request.BrandRequestDto;
-import com.ecommerce.engine.dto.response.BrandResponseDto;
+import com.ecommerce.engine.dto.admin.request.BrandRequestDto;
+import com.ecommerce.engine.dto.admin.response.BrandResponseDto;
 import com.ecommerce.engine.entity.Brand;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.BrandRepository;

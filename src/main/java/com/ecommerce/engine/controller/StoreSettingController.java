@@ -1,6 +1,6 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.common.StoreSettingDto;
+import com.ecommerce.engine.dto.admin.common.StoreSettingDto;
 import com.ecommerce.engine.service.StoreSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

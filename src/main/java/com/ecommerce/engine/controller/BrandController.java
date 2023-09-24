@@ -1,7 +1,7 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.request.BrandRequestDto;
-import com.ecommerce.engine.dto.response.BrandResponseDto;
+import com.ecommerce.engine.dto.admin.request.BrandRequestDto;
+import com.ecommerce.engine.dto.admin.response.BrandResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.BrandService;

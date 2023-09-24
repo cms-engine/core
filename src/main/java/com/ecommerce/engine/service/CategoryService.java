@@ -1,8 +1,8 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.dto.grid.CategoryGridDto;
-import com.ecommerce.engine.dto.request.CategoryRequestDto;
-import com.ecommerce.engine.dto.response.CategoryResponseDto;
+import com.ecommerce.engine.dto.admin.grid.CategoryGridDto;
+import com.ecommerce.engine.dto.admin.request.CategoryRequestDto;
+import com.ecommerce.engine.dto.admin.response.CategoryResponseDto;
 import com.ecommerce.engine.entity.Category;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CategoryRepository;

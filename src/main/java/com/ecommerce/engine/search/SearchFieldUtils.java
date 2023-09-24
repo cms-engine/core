@@ -31,15 +31,8 @@ public class SearchFieldUtils {
         return value -> Enum.valueOf(enumClass, value.toUpperCase());
     }
 
-    public Function<String, Object> toBigDecimalFunction() {
-        return BigDecimal::new;
-    }
-
-    public Function<String, Object> toLongFunction() {
-        return Long::parseLong;
-    }
-
     public Function<String, Object> toInstantFunction() {
         return value -> Instant.ofEpochMilli(Long.parseLong(value));
     }
+
 }

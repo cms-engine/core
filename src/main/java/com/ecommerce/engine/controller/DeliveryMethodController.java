@@ -1,7 +1,7 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.request.DeliveryMethodRequestDto;
-import com.ecommerce.engine.dto.response.DeliveryMethodResponseDto;
+import com.ecommerce.engine.dto.admin.request.DeliveryMethodRequestDto;
+import com.ecommerce.engine.dto.admin.response.DeliveryMethodResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.DeliveryMethodService;

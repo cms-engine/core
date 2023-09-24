@@ -1,7 +1,7 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.request.CustomerGroupRequestDto;
-import com.ecommerce.engine.dto.response.CustomerGroupResponseDto;
+import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;
+import com.ecommerce.engine.dto.admin.response.CustomerGroupResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.CustomerGroupService;

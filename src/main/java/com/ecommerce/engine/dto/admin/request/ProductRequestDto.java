@@ -1,6 +1,6 @@
-package com.ecommerce.engine.dto.request;
+package com.ecommerce.engine.dto.admin.request;
 
-import com.ecommerce.engine.dto.common.MetaDescriptionDto;
+import com.ecommerce.engine.dto.admin.common.MetaDescriptionDto;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
 import com.fasterxml.jackson.annotation.JsonSetter;

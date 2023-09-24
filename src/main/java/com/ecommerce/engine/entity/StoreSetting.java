@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.common.StoreSettingDto;
+import com.ecommerce.engine.dto.admin.common.StoreSettingDto;
 import com.ecommerce.engine.util.StoreSettings;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -33,11 +33,17 @@ public class StoreSetting {
 
     boolean allowAnonymousUsersToReviewStore;
 
+    boolean useCustomerGroups;
+
+    Long customerGroupIdByDefault;
+
     public void updateSettingsHolder() {
         StoreSettings.storeLocale = adminLocale;
         StoreSettings.adminLocale = storeLocale;
         StoreSettings.allowAnonymousUsersToReviewProducts = allowAnonymousUsersToReviewProducts;
         StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
+        StoreSettings.useCustomerGroups = useCustomerGroups;
+        StoreSettings.customerGroupIdByDefault = customerGroupIdByDefault;
     }
 
     public void update(StoreSettingDto storeSettingDto) {
@@ -45,6 +51,8 @@ public class StoreSetting {
         storeLocale = storeSettingDto.storeLocale();
         allowAnonymousUsersToReviewProducts = storeSettingDto.allowAnonymousUsersToReviewProducts();
         allowAnonymousUsersToReviewStore = storeSettingDto.allowAnonymousUsersToReviewStore();
+        useCustomerGroups = storeSettingDto.useCustomerGroups();
+        customerGroupIdByDefault = storeSettingDto.customerGroupIdByDefault();
     }
 
     @Override

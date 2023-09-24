@@ -1,8 +1,8 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.grid.PageGridDto;
-import com.ecommerce.engine.dto.request.PageRequestDto;
-import com.ecommerce.engine.dto.response.PageResponseDto;
+import com.ecommerce.engine.dto.admin.grid.PageGridDto;
+import com.ecommerce.engine.dto.admin.request.PageRequestDto;
+import com.ecommerce.engine.dto.admin.response.PageResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.PageService;

@@ -1,6 +1,6 @@
-package com.ecommerce.engine.dto.response;
+package com.ecommerce.engine.dto.admin.response;
 
-import com.ecommerce.engine.dto.common.MetaDescriptionDto;
+import com.ecommerce.engine.dto.admin.common.MetaDescriptionDto;
 import com.ecommerce.engine.entity.Page;
 import java.time.Instant;
 import java.util.Set;

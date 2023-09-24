@@ -1,6 +1,6 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.dto.response.ImageResponseDto;
+import com.ecommerce.engine.dto.admin.response.ImageResponseDto;
 import com.ecommerce.engine.entity.Image;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ImageRepository;

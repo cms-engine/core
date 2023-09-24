@@ -1,4 +1,4 @@
-package com.ecommerce.engine.dto.response;
+package com.ecommerce.engine.dto.admin.response;
 
 import java.util.UUID;
 

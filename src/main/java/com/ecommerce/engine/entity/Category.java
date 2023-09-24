@@ -2,7 +2,7 @@ package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
-import com.ecommerce.engine.dto.request.CategoryRequestDto;
+import com.ecommerce.engine.dto.admin.request.CategoryRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -1,6 +1,6 @@
-package com.ecommerce.engine.dto.response;
+package com.ecommerce.engine.dto.admin.response;
 
-import com.ecommerce.engine.dto.common.NameDescriptionDto;
+import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
 import com.ecommerce.engine.entity.CustomerGroup;
 import java.util.Set;
 import java.util.stream.Collectors;

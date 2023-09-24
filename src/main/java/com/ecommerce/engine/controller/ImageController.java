@@ -1,6 +1,6 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.response.ImageResponseDto;
+import com.ecommerce.engine.dto.admin.response.ImageResponseDto;
 import com.ecommerce.engine.service.ImageService;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Set;

@@ -1,25 +1,22 @@
-package com.ecommerce.engine.dto.response;
+package com.ecommerce.engine.dto.admin.grid;
 
-import com.ecommerce.engine.dto.common.MetaDescriptionDto;
 import com.ecommerce.engine.entity.Product;
-import com.ecommerce.engine.entity.ProductAdditionalImage;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
-public record ProductResponseDto(
+public record ProductGridDto(
         long id,
+        String title,
         Long categoryId,
-        UUID imageId,
+        String categoryTitle,
         String imageSrc,
         String sku,
         String ean,
         String barcode,
         Long brandId,
+        String brandName,
         LengthClass lengthClass,
         BigDecimal length,
         BigDecimal width,
@@ -28,20 +25,20 @@ public record ProductResponseDto(
         BigDecimal weight,
         Instant created,
         Instant updated,
-        boolean enabled,
-        Set<MetaDescriptionDto> descriptions,
-        Set<AdditionalImage> additionalImages) {
+        boolean enabled) {
 
-    public ProductResponseDto(Product product) {
+    public ProductGridDto(Product product) {
         this(
                 product.getId(),
+                product.getLocaleTitle(),
                 product.getCategoryId(),
-                product.getImageId(),
+                product.getCategoryLocaleTitle(),
                 product.getImageSrc(),
                 product.getSku(),
                 product.getEan(),
                 product.getBarcode(),
                 product.getBrandId(),
+                product.getBrandName(),
                 product.getLengthClass(),
                 product.getLength(),
                 product.getWidth(),
@@ -50,14 +47,6 @@ public record ProductResponseDto(
                 product.getWeight(),
                 product.getCreated(),
                 product.getUpdated(),
-                product.isEnabled(),
-                product.getDescriptions().stream().map(MetaDescriptionDto::new).collect(Collectors.toSet()),
-                product.getAdditionalImages().stream().map(AdditionalImage::new).collect(Collectors.toSet()));
-    }
-
-    public record AdditionalImage(UUID id, String src, int sortOrder) {
-        public AdditionalImage(ProductAdditionalImage additionalImage) {
-            this(additionalImage.getImageId(), additionalImage.getImageSrc(), additionalImage.getSortOrder());
-        }
+                product.isEnabled());
     }
 }

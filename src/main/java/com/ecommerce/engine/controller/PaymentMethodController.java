@@ -1,7 +1,7 @@
 package com.ecommerce.engine.controller;
 
-import com.ecommerce.engine.dto.request.PaymentMethodRequestDto;
-import com.ecommerce.engine.dto.response.PaymentMethodResponseDto;
+import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
+import com.ecommerce.engine.dto.admin.response.PaymentMethodResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.PaymentMethodService;

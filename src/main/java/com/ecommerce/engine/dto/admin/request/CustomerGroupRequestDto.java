@@ -1,6 +1,6 @@
-package com.ecommerce.engine.dto.request;
+package com.ecommerce.engine.dto.admin.request;
 
-import com.ecommerce.engine.dto.common.NameDescriptionDto;
+import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

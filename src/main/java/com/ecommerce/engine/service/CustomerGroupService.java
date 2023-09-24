@@ -1,7 +1,7 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.dto.request.CustomerGroupRequestDto;
-import com.ecommerce.engine.dto.response.CustomerGroupResponseDto;
+import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;
+import com.ecommerce.engine.dto.admin.response.CustomerGroupResponseDto;
 import com.ecommerce.engine.entity.CustomerGroup;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CustomerGroupRepository;

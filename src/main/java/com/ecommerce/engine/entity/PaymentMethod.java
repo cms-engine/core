@@ -49,7 +49,7 @@ public class PaymentMethod {
     }
 
     public String getLocaleName() {
-        return Localable.getLocaleTitle(descriptions);
+        return Localable.getLocaleName(descriptions);
     }
 
     @Override

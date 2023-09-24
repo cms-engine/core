@@ -11,7 +11,7 @@ public interface Localable {
 
     String getName();
 
-    static String getLocaleTitle(Collection<? extends Localable> descriptions) {
+    static String getLocaleName(Collection<? extends Localable> descriptions) {
         return descriptions.stream()
                 .filter(Localable::isUserLocale)
                 .findFirst()

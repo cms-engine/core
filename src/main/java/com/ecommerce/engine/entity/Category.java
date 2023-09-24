@@ -84,7 +84,7 @@ public class Category {
     }
 
     public String getLocaleTitle() {
-        return Localable.getLocaleTitle(descriptions);
+        return Localable.getLocaleName(descriptions);
     }
 
     public Long getParentId() {

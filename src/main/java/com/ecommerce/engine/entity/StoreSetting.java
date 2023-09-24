@@ -29,14 +29,22 @@ public class StoreSetting {
 
     Locale storeLocale = Locale.US;
 
+    boolean allowAnonymousUsersToReviewProducts;
+
+    boolean allowAnonymousUsersToReviewStore;
+
     public void updateSettingsHolder() {
         StoreSettings.storeLocale = adminLocale;
         StoreSettings.adminLocale = storeLocale;
+        StoreSettings.allowAnonymousUsersToReviewProducts = allowAnonymousUsersToReviewProducts;
+        StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
     }
 
     public void update(StoreSettingDto storeSettingDto) {
         adminLocale = storeSettingDto.adminLocale();
         storeLocale = storeSettingDto.storeLocale();
+        allowAnonymousUsersToReviewProducts = storeSettingDto.allowAnonymousUsersToReviewProducts();
+        allowAnonymousUsersToReviewStore = storeSettingDto.allowAnonymousUsersToReviewStore();
     }
 
     @Override

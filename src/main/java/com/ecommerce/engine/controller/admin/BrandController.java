@@ -1,10 +1,10 @@
-package com.ecommerce.engine.controller;
+package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.request.BrandRequestDto;
 import com.ecommerce.engine.dto.admin.response.BrandResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.service.BrandService;
+import com.ecommerce.engine.service.admin.BrandService;
 import jakarta.validation.Valid;
 import java.util.Set;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/brands")
+@RequestMapping("/admin/brands")
 @RequiredArgsConstructor
 public class BrandController {
 

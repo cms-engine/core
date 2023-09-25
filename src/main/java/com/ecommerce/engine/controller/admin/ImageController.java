@@ -1,7 +1,7 @@
-package com.ecommerce.engine.controller;
+package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.response.ImageResponseDto;
-import com.ecommerce.engine.service.ImageService;
+import com.ecommerce.engine.service.admin.ImageService;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Set;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/admin/images")
 @RequiredArgsConstructor
 @Validated
 public class ImageController {

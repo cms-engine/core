@@ -1,4 +1,4 @@
-package com.ecommerce.engine.service;
+package com.ecommerce.engine.service.admin;
 
 import com.ecommerce.engine.dto.admin.response.ImageResponseDto;
 import com.ecommerce.engine.entity.Image;

@@ -1,11 +1,11 @@
-package com.ecommerce.engine.controller;
+package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.grid.PaymentMethodGridDto;
 import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
 import com.ecommerce.engine.dto.admin.response.PaymentMethodResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.service.PaymentMethodService;
+import com.ecommerce.engine.service.admin.PaymentMethodService;
 import jakarta.validation.Valid;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/payment-methods")
+@RequestMapping("/admin/payment-methods")
 @RequiredArgsConstructor
 public class PaymentMethodController {
 

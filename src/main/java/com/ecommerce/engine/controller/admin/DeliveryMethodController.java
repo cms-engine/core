@@ -1,11 +1,11 @@
-package com.ecommerce.engine.controller;
+package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.grid.DeliveryMethodGridDto;
 import com.ecommerce.engine.dto.admin.request.DeliveryMethodRequestDto;
 import com.ecommerce.engine.dto.admin.response.DeliveryMethodResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.service.DeliveryMethodService;
+import com.ecommerce.engine.service.admin.DeliveryMethodService;
 import jakarta.validation.Valid;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/delivery-methods")
+@RequestMapping("/admin/delivery-methods")
 @RequiredArgsConstructor
 public class DeliveryMethodController {
 

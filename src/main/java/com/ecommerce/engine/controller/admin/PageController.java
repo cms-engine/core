@@ -1,11 +1,11 @@
-package com.ecommerce.engine.controller;
+package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.grid.PageGridDto;
 import com.ecommerce.engine.dto.admin.request.PageRequestDto;
 import com.ecommerce.engine.dto.admin.response.PageResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.service.PageService;
+import com.ecommerce.engine.service.admin.PageService;
 import jakarta.validation.Valid;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/pages")
+@RequestMapping("/admin/pages")
 @RequiredArgsConstructor
 public class PageController {
 

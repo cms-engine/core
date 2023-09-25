@@ -1,11 +1,11 @@
-package com.ecommerce.engine.controller;
+package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.grid.CustomerGroupGridDto;
 import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;
 import com.ecommerce.engine.dto.admin.response.CustomerGroupResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.service.CustomerGroupService;
+import com.ecommerce.engine.service.admin.CustomerGroupService;
 import jakarta.validation.Valid;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/customer-groups")
+@RequestMapping("/admin/customer-groups")
 @RequiredArgsConstructor
 public class CustomerGroupController {
 

@@ -1,11 +1,11 @@
-package com.ecommerce.engine.controller;
+package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.grid.ProductGridDto;
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
 import com.ecommerce.engine.dto.admin.response.ProductResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.service.ProductService;
+import com.ecommerce.engine.service.admin.ProductService;
 import jakarta.validation.Valid;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/admin/products")
 @RequiredArgsConstructor
 public class ProductController {
 

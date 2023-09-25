@@ -1,4 +1,4 @@
-package com.ecommerce.engine.service;
+package com.ecommerce.engine.service.admin;
 
 import com.ecommerce.engine.dto.admin.grid.CustomerGroupGridDto;
 import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;

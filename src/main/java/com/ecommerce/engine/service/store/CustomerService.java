@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("customerServiceStore")
 @RequiredArgsConstructor
 public class CustomerService {
 

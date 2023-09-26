@@ -1,6 +1,5 @@
 package com.ecommerce.engine.config;
 
-import com.ecommerce.engine.config.exception.ApplicationExceptionResolver;
 import com.ecommerce.engine.config.exception.CustomErrorAttributes;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -26,11 +25,6 @@ public class EngineConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
         return OBJECT_MAPPER;
-    }
-
-    @Bean
-    public ApplicationExceptionResolver customExceptionResolver() {
-        return new ApplicationExceptionResolver();
     }
 
     @Bean

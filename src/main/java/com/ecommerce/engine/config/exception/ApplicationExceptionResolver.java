@@ -4,11 +4,13 @@ import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver;
 
 @Slf4j
+@Component
 public class ApplicationExceptionResolver extends ResponseStatusExceptionResolver {
 
     @Override

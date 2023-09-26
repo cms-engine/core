@@ -4,6 +4,8 @@ import com.ecommerce.engine.dto.admin.response.ImageResponseDto;
 import com.ecommerce.engine.entity.Image;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ImageRepository;
+import com.ecommerce.engine.service.EntityPresenceService;
+import com.ecommerce.engine.validation.EntityType;
 import jakarta.annotation.Nullable;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,14 +19,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class ImageService {
+public class ImageService implements EntityPresenceService<UUID> {
 
-    private final ImageRepository imageRepository;
+    private final ImageRepository repository;
     private final String imageDir;
 
     @SneakyThrows
-    public ImageService(ImageRepository imageRepository, @Value("${engine.image-dir}") String imageDir) {
-        this.imageRepository = imageRepository;
+    public ImageService(ImageRepository repository, @Value("${engine.image-dir}") String imageDir) {
+        this.repository = repository;
         this.imageDir = imageDir;
 
         // Create the directory if it doesn't exist
@@ -35,7 +37,7 @@ public class ImageService {
     }
 
     public ImageResponseDto get(UUID id) {
-        Image image = imageRepository.findById(id).orElseThrow(() -> new NotFoundException("image", id));
+        Image image = repository.findById(id).orElseThrow(() -> new NotFoundException("image", id));
         return new ImageResponseDto(image.getId(), image.getSrc(), image.getName());
     }
 
@@ -45,7 +47,7 @@ public class ImageService {
     }
 
     public ImageResponseDto update(UUID id, MultipartFile imageFile, String name) {
-        String oldPath = imageRepository.findById(id).map(Image::getSrc).orElse(null);
+        String oldPath = repository.findById(id).map(Image::getSrc).orElse(null);
         return saveAndGet(id, imageFile, name, oldPath);
     }
 
@@ -72,16 +74,26 @@ public class ImageService {
 
         // Store the image reference in the database
         Image image = new Image(id, imageDir + "/" + uniqueFileName, name);
-        Image saved = imageRepository.save(image);
+        Image saved = repository.save(image);
 
         return new ImageResponseDto(saved.getId(), saved.getSrc(), saved.getName());
     }
 
     public void delete(UUID id) {
-        imageRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     public void deleteMany(Set<UUID> ids) {
-        imageRepository.deleteAllById(ids);
+        repository.deleteAllById(ids);
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.IMAGE;
+    }
+
+    @Override
+    public boolean exists(UUID id) {
+        return repository.existsById(id);
     }
 }

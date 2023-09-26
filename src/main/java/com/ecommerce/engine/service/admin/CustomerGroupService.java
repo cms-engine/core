@@ -10,6 +10,8 @@ import com.ecommerce.engine.search.SearchEntity;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
+import com.ecommerce.engine.service.EntityPresenceService;
+import com.ecommerce.engine.validation.EntityType;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerGroupService {
+public class CustomerGroupService implements EntityPresenceService<Long> {
 
     private final CustomerGroupRepository repository;
     private final SearchService<CustomerGroup, CustomerGroupGridDto> searchService;
@@ -57,5 +59,15 @@ public class CustomerGroupService {
     public SearchResponse<CustomerGroupGridDto> search(UUID id, SearchRequest searchRequest) {
         return searchService.search(
                 id, searchRequest, SearchEntity.CUSTOMER_GROUP, CustomerGroup.class, CustomerGroupGridDto::new);
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.CUSTOMER_GROUP;
+    }
+
+    @Override
+    public boolean exists(Long id) {
+        return repository.existsById(id);
     }
 }

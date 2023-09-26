@@ -9,6 +9,8 @@ import com.ecommerce.engine.search.SearchEntity;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
+import com.ecommerce.engine.service.EntityPresenceService;
+import com.ecommerce.engine.validation.EntityType;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class BrandService {
+public class BrandService implements EntityPresenceService<Long> {
 
     private final BrandRepository repository;
     private final SearchService<Brand, BrandResponseDto> searchService;
@@ -55,5 +57,15 @@ public class BrandService {
 
     public SearchResponse<BrandResponseDto> search(UUID id, SearchRequest searchRequest) {
         return searchService.search(id, searchRequest, SearchEntity.BRAND, Brand.class, BrandResponseDto::new);
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.BRAND;
+    }
+
+    @Override
+    public boolean exists(Long id) {
+        return repository.existsById(id);
     }
 }

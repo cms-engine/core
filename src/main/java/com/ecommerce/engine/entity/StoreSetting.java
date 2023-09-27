@@ -6,7 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Locale;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,12 +25,6 @@ public class StoreSetting {
     @Id
     Integer id = 1;
 
-    @Column(nullable = false)
-    Locale adminLocale = Locale.US;
-
-    @Column(nullable = false)
-    Locale storeLocale = Locale.US;
-
     boolean allowAnonymousUsersToReviewProducts;
 
     boolean allowAnonymousUsersToReviewStore;
@@ -47,8 +40,6 @@ public class StoreSetting {
     String storePasswordRegex = "^(?=.*\\d)[^\\s]{8,}$";
 
     public void updateSettingsHolder() {
-        StoreSettings.storeLocale = adminLocale;
-        StoreSettings.adminLocale = storeLocale;
         StoreSettings.allowAnonymousUsersToReviewProducts = allowAnonymousUsersToReviewProducts;
         StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
         StoreSettings.useCustomerGroups = useCustomerGroups;
@@ -58,8 +49,6 @@ public class StoreSetting {
     }
 
     public void update(StoreSettingDto storeSettingDto) {
-        adminLocale = storeSettingDto.adminLocale();
-        storeLocale = storeSettingDto.storeLocale();
         allowAnonymousUsersToReviewProducts = storeSettingDto.allowAnonymousUsersToReviewProducts();
         allowAnonymousUsersToReviewStore = storeSettingDto.allowAnonymousUsersToReviewStore();
         useCustomerGroups = storeSettingDto.useCustomerGroups();

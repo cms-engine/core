@@ -1,8 +1,8 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.util.TranslationUtils;
 import java.util.Collection;
 import java.util.Locale;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 @SuppressWarnings("SpellCheckingInspection")
 public interface Localable {
@@ -20,6 +20,6 @@ public interface Localable {
     }
 
     default boolean isUserLocale() {
-        return TranslationUtils.getUserLocale().equals(getLocale());
+        return LocaleContextHolder.getLocale().equals(getLocale());
     }
 }

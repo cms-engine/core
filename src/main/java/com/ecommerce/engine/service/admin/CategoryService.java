@@ -11,6 +11,7 @@ import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
+import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
 import java.util.Set;
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class CategoryService implements EntityPresenceService<Long> {
 
     private final CategoryRepository repository;
     private final SearchService<Category, CategoryGridDto> searchService;
+    private final ForeignKeysChecker foreignKeysChecker;
 
     public CategoryResponseDto get(long id) {
         Category category = findById(id);
@@ -45,6 +47,7 @@ public class CategoryService implements EntityPresenceService<Long> {
     }
 
     public void delete(long id) {
+        foreignKeysChecker.checkUsages(Category.TABLE_NAME, id, "category_description");
         repository.deleteById(id);
     }
 
@@ -53,7 +56,7 @@ public class CategoryService implements EntityPresenceService<Long> {
     }
 
     private Category findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("category", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Category.TABLE_NAME, id));
     }
 
     public SearchResponse<CategoryGridDto> search(UUID id, SearchRequest searchRequest) {

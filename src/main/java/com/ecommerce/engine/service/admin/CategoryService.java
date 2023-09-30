@@ -1,5 +1,7 @@
 package com.ecommerce.engine.service.admin;
 
+import com.ecommerce.engine.config.exception.ApplicationException;
+import com.ecommerce.engine.config.exception.ErrorCode;
 import com.ecommerce.engine.dto.admin.grid.CategoryGridDto;
 import com.ecommerce.engine.dto.admin.request.CategoryRequestDto;
 import com.ecommerce.engine.dto.admin.response.CategoryResponseDto;
@@ -47,8 +49,12 @@ public class CategoryService implements EntityPresenceService<Long> {
     }
 
     public void delete(long id) {
-        foreignKeysChecker.checkUsages(Category.TABLE_NAME, id, "category_description");
-        repository.deleteById(id);
+        var usages = foreignKeysChecker.checkUsages(Category.TABLE_NAME, id, "category_description");
+        if (usages.isEmpty()) {
+            repository.deleteById(id);
+        } else {
+            throw new ApplicationException(ErrorCode.RECORD_HAS_USAGES, usages.toString());
+        }
     }
 
     public void deleteMany(Set<Long> ids) {

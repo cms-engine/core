@@ -1,12 +1,15 @@
 package com.ecommerce.engine.service;
 
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.ApplicationListener;
@@ -55,18 +58,21 @@ public class ForeignKeysChecker implements ApplicationListener<ContextRefreshedE
         });
     }
 
-    public void checkUsages(String tableName, Object recordId, String... excludeUsageTable) {
+    public List<UsageData> checkUsages(String tableName, Object recordId, String... excludeUsageTable) {
         List<TableData> tableDataList = tableDataMap.get(tableName);
         if (CollectionUtils.isEmpty(tableDataList)) {
-            return;
+            return Collections.emptyList();
         }
 
-        tableDataList.forEach(tableData -> checkUsageInTable(tableData, recordId, excludeUsageTable));
+        return tableDataList.stream()
+                .map(tableData -> checkUsageInTable(tableData, recordId, excludeUsageTable))
+                .filter(Objects::nonNull)
+                .toList();
     }
 
-    private void checkUsageInTable(TableData tableData, Object recordId, String... excludeUsageTable) {
+    @Nullable private UsageData checkUsageInTable(TableData tableData, Object recordId, String... excludeUsageTable) {
         if (ArrayUtils.contains(excludeUsageTable, tableData.usageTable)) {
-            return;
+            return null;
         }
 
         String sql = SEARCH_PATTERN.formatted(tableData.usageTable, tableData.columnName);
@@ -74,11 +80,14 @@ public class ForeignKeysChecker implements ApplicationListener<ContextRefreshedE
         try {
             foundIds = jdbcTemplate.queryForList(sql, String.class, recordId);
         } catch (Exception e) {
-            return;
+            return null;
         }
 
-        System.out.println("Record %s of table %s is used in table %s, records: %s"
-                .formatted(recordId, tableData.tableName, tableData.usageTable, foundIds));
+        if (CollectionUtils.isEmpty(foundIds)) {
+            return null;
+        }
+
+        return new UsageData(recordId, tableData.tableName, tableData.usageTable, foundIds);
     }
 
     private static class TableDataRowMapper implements RowMapper<TableData> {
@@ -89,4 +98,13 @@ public class ForeignKeysChecker implements ApplicationListener<ContextRefreshedE
     }
 
     private record TableData(String tableName, String usageTable, String columnName) {}
+
+    private record UsageData(Object recordId, String tableName, String usageTable, List<String> foundIds) {
+
+        @Override
+        public String toString() {
+            return "%s with id %s is used in table %s, records: %s"
+                    .formatted(tableName, recordId, usageTable, foundIds);
+        }
+    }
 }

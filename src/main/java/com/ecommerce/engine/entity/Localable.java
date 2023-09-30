@@ -13,13 +13,9 @@ public interface Localable {
 
     static String getLocaleName(Collection<? extends Localable> descriptions) {
         return descriptions.stream()
-                .filter(Localable::isUserLocale)
+                .filter(localable -> LocaleContextHolder.getLocale().equals(localable.getLocale()))
                 .findFirst()
                 .map(Localable::getName)
                 .orElse(null);
-    }
-
-    default boolean isUserLocale() {
-        return LocaleContextHolder.getLocale().equals(getLocale());
     }
 }

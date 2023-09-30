@@ -37,7 +37,7 @@ public class ImageService implements EntityPresenceService<UUID> {
     }
 
     public ImageResponseDto get(UUID id) {
-        Image image = repository.findById(id).orElseThrow(() -> new NotFoundException("image", id));
+        Image image = repository.findById(id).orElseThrow(() -> new NotFoundException(Image.TABLE_NAME, id));
         return new ImageResponseDto(image.getId(), image.getSrc(), image.getName());
     }
 

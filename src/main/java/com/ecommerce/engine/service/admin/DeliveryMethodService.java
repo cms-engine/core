@@ -51,7 +51,7 @@ public class DeliveryMethodService {
     }
 
     private DeliveryMethod findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("delivery method", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(DeliveryMethod.TABLE_NAME, id));
     }
 
     public SearchResponse<DeliveryMethodGridDto> search(UUID id, SearchRequest searchRequest) {

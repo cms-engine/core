@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.Image.TABLE_NAME;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -20,9 +22,11 @@ import org.hibernate.proxy.HibernateProxy;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "image")
+@Table(name = TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Image {
+
+    public static final String TABLE_NAME = "image";
 
     @Id
     UUID id;

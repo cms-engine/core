@@ -51,7 +51,7 @@ public class PaymentMethodService {
     }
 
     private PaymentMethod findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("payment method", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(PaymentMethod.TABLE_NAME, id));
     }
 
     public SearchResponse<PaymentMethodGridDto> search(UUID id, SearchRequest searchRequest) {

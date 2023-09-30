@@ -1,5 +1,6 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.Product.TABLE_NAME;
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
@@ -41,9 +42,11 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = "product")
+@Table(name = TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
+
+    public static final String TABLE_NAME = "product";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

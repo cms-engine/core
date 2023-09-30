@@ -63,7 +63,7 @@ public class Category {
     boolean enabled;
 
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = Category.TABLE_NAME, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<CategoryDescription> descriptions = new HashSet<>();
 
     public Category(CategoryRequestDto requestDto) {

@@ -53,7 +53,7 @@ public class CustomerGroupService implements EntityPresenceService<Long> {
     }
 
     private CustomerGroup findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("customer group", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(CustomerGroup.TABLE_NAME, id));
     }
 
     public SearchResponse<CustomerGroupGridDto> search(UUID id, SearchRequest searchRequest) {

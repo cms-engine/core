@@ -42,7 +42,7 @@ public class CustomerService {
     }
 
     private Customer findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("customer", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Customer.TABLE_NAME, id));
     }
 
     public SearchResponse<CustomerResponseDto> search(UUID id, SearchRequest searchRequest) {

@@ -52,7 +52,7 @@ public class BrandService implements EntityPresenceService<Long> {
     }
 
     private Brand findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("brand", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Brand.TABLE_NAME, id));
     }
 
     public SearchResponse<BrandResponseDto> search(UUID id, SearchRequest searchRequest) {

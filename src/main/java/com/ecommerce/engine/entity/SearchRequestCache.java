@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.SearchRequestCache.TABLE_NAME;
+
 import com.ecommerce.engine.search.SearchRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,11 +24,13 @@ import org.hibernate.type.SqlTypes;
 @Setter
 @ToString
 @Entity
-@Table(name = "search_request_cache")
+@Table(name = TABLE_NAME)
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SearchRequestCache {
+
+    public static final String TABLE_NAME = "search_request_cache";
 
     @Id
     UUID id;

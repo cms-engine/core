@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.PaymentMethod.TABLE_NAME;
+
 import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -28,9 +30,11 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = "payment_method")
+@Table(name = TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentMethod {
+
+    public static final String TABLE_NAME = "payment_method";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

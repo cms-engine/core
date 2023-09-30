@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.StoreSetting.TABLE_NAME;
+
 import com.ecommerce.engine.dto.admin.common.StoreSettingDto;
 import com.ecommerce.engine.util.StoreSettings;
 import jakarta.persistence.Column;
@@ -18,9 +20,11 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = "store_setting")
+@Table(name = TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StoreSetting {
+
+    public static final String TABLE_NAME = "store_setting";
 
     @Id
     Integer id = 1;

@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.CustomerGroup.TABLE_NAME;
+
 import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -26,9 +28,11 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = "customer_group")
+@Table(name = TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerGroup {
+
+    public static final String TABLE_NAME = "customer_group";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

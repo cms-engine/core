@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.Page.TABLE_NAME;
+
 import com.ecommerce.engine.dto.admin.request.PageRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -29,9 +31,11 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = "page")
+@Table(name = TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Page {
+
+    public static final String TABLE_NAME = "page";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

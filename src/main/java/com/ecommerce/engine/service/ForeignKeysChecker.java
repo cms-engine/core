@@ -1,19 +1,25 @@
 package com.ecommerce.engine.service;
 
+import com.ecommerce.engine.config.exception.ApplicationException;
+import com.ecommerce.engine.config.exception.ErrorCode;
+import com.ecommerce.engine.util.TranslationUtils;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
@@ -58,36 +64,54 @@ public class ForeignKeysChecker implements ApplicationListener<ContextRefreshedE
         });
     }
 
-    public List<UsageData> checkUsages(String tableName, Object recordId, String... excludeUsageTable) {
+    public void checkUsages(String tableName, Object recordId, String... excludeUsageTable) {
         List<TableData> tableDataList = tableDataMap.get(tableName);
         if (CollectionUtils.isEmpty(tableDataList)) {
-            return Collections.emptyList();
+            return;
         }
 
-        return tableDataList.stream()
+        List<UsageData> usages = tableDataList.stream()
                 .map(tableData -> checkUsageInTable(tableData, recordId, excludeUsageTable))
                 .filter(Objects::nonNull)
                 .toList();
+
+        if (!usages.isEmpty()) {
+            String translatedTableName =
+                    StringUtils.capitalize(TranslationUtils.getMessage(TranslationUtils.TABLE_NAME_KEY + tableName));
+            String translatedUsages =
+                    usages.stream().map(Objects::toString).collect(Collectors.joining("; ", "[", "]"));
+
+            throw new ApplicationException(
+                    ErrorCode.RECORD_HAS_USAGES,
+                    TranslationUtils.getMessage(
+                            "exception.foundUsage", translatedTableName, recordId, translatedUsages));
+        }
     }
 
     @Nullable private UsageData checkUsageInTable(TableData tableData, Object recordId, String... excludeUsageTable) {
-        if (ArrayUtils.contains(excludeUsageTable, tableData.usageTable)) {
+        String usageTable = tableData.usageTable;
+
+        if (ArrayUtils.contains(excludeUsageTable, usageTable)) {
             return null;
         }
 
-        String sql = SEARCH_PATTERN.formatted(tableData.usageTable, tableData.columnName);
+        String sql = SEARCH_PATTERN.formatted(usageTable, tableData.columnName);
         List<String> foundIds;
         try {
             foundIds = jdbcTemplate.queryForList(sql, String.class, recordId);
-        } catch (Exception e) {
-            return null;
+        } catch (BadSqlGrammarException e) {
+            throw new ApplicationException(
+                    ErrorCode.BAD_SQL_GRAMMAR,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Cannot find usages for table %s due to it doesn't contain an id column!".formatted(usageTable),
+                    e);
         }
 
         if (CollectionUtils.isEmpty(foundIds)) {
             return null;
         }
 
-        return new UsageData(recordId, tableData.tableName, tableData.usageTable, foundIds);
+        return new UsageData(recordId, tableData.tableName, usageTable, foundIds);
     }
 
     private static class TableDataRowMapper implements RowMapper<TableData> {
@@ -103,8 +127,8 @@ public class ForeignKeysChecker implements ApplicationListener<ContextRefreshedE
 
         @Override
         public String toString() {
-            return "%s with id %s is used in table %s, records: %s"
-                    .formatted(tableName, recordId, usageTable, foundIds);
+            String translatedUsageTable = TranslationUtils.getMessage(TranslationUtils.TABLE_NAME_KEY + usageTable);
+            return TranslationUtils.getMessage("exception.usageInfo", translatedUsageTable, foundIds);
         }
     }
 }

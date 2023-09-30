@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.StoreReview.TABLE_NAME;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,9 +27,11 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = "store_review")
+@Table(name = TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StoreReview {
+
+    public static final String TABLE_NAME = "store_review";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

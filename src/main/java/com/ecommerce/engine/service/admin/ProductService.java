@@ -51,7 +51,7 @@ public class ProductService {
     }
 
     private Product findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("product", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Product.TABLE_NAME, id));
     }
 
     public SearchResponse<ProductGridDto> search(UUID id, SearchRequest searchRequest) {

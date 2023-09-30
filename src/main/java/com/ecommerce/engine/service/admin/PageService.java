@@ -51,7 +51,7 @@ public class PageService {
     }
 
     private Page findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("page", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Page.TABLE_NAME, id));
     }
 
     public SearchResponse<PageGridDto> search(UUID id, SearchRequest searchRequest) {

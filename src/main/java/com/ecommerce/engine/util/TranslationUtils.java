@@ -6,6 +6,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 @UtilityClass
 public class TranslationUtils {
+    public static final String TABLE_NAME_KEY = "tableName.";
     private static final ResourceBundleMessageSource MESSAGE_SOURCE;
 
     static {

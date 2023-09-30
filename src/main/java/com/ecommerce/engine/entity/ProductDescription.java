@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.ProductDescription.TABLE_NAME;
+
 import com.ecommerce.engine.dto.admin.common.MetaDescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -23,10 +25,12 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = "product_description")
+@Table(name = TABLE_NAME)
 @IdClass(ProductDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDescription extends DescriptionSuperclass {
+
+    public static final String TABLE_NAME = "product_description";
 
     @Id
     @ManyToOne

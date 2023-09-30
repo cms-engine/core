@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.entity.Customer.TABLE_NAME;
+
 import com.ecommerce.engine.dto.admin.request.CustomerRequestDto;
 import com.ecommerce.engine.dto.store.request.CustomerInfoRequestDto;
 import com.ecommerce.engine.dto.store.request.CustomerRegisterRequestDto;
@@ -32,9 +34,11 @@ import org.springframework.util.StringUtils;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = "customer")
+@Table(name = TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Customer {
+
+    public static final String TABLE_NAME = "customer";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

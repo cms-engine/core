@@ -17,7 +17,14 @@ public class StoreSettingService {
 
         Optional<StoreSetting> settingOptional = storeSettingRepository.findById(1);
 
-        storeSetting = settingOptional.orElseGet(StoreSetting::new);
+        if (settingOptional.isPresent()) {
+            this.storeSetting = settingOptional.get();
+        } else {
+            StoreSetting storeSetting = new StoreSetting();
+            storeSettingRepository.save(storeSetting);
+            this.storeSetting = storeSetting;
+        }
+
         storeSetting.updateSettingsHolder();
     }
 

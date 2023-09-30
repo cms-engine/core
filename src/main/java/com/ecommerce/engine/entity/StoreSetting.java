@@ -2,6 +2,7 @@ package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.entity.StoreSetting.TABLE_NAME;
 
+import com.ecommerce.engine.config.EngineConfiguration;
 import com.ecommerce.engine.dto.admin.common.StoreSettingDto;
 import com.ecommerce.engine.util.StoreSettings;
 import jakarta.persistence.Column;
@@ -29,6 +30,8 @@ public class StoreSetting {
     @Id
     Integer id = 1;
 
+    String version = EngineConfiguration.APP_VERSION;
+
     boolean allowAnonymousUsersToReviewProducts;
 
     boolean allowAnonymousUsersToReviewStore;
@@ -44,6 +47,7 @@ public class StoreSetting {
     String storePasswordRegex = "^(?=.*\\d)[^\\s]{8,}$";
 
     public void updateSettingsHolder() {
+        StoreSettings.version = version;
         StoreSettings.allowAnonymousUsersToReviewProducts = allowAnonymousUsersToReviewProducts;
         StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
         StoreSettings.useCustomerGroups = useCustomerGroups;

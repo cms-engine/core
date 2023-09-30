@@ -2,6 +2,7 @@ package com.ecommerce.engine.util;
 
 public final class StoreSettings {
 
+    public static String version;
     public static boolean allowAnonymousUsersToReviewProducts;
     public static boolean allowAnonymousUsersToReviewStore;
     public static boolean useCustomerGroups;

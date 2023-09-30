@@ -1,5 +1,6 @@
 package com.ecommerce.engine.util;
 
+import java.util.Locale;
 import lombok.experimental.UtilityClass;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -13,6 +14,7 @@ public class TranslationUtils {
         MESSAGE_SOURCE = new ResourceBundleMessageSource();
         MESSAGE_SOURCE.setBasenames("translation/messages");
         MESSAGE_SOURCE.setDefaultEncoding("UTF-8");
+        MESSAGE_SOURCE.setDefaultLocale(Locale.ENGLISH);
     }
 
     public String getMessage(String key, Object... args) {

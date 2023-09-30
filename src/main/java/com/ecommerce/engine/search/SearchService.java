@@ -168,7 +168,7 @@ public class SearchService<E, D> {
     private SearchRequest restoreSearchRequest(UUID id) {
         SearchRequestCache searchRequestCache = searchRequestCacheRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("search request", id));
+                .orElseThrow(() -> new NotFoundException(SearchRequestCache.TABLE_NAME, id));
         return searchRequestCache.getSearchRequest();
     }
 

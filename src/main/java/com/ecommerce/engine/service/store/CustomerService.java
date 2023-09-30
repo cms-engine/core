@@ -68,7 +68,7 @@ public class CustomerService {
     }
 
     private Customer findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("customer", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Customer.TABLE_NAME, id));
     }
 
     private void checkEmailForUniqueness(String email) {

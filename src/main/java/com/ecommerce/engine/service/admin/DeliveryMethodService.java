@@ -10,6 +10,7 @@ import com.ecommerce.engine.search.SearchEntity;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
+import com.ecommerce.engine.service.ForeignKeysChecker;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class DeliveryMethodService {
 
     private final DeliveryMethodRepository repository;
     private final SearchService<DeliveryMethod, DeliveryMethodGridDto> searchService;
+    private final ForeignKeysChecker foreignKeysChecker;
 
     public DeliveryMethodResponseDto get(long id) {
         DeliveryMethod deliveryMethod = findById(id);
@@ -43,10 +45,12 @@ public class DeliveryMethodService {
     }
 
     public void delete(long id) {
+        foreignKeysChecker.checkUsages(DeliveryMethod.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     public void deleteMany(Set<Long> ids) {
+        ids.forEach(id -> foreignKeysChecker.checkUsages(DeliveryMethod.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 

@@ -52,6 +52,7 @@ public class CategoryService implements EntityPresenceService<Long> {
     }
 
     public void deleteMany(Set<Long> ids) {
+        ids.forEach(id -> foreignKeysChecker.checkUsages(Category.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 

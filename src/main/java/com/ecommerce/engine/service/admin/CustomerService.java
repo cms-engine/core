@@ -9,6 +9,7 @@ import com.ecommerce.engine.search.SearchEntity;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
+import com.ecommerce.engine.service.ForeignKeysChecker;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class CustomerService {
 
     private final CustomerRepository repository;
     private final SearchService<Customer, CustomerResponseDto> searchService;
+    private final ForeignKeysChecker foreignKeysChecker;
 
     public CustomerResponseDto get(long id) {
         Customer customer = findById(id);
@@ -34,10 +36,12 @@ public class CustomerService {
     }
 
     public void delete(long id) {
+        foreignKeysChecker.checkUsages(Customer.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     public void deleteMany(Set<Long> ids) {
+        ids.forEach(id -> foreignKeysChecker.checkUsages(Customer.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 

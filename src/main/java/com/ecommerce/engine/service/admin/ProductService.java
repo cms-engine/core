@@ -10,6 +10,7 @@ import com.ecommerce.engine.search.SearchEntity;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
+import com.ecommerce.engine.service.ForeignKeysChecker;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class ProductService {
 
     private final ProductRepository repository;
     private final SearchService<Product, ProductGridDto> searchService;
+    private final ForeignKeysChecker foreignKeysChecker;
 
     public ProductResponseDto get(long id) {
         Product category = findById(id);
@@ -43,10 +45,12 @@ public class ProductService {
     }
 
     public void delete(long id) {
+        foreignKeysChecker.checkUsages(Product.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     public void deleteMany(Set<Long> ids) {
+        ids.forEach(id -> foreignKeysChecker.checkUsages(Product.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 

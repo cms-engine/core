@@ -16,8 +16,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -129,16 +127,7 @@ public class ForeignKeysChecker implements ApplicationListener<ContextRefreshedE
         }
 
         String sql = SEARCH_PATTERN.formatted(usageTable, tableData.columnName);
-        List<String> foundIds;
-        try {
-            foundIds = jdbcTemplate.queryForList(sql, String.class, recordId);
-        } catch (BadSqlGrammarException e) {
-            throw new ApplicationException(
-                    ErrorCode.BAD_SQL_GRAMMAR,
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Cannot find usages for table %s due to it doesn't contain an id column!".formatted(usageTable),
-                    e);
-        }
+        List<String> foundIds = jdbcTemplate.queryForList(sql, String.class, recordId);
 
         if (CollectionUtils.isEmpty(foundIds)) {
             return null;

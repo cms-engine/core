@@ -11,6 +11,7 @@ import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
+import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
 import java.util.Set;
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class CustomerGroupService implements EntityPresenceService<Long> {
 
     private final CustomerGroupRepository repository;
     private final SearchService<CustomerGroup, CustomerGroupGridDto> searchService;
+    private final ForeignKeysChecker foreignKeysChecker;
 
     public CustomerGroupResponseDto get(long id) {
         CustomerGroup customerGroup = findById(id);
@@ -45,10 +47,12 @@ public class CustomerGroupService implements EntityPresenceService<Long> {
     }
 
     public void delete(long id) {
+        foreignKeysChecker.checkUsages(CustomerGroup.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     public void deleteMany(Set<Long> ids) {
+        ids.forEach(id -> foreignKeysChecker.checkUsages(CustomerGroup.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 

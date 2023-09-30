@@ -10,6 +10,7 @@ import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
+import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
 import java.util.Set;
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class BrandService implements EntityPresenceService<Long> {
 
     private final BrandRepository repository;
     private final SearchService<Brand, BrandResponseDto> searchService;
+    private final ForeignKeysChecker foreignKeysChecker;
 
     public BrandResponseDto get(long id) {
         Brand brand = findById(id);
@@ -44,10 +46,12 @@ public class BrandService implements EntityPresenceService<Long> {
     }
 
     public void delete(long id) {
+        foreignKeysChecker.checkUsages(Brand.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     public void deleteMany(Set<Long> ids) {
+        ids.forEach(id -> foreignKeysChecker.checkUsages(Brand.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 

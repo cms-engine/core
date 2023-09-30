@@ -1,10 +1,12 @@
 package com.ecommerce.engine.service.admin;
 
+import com.ecommerce.engine.config.EngineProperties;
 import com.ecommerce.engine.dto.admin.response.ImageResponseDto;
 import com.ecommerce.engine.entity.Image;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ImageRepository;
 import com.ecommerce.engine.service.EntityPresenceService;
+import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
 import jakarta.annotation.Nullable;
 import java.nio.file.Files;
@@ -13,7 +15,6 @@ import java.nio.file.Paths;
 import java.util.Set;
 import java.util.UUID;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,12 +23,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageService implements EntityPresenceService<UUID> {
 
     private final ImageRepository repository;
+    private final ForeignKeysChecker foreignKeysChecker;
     private final String imageDir;
 
     @SneakyThrows
-    public ImageService(ImageRepository repository, @Value("${engine.image-dir}") String imageDir) {
+    public ImageService(
+            ImageRepository repository, ForeignKeysChecker foreignKeysChecker, EngineProperties engineProperties) {
         this.repository = repository;
-        this.imageDir = imageDir;
+        this.imageDir = engineProperties.getImageDir();
+        this.foreignKeysChecker = foreignKeysChecker;
 
         // Create the directory if it doesn't exist
         Path uploadPath = Paths.get(imageDir);
@@ -80,10 +84,12 @@ public class ImageService implements EntityPresenceService<UUID> {
     }
 
     public void delete(UUID id) {
+        foreignKeysChecker.checkUsages(Image.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     public void deleteMany(Set<UUID> ids) {
+        ids.forEach(id -> foreignKeysChecker.checkUsages(Image.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 

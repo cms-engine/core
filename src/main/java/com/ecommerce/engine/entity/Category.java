@@ -86,7 +86,7 @@ public class Category {
     }
 
     public String getLocaleTitle() {
-        return Localable.getAdminLocaleName(descriptions);
+        return Localable.getStoreDefaultLocaleName(descriptions);
     }
 
     public Long getParentId() {

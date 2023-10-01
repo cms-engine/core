@@ -62,7 +62,7 @@ public class PaymentMethod {
     }
 
     public String getLocaleName() {
-        return Localable.getAdminLocaleName(descriptions);
+        return Localable.getStoreDefaultLocaleName(descriptions);
     }
 
     @Override

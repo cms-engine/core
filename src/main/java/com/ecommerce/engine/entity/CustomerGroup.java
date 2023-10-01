@@ -54,7 +54,7 @@ public class CustomerGroup {
     }
 
     public String getLocaleName() {
-        return Localable.getAdminLocaleName(descriptions);
+        return Localable.getStoreDefaultLocaleName(descriptions);
     }
 
     @Override

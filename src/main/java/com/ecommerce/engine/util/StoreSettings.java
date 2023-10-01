@@ -1,8 +1,13 @@
 package com.ecommerce.engine.util;
 
+import java.util.List;
+import java.util.Locale;
+
 public final class StoreSettings {
 
     public static String version;
+    public static List<Locale> storeLocales;
+    public static Locale defaultStoreLocale;
     public static boolean allowAnonymousUsersToReviewProducts;
     public static boolean allowAnonymousUsersToReviewStore;
     public static boolean useCustomerGroups;

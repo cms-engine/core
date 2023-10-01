@@ -67,7 +67,7 @@ public class Page {
     }
 
     public String getLocaleTitle() {
-        return Localable.getLocaleName(descriptions);
+        return Localable.getAdminLocaleName(descriptions);
     }
 
     @Override

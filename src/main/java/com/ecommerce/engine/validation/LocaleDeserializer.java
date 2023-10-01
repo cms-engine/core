@@ -13,7 +13,7 @@ import org.apache.commons.lang3.LocaleUtils;
 
 public class LocaleDeserializer extends JsonDeserializer<Locale> {
 
-    public static final Pattern LOCALE_PATTERN = Pattern.compile("[a-z]{2}_[A-Z]{2}");
+    public static final Pattern LOCALE_PATTERN = Pattern.compile("[a-z]{2}[_-][A-Z]{2}");
 
     @Override
     public Locale deserialize(JsonParser jp, DeserializationContext context) throws IOException {
@@ -22,7 +22,7 @@ public class LocaleDeserializer extends JsonDeserializer<Locale> {
         String nodeText = node.asText();
 
         if (LOCALE_PATTERN.matcher(nodeText).matches()) {
-            return LocaleUtils.toLocale(nodeText);
+            return LocaleUtils.toLocale(nodeText.replace("-", "_"));
         } else {
             throw new InvalidFormatException(
                     jp, "Locale doesn't match the pattern %s".formatted(LOCALE_PATTERN), nodeText, Locale.class);

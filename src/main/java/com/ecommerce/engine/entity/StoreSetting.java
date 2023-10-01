@@ -9,12 +9,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.LocaleUtils;
 import org.hibernate.proxy.HibernateProxy;
 
 @Getter
@@ -32,6 +37,10 @@ public class StoreSetting {
 
     String version = EngineConfiguration.APP_VERSION;
 
+    String storeLocales = "en_US";
+
+    Locale defaultStoreLocale = Locale.US;
+
     boolean allowAnonymousUsersToReviewProducts;
 
     boolean allowAnonymousUsersToReviewStore;
@@ -48,6 +57,8 @@ public class StoreSetting {
 
     public void updateSettingsHolder() {
         StoreSettings.version = version;
+        StoreSettings.storeLocales = getStoreLocales();
+        StoreSettings.defaultStoreLocale = defaultStoreLocale;
         StoreSettings.allowAnonymousUsersToReviewProducts = allowAnonymousUsersToReviewProducts;
         StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
         StoreSettings.useCustomerGroups = useCustomerGroups;
@@ -57,6 +68,9 @@ public class StoreSetting {
     }
 
     public void update(StoreSettingDto storeSettingDto) {
+        storeLocales =
+                storeSettingDto.storeLocales().stream().map(Object::toString).collect(Collectors.joining(","));
+        defaultStoreLocale = storeSettingDto.defaultStoreLocale();
         allowAnonymousUsersToReviewProducts = storeSettingDto.allowAnonymousUsersToReviewProducts();
         allowAnonymousUsersToReviewStore = storeSettingDto.allowAnonymousUsersToReviewStore();
         useCustomerGroups = storeSettingDto.useCustomerGroups();
@@ -88,5 +102,10 @@ public class StoreSetting {
                         .getPersistentClass()
                         .hashCode()
                 : getClass().hashCode();
+    }
+
+    public List<Locale> getStoreLocales() {
+        String[] localesArray = storeLocales.split(",");
+        return Arrays.stream(localesArray).map(LocaleUtils::toLocale).toList();
     }
 }

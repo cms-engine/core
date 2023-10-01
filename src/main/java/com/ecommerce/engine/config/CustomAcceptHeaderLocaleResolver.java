@@ -1,41 +1,54 @@
 package com.ecommerce.engine.config;
 
+import com.ecommerce.engine.util.StoreSettings;
 import com.ecommerce.engine.validation.LocaleDeserializer;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Locale;
 import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 public class CustomAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver {
 
-    private final Locale defaultLocale = Locale.ENGLISH;
+    public static final List<Locale> SUPPORTED_ADMIN_LOCALES = List.of(Locale.ENGLISH, new Locale("uk"));
 
     @Nonnull
     @Override
     public Locale resolveLocale(@Nonnull HttpServletRequest request) {
-        Locale requestLocale = request.getLocale();
-        if (requestLocale.getLanguage().isEmpty()) {
-            requestLocale = defaultLocale;
-        }
         String languageHeader = request.getHeader("Accept-Language");
+        Locale requestLocale;
 
-        if (languageHeader == null) {
-            return requestLocale;
-        }
-
-        if (languageHeader.length() >= 5) {
+        // Ability to accept locales written with underscore
+        if (languageHeader != null && languageHeader.length() >= 5) {
             String substring = languageHeader.substring(0, 5);
-            return LocaleDeserializer.LOCALE_PATTERN.matcher(substring).matches()
-                    ? LocaleUtils.toLocale(substring)
-                    : requestLocale;
+            if (LocaleDeserializer.LOCALE_PATTERN.matcher(substring).matches()) {
+                requestLocale = LocaleUtils.toLocale(substring.replace("-", "_"));
+            } else {
+                requestLocale = request.getLocale();
+            }
         } else {
-            return requestLocale;
+            requestLocale = request.getLocale();
         }
+
+        return isAdminController(request) ? resolveAdminLocale(requestLocale) : resolveStoreLocale(requestLocale);
     }
 
-    @Override
-    protected Locale getDefaultLocale() {
-        return defaultLocale;
+    private Locale resolveAdminLocale(Locale requestLocale) {
+        return SUPPORTED_ADMIN_LOCALES.stream()
+                .filter(supportedLocale -> supportedLocale.getLanguage().equals(requestLocale.getLanguage()))
+                .findFirst()
+                .orElse(Locale.ENGLISH);
+    }
+
+    private static Locale resolveStoreLocale(Locale requestLocale) {
+        return StoreSettings.storeLocales.stream()
+                .filter(supportedLocale -> supportedLocale.equals(requestLocale))
+                .findFirst()
+                .orElse(StoreSettings.defaultStoreLocale);
+    }
+
+    private boolean isAdminController(HttpServletRequest request) {
+        return true;
     }
 }

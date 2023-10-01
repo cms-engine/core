@@ -149,7 +149,7 @@ public class Product {
     }
 
     public String getLocaleTitle() {
-        return Localable.getLocaleName(descriptions);
+        return Localable.getAdminLocaleName(descriptions);
     }
 
     public Long getCategoryId() {

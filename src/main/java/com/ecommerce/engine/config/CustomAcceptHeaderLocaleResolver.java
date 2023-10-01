@@ -49,6 +49,6 @@ public class CustomAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver
     }
 
     private boolean isAdminController(HttpServletRequest request) {
-        return true;
+        return request.getRequestURI().matches("/admin.*");
     }
 }

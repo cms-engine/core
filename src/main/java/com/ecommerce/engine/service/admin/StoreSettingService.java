@@ -12,6 +12,7 @@ public class StoreSettingService {
     private final StoreSettingRepository storeSettingRepository;
     private final StoreSetting storeSetting;
 
+    // TODO Prepare new settings via liquibase
     public StoreSettingService(StoreSettingRepository storeSettingRepository) {
         this.storeSettingRepository = storeSettingRepository;
 

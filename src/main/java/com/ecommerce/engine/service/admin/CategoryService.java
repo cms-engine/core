@@ -38,10 +38,11 @@ public class CategoryService implements EntityPresenceService<Long> {
     }
 
     public CategoryResponseDto update(long id, CategoryRequestDto requestDto) {
-        findById(id);
+        Category existing = findById(id);
 
         Category category = new Category(requestDto);
         category.setId(id);
+        category.getDescriptions().addAll(existing.getDescriptions());
         Category saved = repository.save(category);
         return new CategoryResponseDto(saved);
     }

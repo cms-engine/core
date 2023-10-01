@@ -36,10 +36,11 @@ public class PaymentMethodService {
     }
 
     public PaymentMethodResponseDto update(long id, PaymentMethodRequestDto requestDto) {
-        findById(id);
+        PaymentMethod existing = findById(id);
 
         PaymentMethod paymentMethod = new PaymentMethod(requestDto);
         paymentMethod.setId(id);
+        paymentMethod.getDescriptions().addAll(existing.getDescriptions());
         PaymentMethod saved = repository.save(paymentMethod);
         return new PaymentMethodResponseDto(saved);
     }

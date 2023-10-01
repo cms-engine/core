@@ -36,10 +36,11 @@ public class DeliveryMethodService {
     }
 
     public DeliveryMethodResponseDto update(long id, DeliveryMethodRequestDto requestDto) {
-        findById(id);
+        DeliveryMethod existing = findById(id);
 
         DeliveryMethod deliveryMethod = new DeliveryMethod(requestDto);
         deliveryMethod.setId(id);
+        deliveryMethod.getDescriptions().addAll(existing.getDescriptions());
         DeliveryMethod saved = repository.save(deliveryMethod);
         return new DeliveryMethodResponseDto(saved);
     }

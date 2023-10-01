@@ -36,10 +36,11 @@ public class PageService {
     }
 
     public PageResponseDto update(long id, PageRequestDto requestDto) {
-        findById(id);
+        Page existing = findById(id);
 
         Page page = new Page(requestDto);
         page.setId(id);
+        page.getDescriptions().addAll(existing.getDescriptions());
         Page saved = repository.save(page);
         return new PageResponseDto(saved);
     }

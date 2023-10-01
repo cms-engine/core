@@ -3,7 +3,6 @@ package com.ecommerce.engine.dto.admin.response;
 import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
 import com.ecommerce.engine.entity.DeliveryMethod;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public record DeliveryMethodResponseDto(long id, boolean enabled, Set<NameDescriptionDto> descriptions) {
 
@@ -11,8 +10,6 @@ public record DeliveryMethodResponseDto(long id, boolean enabled, Set<NameDescri
         this(
                 deliveryMethod.getId(),
                 deliveryMethod.isEnabled(),
-                deliveryMethod.getDescriptions().stream()
-                        .map(NameDescriptionDto::new)
-                        .collect(Collectors.toSet()));
+                NameDescriptionDto.createNameDescriptionDtoSet(deliveryMethod.getDescriptions()));
     }
 }

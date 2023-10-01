@@ -5,7 +5,6 @@ import com.ecommerce.engine.entity.Category;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public record CategoryResponseDto(
         long id,
@@ -27,6 +26,6 @@ public record CategoryResponseDto(
                 category.getCreated(),
                 category.getUpdated(),
                 category.isEnabled(),
-                category.getDescriptions().stream().map(MetaDescriptionDto::new).collect(Collectors.toSet()));
+                MetaDescriptionDto.createMetaDescriptionDtoSet(category.getDescriptions()));
     }
 }

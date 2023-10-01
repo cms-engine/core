@@ -51,7 +51,7 @@ public record ProductResponseDto(
                 product.getCreated(),
                 product.getUpdated(),
                 product.isEnabled(),
-                product.getDescriptions().stream().map(MetaDescriptionDto::new).collect(Collectors.toSet()),
+                MetaDescriptionDto.createMetaDescriptionDtoSet(product.getDescriptions()),
                 product.getAdditionalImages().stream().map(AdditionalImage::new).collect(Collectors.toSet()));
     }
 

@@ -4,7 +4,6 @@ import com.ecommerce.engine.dto.admin.common.MetaDescriptionDto;
 import com.ecommerce.engine.entity.Page;
 import java.time.Instant;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public record PageResponseDto(
         long id,
@@ -22,6 +21,6 @@ public record PageResponseDto(
                 page.getCreated(),
                 page.getUpdated(),
                 page.isEnabled(),
-                page.getDescriptions().stream().map(MetaDescriptionDto::new).collect(Collectors.toSet()));
+                MetaDescriptionDto.createMetaDescriptionDtoSet(page.getDescriptions()));
     }
 }

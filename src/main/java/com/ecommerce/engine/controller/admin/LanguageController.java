@@ -59,4 +59,9 @@ public class LanguageController {
     public void deleteMany(@RequestBody Set<Integer> ids) {
         languageService.deleteMany(ids);
     }
+
+    @PutMapping("/{id}/make-default")
+    public LanguageResponseDto update(@PathVariable int id) {
+        return languageService.makeDefault(id);
+    }
 }

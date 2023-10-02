@@ -44,7 +44,7 @@ public class Language {
     String subFolder;
 
     @Column(unique = true, length = 5)
-    String suffixUrl;
+    String urlSuffix;
 
     boolean defaultLang;
 
@@ -58,8 +58,7 @@ public class Language {
         name = requestDto.name();
         hreflang = requestDto.hreflang();
         subFolder = requestDto.subFolder();
-        suffixUrl = requestDto.suffixUrl();
-        defaultLang = requestDto.defaultLang();
+        urlSuffix = requestDto.urlSuffix();
         enabled = requestDto.enabled();
     }
 

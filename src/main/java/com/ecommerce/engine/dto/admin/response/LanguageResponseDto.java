@@ -17,7 +17,7 @@ public record LanguageResponseDto(
                 language.getName(),
                 language.getHreflang().toString().replace("_", "-"),
                 language.getSubFolder(),
-                language.getSuffixUrl(),
+                language.getUrlSuffix(),
                 language.isDefaultLang(),
                 language.isEnabled());
     }

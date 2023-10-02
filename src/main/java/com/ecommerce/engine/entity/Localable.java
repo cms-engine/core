@@ -13,8 +13,7 @@ public interface Localable {
 
     static String getStoreDefaultLocaleName(Collection<? extends Localable> descriptions) {
         return descriptions.stream()
-                .filter(localable -> StoreSettings.defaultStoreLanguage.equals(
-                        localable.getLanguage().getHreflang()))
+                .filter(localable -> StoreSettings.defaultStoreLanguage.equals(localable.getLanguage()))
                 .findFirst()
                 .map(Localable::getName)
                 .orElse(null);

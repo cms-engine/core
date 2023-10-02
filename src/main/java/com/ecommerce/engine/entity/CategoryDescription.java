@@ -9,7 +9,6 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -43,7 +42,7 @@ public class CategoryDescription extends DescriptionSuperclass {
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Locale locale;
+        Language language;
         Category category;
     }
 
@@ -61,12 +60,12 @@ public class CategoryDescription extends DescriptionSuperclass {
         CategoryDescription that = (CategoryDescription) o;
         return getCategory() != null
                 && Objects.equals(getCategory(), that.getCategory())
-                && getLocale() != null
-                && Objects.equals(getLocale(), that.getLocale());
+                && getLanguage() != null
+                && Objects.equals(getLanguage(), that.getLanguage());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getCategory(), getLocale());
+        return Objects.hash(getCategory(), getLanguage());
     }
 }

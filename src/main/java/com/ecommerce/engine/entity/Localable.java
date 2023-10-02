@@ -2,19 +2,19 @@ package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine.util.StoreSettings;
 import java.util.Collection;
-import java.util.Locale;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 @SuppressWarnings("SpellCheckingInspection")
 public interface Localable {
 
-    Locale getLocale();
+    Language getLanguage();
 
     String getName();
 
     static String getStoreDefaultLocaleName(Collection<? extends Localable> descriptions) {
         return descriptions.stream()
-                .filter(localable -> StoreSettings.defaultStoreLocale.equals(localable.getLocale()))
+                .filter(localable -> StoreSettings.defaultStoreLanguage.equals(
+                        localable.getLanguage().getHreflang()))
                 .findFirst()
                 .map(Localable::getName)
                 .orElse(null);
@@ -22,7 +22,8 @@ public interface Localable {
 
     static String getRequestBasedLocaleName(Collection<? extends Localable> descriptions) {
         return descriptions.stream()
-                .filter(localable -> LocaleContextHolder.getLocale().equals(localable.getLocale()))
+                .filter(localable -> LocaleContextHolder.getLocale()
+                        .equals(localable.getLanguage().getHreflang()))
                 .findFirst()
                 .map(Localable::getName)
                 .orElse(null);

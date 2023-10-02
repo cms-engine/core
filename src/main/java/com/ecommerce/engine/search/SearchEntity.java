@@ -14,7 +14,8 @@ public enum SearchEntity {
     PAYMENT_METHOD(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, Long::parseLong))),
     PAGE(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, Long::parseLong))),
     CUSTOMER_GROUP(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, Long::parseLong))),
-    CUSTOMER(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, Long::parseLong)));
+    CUSTOMER(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, Long::parseLong))),
+    LANGUAGE(Map.of("id", new SearchField("id", SearchFieldUtils.NUMBER_FILTERS, Integer::parseInt)));
 
     private final Map<String, SearchField> searchFields;
 }

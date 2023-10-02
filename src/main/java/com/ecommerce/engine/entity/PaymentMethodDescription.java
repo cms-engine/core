@@ -10,7 +10,6 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -34,8 +33,8 @@ public class PaymentMethodDescription implements Localable {
     public static final String TABLE_NAME = "payment_method_description";
 
     @Id
-    @Column(length = 5)
-    Locale locale;
+    @ManyToOne
+    Language language;
 
     @Id
     @ManyToOne
@@ -45,14 +44,14 @@ public class PaymentMethodDescription implements Localable {
     String name;
 
     public PaymentMethodDescription(NameDescriptionDto descriptionDto) {
-        locale = descriptionDto.locale();
+        language = new Language(descriptionDto.languageId());
         name = descriptionDto.name();
     }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Locale locale;
+        Language language;
         PaymentMethod paymentMethod;
     }
 
@@ -68,14 +67,14 @@ public class PaymentMethodDescription implements Localable {
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         PaymentMethodDescription that = (PaymentMethodDescription) o;
-        return getLocale() != null
-                && Objects.equals(getLocale(), that.getLocale())
+        return getLanguage() != null
+                && Objects.equals(getLanguage(), that.getLanguage())
                 && getPaymentMethod() != null
                 && Objects.equals(getPaymentMethod(), that.getPaymentMethod());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(locale, paymentMethod);
+        return Objects.hash(language, paymentMethod);
     }
 }

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import java.time.Instant;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,7 @@ public class OpenApiConfiguration {
 
     static {
         StringSchema localeSchema = new StringSchema();
-        localeSchema.setExample("en_US");
+        localeSchema.setExamples(List.of("uk", "en-US", "en_GB"));
         SpringDocUtils.getConfig().replaceWithSchema(Locale.class, localeSchema);
 
         StringSchema currencySchema = new StringSchema();

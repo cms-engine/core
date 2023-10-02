@@ -3,14 +3,12 @@ package com.ecommerce.engine.entity;
 import static com.ecommerce.engine.entity.DeliveryMethodDescription.TABLE_NAME;
 
 import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -34,8 +32,8 @@ public class DeliveryMethodDescription implements Localable {
     public static final String TABLE_NAME = "delivery_method_description";
 
     @Id
-    @Column(length = 5)
-    Locale locale;
+    @ManyToOne
+    Language language;
 
     @Id
     @ManyToOne
@@ -44,14 +42,14 @@ public class DeliveryMethodDescription implements Localable {
     String name;
 
     public DeliveryMethodDescription(NameDescriptionDto descriptionDto) {
-        locale = descriptionDto.locale();
+        language = new Language(descriptionDto.languageId());
         name = descriptionDto.name();
     }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Locale locale;
+        Language language;
         DeliveryMethod deliveryMethod;
     }
 
@@ -67,14 +65,14 @@ public class DeliveryMethodDescription implements Localable {
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         DeliveryMethodDescription that = (DeliveryMethodDescription) o;
-        return getLocale() != null
-                && Objects.equals(getLocale(), that.getLocale())
+        return getLanguage() != null
+                && Objects.equals(getLanguage(), that.getLanguage())
                 && getDeliveryMethod() != null
                 && Objects.equals(getDeliveryMethod(), that.getDeliveryMethod());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(locale, deliveryMethod);
+        return Objects.hash(language, deliveryMethod);
     }
 }

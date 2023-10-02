@@ -1,1 +1,4 @@
 1. Provide new store settings and update existing row
+2. Save langs to store settings
+3. Provide all necessary unique checks
+4. Checks during deleting

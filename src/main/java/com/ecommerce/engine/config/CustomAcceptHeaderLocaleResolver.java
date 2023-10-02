@@ -1,5 +1,6 @@
 package com.ecommerce.engine.config;
 
+import com.ecommerce.engine.entity.Language;
 import com.ecommerce.engine.util.StoreSettings;
 import com.ecommerce.engine.validation.LocaleDeserializer;
 import jakarta.annotation.Nonnull;
@@ -42,10 +43,11 @@ public class CustomAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver
     }
 
     private static Locale resolveStoreLocale(Locale requestLocale) {
-        return StoreSettings.storeLocales.stream()
+        return StoreSettings.storeLanguages.stream()
+                .map(Language::getHreflang)
                 .filter(supportedLocale -> supportedLocale.equals(requestLocale))
                 .findFirst()
-                .orElse(StoreSettings.defaultStoreLocale);
+                .orElse(StoreSettings.defaultStoreLanguage.getHreflang());
     }
 
     private boolean isAdminController(HttpServletRequest request) {

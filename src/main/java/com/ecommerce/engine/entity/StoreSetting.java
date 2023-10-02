@@ -9,17 +9,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.lang3.LocaleUtils;
 import org.hibernate.proxy.HibernateProxy;
 
 @Getter
@@ -35,11 +30,15 @@ public class StoreSetting {
     @Id
     Integer id = 1;
 
+    boolean configured;
+
     String version = EngineConfiguration.APP_VERSION;
 
-    String storeLocales = "en_US";
+    boolean useSubFoldersForMultiLanguageUrls; // domain.com/uk/, domain.com/en/
 
-    Locale defaultStoreLocale = Locale.US;
+    boolean buildUniqueUrlForEachLanguage; // domain.com/biser (uk), domain.com/bead (en)
+
+    boolean useSuffixesForMultiLanguageUrls; // domain.com/iphone-uk, domain.com/iphone-en
 
     boolean allowAnonymousUsersToReviewProducts;
 
@@ -47,7 +46,7 @@ public class StoreSetting {
 
     boolean useCustomerGroups;
 
-    Long customerGroupIdByDefault;
+    Long defaultCustomerGroupId;
 
     @Column(nullable = false)
     String adminPasswordRegex = "^(?=.*\\d)[^\\s]{8,}$";
@@ -56,25 +55,21 @@ public class StoreSetting {
     String storePasswordRegex = "^(?=.*\\d)[^\\s]{8,}$";
 
     public void updateSettingsHolder() {
+        StoreSettings.configured = configured;
         StoreSettings.version = version;
-        StoreSettings.storeLocales = getStoreLocales();
-        StoreSettings.defaultStoreLocale = defaultStoreLocale;
         StoreSettings.allowAnonymousUsersToReviewProducts = allowAnonymousUsersToReviewProducts;
         StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
         StoreSettings.useCustomerGroups = useCustomerGroups;
-        StoreSettings.customerGroupIdByDefault = customerGroupIdByDefault;
+        StoreSettings.defaultCustomerGroupId = defaultCustomerGroupId;
         StoreSettings.adminPasswordRegex = adminPasswordRegex;
         StoreSettings.storePasswordRegex = storePasswordRegex;
     }
 
     public void update(StoreSettingDto storeSettingDto) {
-        storeLocales =
-                storeSettingDto.storeLocales().stream().map(Object::toString).collect(Collectors.joining(","));
-        defaultStoreLocale = storeSettingDto.defaultStoreLocale();
         allowAnonymousUsersToReviewProducts = storeSettingDto.allowAnonymousUsersToReviewProducts();
         allowAnonymousUsersToReviewStore = storeSettingDto.allowAnonymousUsersToReviewStore();
         useCustomerGroups = storeSettingDto.useCustomerGroups();
-        customerGroupIdByDefault = storeSettingDto.customerGroupIdByDefault();
+        defaultCustomerGroupId = storeSettingDto.defaultCustomerGroupId();
         adminPasswordRegex = storeSettingDto.adminPasswordRegex();
         storePasswordRegex = storeSettingDto.storePasswordRegex();
     }
@@ -102,10 +97,5 @@ public class StoreSetting {
                         .getPersistentClass()
                         .hashCode()
                 : getClass().hashCode();
-    }
-
-    public List<Locale> getStoreLocales() {
-        String[] localesArray = storeLocales.split(",");
-        return Arrays.stream(localesArray).map(LocaleUtils::toLocale).toList();
     }
 }

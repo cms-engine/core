@@ -13,7 +13,7 @@ import org.apache.commons.lang3.LocaleUtils;
 
 public class LocaleDeserializer extends JsonDeserializer<Locale> {
 
-    public static final Pattern LOCALE_PATTERN = Pattern.compile("[a-z]{2}[_-][A-Z]{2}");
+    public static final Pattern LOCALE_PATTERN = Pattern.compile("[a-z]{2}([_-][A-Z]{2})?");
 
     @Override
     public Locale deserialize(JsonParser jp, DeserializationContext context) throws IOException {

@@ -3,8 +3,8 @@ package com.ecommerce.engine.entity;
 import com.ecommerce.engine.dto.admin.common.MetaDescriptionDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
-import java.util.Locale;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +22,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class DescriptionSuperclass implements Localable {
     @Id
-    @Column(length = 5)
-    Locale locale;
+    @ManyToOne
+    Language language;
 
     String title;
 
@@ -39,7 +39,7 @@ public abstract class DescriptionSuperclass implements Localable {
     }
 
     public DescriptionSuperclass(MetaDescriptionDto metaDescriptionDto) {
-        locale = metaDescriptionDto.locale();
+        language = new Language(metaDescriptionDto.languageId());
         title = metaDescriptionDto.title();
         description = metaDescriptionDto.description();
         metaTitle = metaDescriptionDto.metaTitle();

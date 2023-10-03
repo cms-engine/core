@@ -14,7 +14,5 @@ public interface LanguageRepository extends JpaRepository<Language, Integer> {
 
     Optional<Language> findByUrlSuffix(String urlSuffix);
 
-    Optional<Language> findByDefaultLangTrue();
-
     List<Language> findAllByEnabledTrue();
 }

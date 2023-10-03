@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.Brand.TABLE_NAME;
+import static com.ecommerce.engine.entity.Language.TABLE_NAME;
 
 import com.ecommerce.engine.dto.admin.request.LanguageRequestDto;
 import jakarta.persistence.Column;
@@ -40,13 +40,13 @@ public class Language {
     @Column(nullable = false, unique = true, length = 5)
     Locale hreflang;
 
-    @Column(unique = true, length = 5)
+    @Column(length = 5)
     String subFolder;
 
-    @Column(unique = true, length = 5)
+    @Column(length = 5)
     String urlSuffix;
 
-    boolean defaultLang;
+    int sortOrder;
 
     boolean enabled;
 
@@ -59,6 +59,7 @@ public class Language {
         hreflang = requestDto.hreflang();
         subFolder = requestDto.subFolder();
         urlSuffix = requestDto.urlSuffix();
+        sortOrder = requestDto.sortOrder();
         enabled = requestDto.enabled();
     }
 

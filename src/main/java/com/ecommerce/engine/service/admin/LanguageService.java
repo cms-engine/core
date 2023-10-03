@@ -24,13 +24,12 @@ import com.ecommerce.engine.util.TranslationUtils;
 import com.ecommerce.engine.validation.EntityType;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
+@DependsOn("storeSettingService")
 @Service
 public class LanguageService implements EntityPresenceService<Integer> {
 
@@ -59,9 +58,6 @@ public class LanguageService implements EntityPresenceService<Integer> {
         checkUniqueFields(requestDto);
 
         Language language = new Language(requestDto);
-        if (repository.count() == 0) {
-            language.setDefaultLang(true);
-        }
         Language saved = repository.save(language);
 
         fillStoreSettings();
@@ -71,13 +67,12 @@ public class LanguageService implements EntityPresenceService<Integer> {
 
     @Transactional
     public LanguageResponseDto update(int id, LanguageRequestDto requestDto) {
-        Language existing = findById(id);
+        findById(id);
 
         checkUniqueFields(requestDto);
 
         Language language = new Language(requestDto);
         language.setId(id);
-        language.setDefaultLang(existing.isDefaultLang());
         Language saved = repository.save(language);
 
         fillStoreSettings();
@@ -85,51 +80,22 @@ public class LanguageService implements EntityPresenceService<Integer> {
         return new LanguageResponseDto(saved);
     }
 
-    public LanguageResponseDto makeDefault(int id) {
-        Language existing = findById(id);
-
-        existing.setEnabled(true);
-
-        Optional<Language> byDefaultLangTrue = repository.findByDefaultLangTrue();
-        if (byDefaultLangTrue.isPresent()) {
-            Language foundDefaultLanguage = byDefaultLangTrue.get();
-            if (existing.equals(foundDefaultLanguage)) {
-                return new LanguageResponseDto(existing);
-            }
-
-            foundDefaultLanguage.setDefaultLang(false);
-            repository.save(foundDefaultLanguage);
-        }
-
-        existing.setDefaultLang(true);
-        repository.save(existing);
-
-        fillStoreSettings();
-
-        return new LanguageResponseDto(existing);
-    }
-
     @Transactional
     public void delete(int id) {
-        if (StoreSettings.defaultStoreLanguage.getId().equals(id)) {
+        Language existing = findById(id);
+
+        if (StoreSettings.defaultStoreLocale.equals(existing.getHreflang())) {
             throw new ApplicationException(
                     ErrorCode.DEFAULT_ENTITY, TranslationUtils.getMessage("exception.cannotDeleteDefaultEntity"));
         }
 
-        deleteAllDescriptions(Set.of(id));
+        deleteAllDescriptions(id);
         repository.deleteById(id);
     }
 
     @Transactional
     public void deleteMany(Set<Integer> ids) {
-        if (ids.stream()
-                .anyMatch(id -> StoreSettings.defaultStoreLanguage.getId().equals(id))) {
-            throw new ApplicationException(
-                    ErrorCode.DEFAULT_ENTITY, TranslationUtils.getMessage("exception.cannotDeleteDefaultEntity"));
-        }
-
-        deleteAllDescriptions(ids);
-        repository.deleteAllById(ids);
+        ids.forEach(this::delete);
     }
 
     private Language findById(int id) {
@@ -151,19 +117,16 @@ public class LanguageService implements EntityPresenceService<Integer> {
     }
 
     private void fillStoreSettings() {
-        Optional<Language> byDefaultLangTrue = repository.findByDefaultLangTrue();
-        if (byDefaultLangTrue.isPresent()) {
-            StoreSettings.defaultStoreLanguage = byDefaultLangTrue.get();
-        } else {
-            Language language = new Language();
-            language.setHreflang(Locale.ENGLISH);
-            StoreSettings.defaultStoreLanguage = language;
-        }
-
-        StoreSettings.storeLanguages = repository.findAllByEnabledTrue();
+        StoreSettings.storeLocales = repository.findAllByEnabledTrue().stream()
+                .sorted(Comparator.comparing(
+                                (Language lang) -> lang.getHreflang().equals(StoreSettings.defaultStoreLocale),
+                                Comparator.reverseOrder())
+                        .thenComparing(Language::getSortOrder))
+                .map(Language::getHreflang)
+                .toList();
     }
 
-    private void deleteAllDescriptions(Set<Integer> languageIds) {
+    private void deleteAllDescriptions(Integer languageId) {
         Set<Class<?>> entityClassesWithLanguage = Set.of(
                 CategoryDescription.class,
                 CustomerGroupDescription.class,
@@ -176,8 +139,8 @@ public class LanguageService implements EntityPresenceService<Integer> {
                 entityClassesWithLanguage.stream().map(Class::getSimpleName).collect(Collectors.toSet());
 
         classNames.forEach(className -> entityManager
-                .createQuery("DELETE FROM %s lc WHERE lc.language.id in :languageIds".formatted(className))
-                .setParameter("languageIds", languageIds)
+                .createQuery("DELETE FROM %s lc WHERE lc.language.id = :languageId".formatted(className))
+                .setParameter("languageId", languageId)
                 .executeUpdate());
     }
 
@@ -188,16 +151,22 @@ public class LanguageService implements EntityPresenceService<Integer> {
             throw new NotUniqueException(Language.TABLE_NAME, language.getId(), "hreflang", language.getHreflang());
         }
 
-        Optional<Language> bySubFolder = repository.findBySubFolder(requestDto.subFolder());
-        if (bySubFolder.isPresent()) {
-            Language language = bySubFolder.get();
-            throw new NotUniqueException(Language.TABLE_NAME, language.getId(), "subFolder", language.getHreflang());
+        if (requestDto.subFolder() != null) {
+            Optional<Language> bySubFolder = repository.findBySubFolder(requestDto.subFolder());
+            if (bySubFolder.isPresent()) {
+                Language language = bySubFolder.get();
+                throw new NotUniqueException(
+                        Language.TABLE_NAME, language.getId(), "subFolder", language.getSubFolder());
+            }
         }
 
-        Optional<Language> byUrlSuffix = repository.findByUrlSuffix(requestDto.urlSuffix());
-        if (byUrlSuffix.isPresent()) {
-            Language language = byUrlSuffix.get();
-            throw new NotUniqueException(Language.TABLE_NAME, language.getId(), "urlSuffix", language.getHreflang());
+        if (requestDto.urlSuffix() != null) {
+            Optional<Language> byUrlSuffix = repository.findByUrlSuffix(requestDto.urlSuffix());
+            if (byUrlSuffix.isPresent()) {
+                Language language = byUrlSuffix.get();
+                throw new NotUniqueException(
+                        Language.TABLE_NAME, language.getId(), "urlSuffix", language.getUrlSuffix());
+            }
         }
     }
 }

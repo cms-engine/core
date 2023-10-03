@@ -16,7 +16,8 @@ public record NameDescriptionDto(
     @SuppressWarnings("SpellCheckingInspection")
     public static Set<NameDescriptionDto> createNameDescriptionDtoSet(Collection<? extends Localable> localables) {
         return localables.stream()
-                .filter(localable -> StoreSettings.storeLanguages.contains(localable.getLanguage()))
+                .filter(localable -> StoreSettings.storeLocales.contains(
+                        localable.getLanguage().getHreflang()))
                 .map(NameDescriptionDto::new)
                 .collect(Collectors.toSet());
     }

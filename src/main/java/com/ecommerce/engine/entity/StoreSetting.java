@@ -1,15 +1,15 @@
 package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.entity.StoreSetting.TABLE_NAME;
+import static com.ecommerce.engine.util.NullUtils.nullable;
 
 import com.ecommerce.engine.config.EngineConfiguration;
 import com.ecommerce.engine.dto.admin.common.StoreSettingDto;
 import com.ecommerce.engine.util.StoreSettings;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +32,12 @@ public class StoreSetting {
 
     boolean configured;
 
+    @Column(nullable = false)
     String version = EngineConfiguration.APP_VERSION;
+
+    @ManyToOne
+    @JoinColumn
+    Language defaultStoreLanguage;
 
     boolean useSubFoldersForMultiLanguageUrls; // domain.com/uk/, domain.com/en/
 
@@ -57,6 +62,9 @@ public class StoreSetting {
     public void updateSettingsHolder() {
         StoreSettings.configured = configured;
         StoreSettings.version = version;
+        StoreSettings.defaultStoreLocale = Optional.ofNullable(defaultStoreLanguage)
+                .map(Language::getHreflang)
+                .orElse(Locale.ENGLISH);
         StoreSettings.allowAnonymousUsersToReviewProducts = allowAnonymousUsersToReviewProducts;
         StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
         StoreSettings.useCustomerGroups = useCustomerGroups;
@@ -66,6 +74,7 @@ public class StoreSetting {
     }
 
     public void update(StoreSettingDto storeSettingDto) {
+        defaultStoreLanguage = new Language(storeSettingDto.defaultStoreLanguageId());
         allowAnonymousUsersToReviewProducts = storeSettingDto.allowAnonymousUsersToReviewProducts();
         allowAnonymousUsersToReviewStore = storeSettingDto.allowAnonymousUsersToReviewStore();
         useCustomerGroups = storeSettingDto.useCustomerGroups();
@@ -97,5 +106,9 @@ public class StoreSetting {
                         .getPersistentClass()
                         .hashCode()
                 : getClass().hashCode();
+    }
+
+    public Integer getDefaultStoreLanguageId() {
+        return nullable(defaultStoreLanguage, Language::getId);
     }
 }

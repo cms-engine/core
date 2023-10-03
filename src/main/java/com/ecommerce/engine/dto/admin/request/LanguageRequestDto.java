@@ -11,4 +11,5 @@ public record LanguageRequestDto(
         @NotNull Locale hreflang,
         @Pattern(regexp = "[a-z]{2}([_-][a-z]{2})?") String subFolder,
         @Size(max = 5) String urlSuffix,
+        int sortOrder,
         boolean enabled) {}

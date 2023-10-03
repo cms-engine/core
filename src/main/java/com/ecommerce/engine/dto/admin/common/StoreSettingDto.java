@@ -5,10 +5,12 @@ import com.ecommerce.engine.validation.EntityPresence;
 import com.ecommerce.engine.validation.EntityType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record StoreSettingDto(
         @JsonProperty(access = JsonProperty.Access.READ_ONLY) String version,
+        @NotNull @EntityPresence(EntityType.LANGUAGE) Integer defaultStoreLanguageId,
         boolean allowAnonymousUsersToReviewProducts,
         boolean allowAnonymousUsersToReviewStore,
         boolean useCustomerGroups,
@@ -19,6 +21,7 @@ public record StoreSettingDto(
     public StoreSettingDto(StoreSetting storeSetting) {
         this(
                 storeSetting.getVersion(),
+                storeSetting.getDefaultStoreLanguageId(),
                 storeSetting.isAllowAnonymousUsersToReviewProducts(),
                 storeSetting.isAllowAnonymousUsersToReviewStore(),
                 storeSetting.isUseCustomerGroups(),

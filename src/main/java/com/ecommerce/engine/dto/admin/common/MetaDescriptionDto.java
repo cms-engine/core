@@ -20,7 +20,8 @@ public record MetaDescriptionDto(
     public static Set<MetaDescriptionDto> createMetaDescriptionDtoSet(
             Collection<? extends DescriptionSuperclass> descriptionSuperclasses) {
         return descriptionSuperclasses.stream()
-                .filter(meta -> StoreSettings.storeLanguages.contains(meta.getLanguage()))
+                .filter(meta ->
+                        StoreSettings.storeLocales.contains(meta.getLanguage().getHreflang()))
                 .map(MetaDescriptionDto::new)
                 .collect(Collectors.toSet());
     }

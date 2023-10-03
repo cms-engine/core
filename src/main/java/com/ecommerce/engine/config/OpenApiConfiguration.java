@@ -19,6 +19,7 @@ public class OpenApiConfiguration {
 
     static {
         StringSchema localeSchema = new StringSchema();
+        localeSchema.setExample("en-US");
         localeSchema.setExamples(List.of("uk", "en-US", "en_GB"));
         SpringDocUtils.getConfig().replaceWithSchema(Locale.class, localeSchema);
 

@@ -38,11 +38,10 @@ public class CustomerGroupService implements EntityPresenceService<Long> {
     }
 
     public CustomerGroupResponseDto update(long id, CustomerGroupRequestDto requestDto) {
-        CustomerGroup existing = findById(id);
+        findById(id);
 
         CustomerGroup customerGroup = new CustomerGroup(requestDto);
         customerGroup.setId(id);
-        customerGroup.getDescriptions().addAll(existing.getDescriptions());
         CustomerGroup saved = repository.save(customerGroup);
         return new CustomerGroupResponseDto(saved);
     }

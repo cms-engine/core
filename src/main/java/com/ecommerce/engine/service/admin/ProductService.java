@@ -36,11 +36,10 @@ public class ProductService {
     }
 
     public ProductResponseDto update(long id, ProductRequestDto requestDto) {
-        Product existing = findById(id);
+        findById(id);
 
         Product product = new Product(requestDto);
         product.setId(id);
-        product.getDescriptions().addAll(existing.getDescriptions());
         Product saved = repository.save(product);
         return new ProductResponseDto(saved);
     }

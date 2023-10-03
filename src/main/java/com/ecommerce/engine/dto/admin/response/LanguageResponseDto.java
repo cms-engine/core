@@ -1,16 +1,9 @@
 package com.ecommerce.engine.dto.admin.response;
 
 import com.ecommerce.engine.entity.Language;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record LanguageResponseDto(
-        int id,
-        String name,
-        String hreflang,
-        String subFolder,
-        String suffixUrl,
-        @JsonProperty("default") boolean defaultLang,
-        boolean enabled) {
+        int id, String name, String hreflang, String subFolder, String suffixUrl, int sortOrder, boolean enabled) {
     public LanguageResponseDto(Language language) {
         this(
                 language.getId(),
@@ -18,7 +11,7 @@ public record LanguageResponseDto(
                 language.getHreflang().toString().replace("_", "-"),
                 language.getSubFolder(),
                 language.getUrlSuffix(),
-                language.isDefaultLang(),
+                language.getSortOrder(),
                 language.isEnabled());
     }
 }

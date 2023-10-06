@@ -42,7 +42,7 @@ public class PageDescription extends DescriptionSuperclass {
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Language language;
+        Integer languageId;
         Page page;
     }
 
@@ -60,12 +60,12 @@ public class PageDescription extends DescriptionSuperclass {
         PageDescription that = (PageDescription) o;
         return getPage() != null
                 && Objects.equals(getPage(), that.getPage())
-                && getLanguage() != null
-                && Objects.equals(getLanguage(), that.getLanguage());
+                && getLanguageId() != null
+                && Objects.equals(getLanguageId(), that.getLanguageId());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getPage(), getLanguage());
+        return Objects.hash(getPage(), getLanguageId());
     }
 }

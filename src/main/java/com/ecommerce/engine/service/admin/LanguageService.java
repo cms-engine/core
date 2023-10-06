@@ -118,12 +118,7 @@ public class LanguageService implements EntityPresenceService<Integer> {
 
     private void fillStoreSettings() {
         StoreSettings.storeLocales = repository.findAllByEnabledTrue().stream()
-                .sorted(Comparator.comparing(
-                                (Language lang) -> lang.getHreflang().equals(StoreSettings.defaultStoreLocale),
-                                Comparator.reverseOrder())
-                        .thenComparing(Language::getSortOrder))
-                .map(Language::getHreflang)
-                .toList();
+                .collect(Collectors.toMap(Language::getId, Language::getHreflang));
     }
 
     private void deleteAllDescriptions(Integer languageId) {

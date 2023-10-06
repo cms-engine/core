@@ -42,7 +42,7 @@ public class CategoryDescription extends DescriptionSuperclass {
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Language language;
+        Integer languageId;
         Category category;
     }
 
@@ -60,12 +60,12 @@ public class CategoryDescription extends DescriptionSuperclass {
         CategoryDescription that = (CategoryDescription) o;
         return getCategory() != null
                 && Objects.equals(getCategory(), that.getCategory())
-                && getLanguage() != null
-                && Objects.equals(getLanguage(), that.getLanguage());
+                && getLanguageId() != null
+                && Objects.equals(getLanguageId(), that.getLanguageId());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getCategory(), getLanguage());
+        return Objects.hash(getCategory(), getLanguageId());
     }
 }

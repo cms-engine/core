@@ -27,13 +27,12 @@ import org.hibernate.proxy.HibernateProxy;
 @Table(name = TABLE_NAME)
 @IdClass(DeliveryMethodDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DeliveryMethodDescription implements Localable {
+public class DeliveryMethodDescription implements HasLocale {
 
     public static final String TABLE_NAME = "delivery_method_description";
 
     @Id
-    @ManyToOne
-    Language language;
+    Integer languageId;
 
     @Id
     @ManyToOne
@@ -42,14 +41,14 @@ public class DeliveryMethodDescription implements Localable {
     String name;
 
     public DeliveryMethodDescription(NameDescriptionDto descriptionDto) {
-        language = new Language(descriptionDto.languageId());
+        languageId = descriptionDto.languageId();
         name = descriptionDto.name();
     }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Language language;
+        Integer languageId;
         DeliveryMethod deliveryMethod;
     }
 
@@ -65,14 +64,14 @@ public class DeliveryMethodDescription implements Localable {
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         DeliveryMethodDescription that = (DeliveryMethodDescription) o;
-        return getLanguage() != null
-                && Objects.equals(getLanguage(), that.getLanguage())
+        return getLanguageId() != null
+                && Objects.equals(getLanguageId(), that.getLanguageId())
                 && getDeliveryMethod() != null
                 && Objects.equals(getDeliveryMethod(), that.getDeliveryMethod());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(language, deliveryMethod);
+        return Objects.hash(languageId, deliveryMethod);
     }
 }

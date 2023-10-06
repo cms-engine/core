@@ -42,7 +42,7 @@ public class CustomAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver
     }
 
     private static Locale resolveStoreLocale(Locale requestLocale) {
-        return StoreSettings.storeLocales.stream()
+        return StoreSettings.storeLocales.values().stream()
                 .filter(supportedLocale -> supportedLocale.equals(requestLocale))
                 .findFirst()
                 .orElse(StoreSettings.defaultStoreLocale);

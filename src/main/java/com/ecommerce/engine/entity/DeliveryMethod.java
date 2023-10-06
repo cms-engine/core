@@ -62,7 +62,7 @@ public class DeliveryMethod {
     }
 
     public String getLocaleName() {
-        return Localable.getStoreDefaultLocaleName(descriptions);
+        return HasLocale.getStoreDefaultLocaleName(descriptions);
     }
 
     @Override

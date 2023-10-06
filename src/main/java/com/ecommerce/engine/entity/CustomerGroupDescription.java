@@ -28,13 +28,12 @@ import org.hibernate.proxy.HibernateProxy;
 @Table(name = TABLE_NAME)
 @IdClass(CustomerGroupDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerGroupDescription implements Localable {
+public class CustomerGroupDescription implements HasLocale {
 
     public static final String TABLE_NAME = "customer_group_description";
 
     @Id
-    @ManyToOne
-    Language language;
+    Integer languageId;
 
     @Id
     @ManyToOne
@@ -44,14 +43,14 @@ public class CustomerGroupDescription implements Localable {
     String name;
 
     public CustomerGroupDescription(NameDescriptionDto descriptionDto) {
-        language = new Language(descriptionDto.languageId());
+        languageId = descriptionDto.languageId();
         name = descriptionDto.name();
     }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Language language;
+        Integer languageId;
         CustomerGroup customerGroup;
     }
 
@@ -67,14 +66,14 @@ public class CustomerGroupDescription implements Localable {
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         CustomerGroupDescription that = (CustomerGroupDescription) o;
-        return getLanguage() != null
-                && Objects.equals(getLanguage(), that.getLanguage())
+        return getLanguageId() != null
+                && Objects.equals(getLanguageId(), that.getLanguageId())
                 && getCustomerGroup() != null
                 && Objects.equals(getCustomerGroup(), that.getCustomerGroup());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(language, customerGroup);
+        return Objects.hash(languageId, customerGroup);
     }
 }

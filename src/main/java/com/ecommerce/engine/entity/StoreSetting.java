@@ -9,7 +9,6 @@ import com.ecommerce.engine.util.StoreSettings;
 import jakarta.persistence.*;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,15 +61,19 @@ public class StoreSetting {
     public void updateSettingsHolder() {
         StoreSettings.configured = configured;
         StoreSettings.version = version;
-        StoreSettings.defaultStoreLocale = Optional.ofNullable(defaultStoreLanguage)
-                .map(Language::getHreflang)
-                .orElse(Locale.ENGLISH);
         StoreSettings.allowAnonymousUsersToReviewProducts = allowAnonymousUsersToReviewProducts;
         StoreSettings.allowAnonymousUsersToReviewStore = allowAnonymousUsersToReviewStore;
         StoreSettings.useCustomerGroups = useCustomerGroups;
         StoreSettings.defaultCustomerGroupId = defaultCustomerGroupId;
         StoreSettings.adminPasswordRegex = adminPasswordRegex;
         StoreSettings.storePasswordRegex = storePasswordRegex;
+
+        if (defaultStoreLanguage == null) {
+            StoreSettings.defaultStoreLocale = Locale.ENGLISH;
+        } else {
+            StoreSettings.defaultStoreLocale = defaultStoreLanguage.getHreflang();
+            StoreSettings.defaultStoreLocaleId = defaultStoreLanguage.getId();
+        }
     }
 
     public void update(StoreSettingDto storeSettingDto) {

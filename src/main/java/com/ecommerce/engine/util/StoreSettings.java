@@ -1,13 +1,14 @@
 package com.ecommerce.engine.util;
 
-import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public final class StoreSettings {
 
     public static boolean configured;
     public static String version;
     public static Locale defaultStoreLocale;
+    public static int defaultStoreLocaleId;
     public static boolean allowAnonymousUsersToReviewProducts;
     public static boolean allowAnonymousUsersToReviewStore;
     public static boolean useCustomerGroups;
@@ -16,7 +17,7 @@ public final class StoreSettings {
     public static String storePasswordRegex;
 
     // Languages
-    public static List<Locale> storeLocales;
+    public static Map<Integer, Locale> storeLocales;
 
     private StoreSettings() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");

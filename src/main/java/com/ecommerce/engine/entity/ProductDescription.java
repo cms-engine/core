@@ -42,7 +42,7 @@ public class ProductDescription extends DescriptionSuperclass {
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
-        Language language;
+        Integer languageId;
         Product product;
     }
 
@@ -60,12 +60,12 @@ public class ProductDescription extends DescriptionSuperclass {
         ProductDescription that = (ProductDescription) o;
         return getProduct() != null
                 && Objects.equals(getProduct(), that.getProduct())
-                && getLanguage() != null
-                && Objects.equals(getLanguage(), that.getLanguage());
+                && getLanguageId() != null
+                && Objects.equals(getLanguageId(), that.getLanguageId());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getProduct(), getLanguage());
+        return Objects.hash(getProduct(), getLanguageId());
     }
 }

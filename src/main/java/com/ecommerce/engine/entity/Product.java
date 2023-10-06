@@ -149,7 +149,7 @@ public class Product {
     }
 
     public String getLocaleTitle() {
-        return Localable.getStoreDefaultLocaleName(descriptions);
+        return HasLocale.getStoreDefaultLocaleName(descriptions);
     }
 
     public Long getCategoryId() {

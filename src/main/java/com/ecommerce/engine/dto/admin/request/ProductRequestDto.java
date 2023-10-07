@@ -30,7 +30,9 @@ public record ProductRequestDto(
         @Digits(integer = 7, fraction = 8) BigDecimal weight,
         boolean enabled,
         @NotNull @Size(min = 1) Set<@Valid MetaDescriptionDto> descriptions,
-        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid AdditionalImage> additionalImages) {
+        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid AdditionalImage> additionalImages,
+        @JsonSetter(nulls = Nulls.AS_EMPTY)
+                Set<@Valid @EntityPresence(EntityType.CATEGORY) Long> additionalCategories) {
 
     public record AdditionalImage(@EntityPresence(EntityType.IMAGE) UUID id, int sortOrder) {}
 }

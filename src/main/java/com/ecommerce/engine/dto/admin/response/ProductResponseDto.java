@@ -30,7 +30,8 @@ public record ProductResponseDto(
         Instant updated,
         boolean enabled,
         Set<MetaDescriptionDto> descriptions,
-        Set<AdditionalImage> additionalImages) {
+        Set<AdditionalImage> additionalImages,
+        Set<Long> additionalCategories) {
 
     public ProductResponseDto(Product product) {
         this(
@@ -52,7 +53,10 @@ public record ProductResponseDto(
                 product.getUpdated(),
                 product.isEnabled(),
                 MetaDescriptionDto.createMetaDescriptionDtoSet(product.getDescriptions()),
-                product.getAdditionalImages().stream().map(AdditionalImage::new).collect(Collectors.toSet()));
+                product.getAdditionalImages().stream().map(AdditionalImage::new).collect(Collectors.toSet()),
+                product.getAdditionalCategories().stream()
+                        .map(category -> category.getCategory().getId())
+                        .collect(Collectors.toSet()));
     }
 
     public record AdditionalImage(UUID id, String src, int sortOrder) {

@@ -113,6 +113,10 @@ public class Product {
     Set<ProductDescription> descriptions = new HashSet<>();
 
     @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
+    Set<ProductAdditionalCategory> additionalCategories = new HashSet<>();
+
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<ProductAdditionalImage> additionalImages = new HashSet<>();
 
@@ -145,6 +149,11 @@ public class Product {
         additionalImages = requestDto.additionalImages().stream()
                 .map(ProductAdditionalImage::new)
                 .peek(img -> img.setProduct(this))
+                .collect(Collectors.toSet());
+
+        additionalCategories = requestDto.additionalCategories().stream()
+                .map(ProductAdditionalCategory::new)
+                .peek(category -> category.setProduct(this))
                 .collect(Collectors.toSet());
     }
 

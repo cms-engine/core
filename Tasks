@@ -1,3 +1,1 @@
-1. Provide new store settings and update existing row
-Language:
-2. Cannot persist detached entity,3
+1. Provide new store settings and update existing row (via liquibase)

@@ -27,7 +27,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Table(name = TABLE_NAME)
 @IdClass(PageDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PageDescription extends DescriptionSuperclass {
+public class PageDescription extends MetaDescriptionSuperclass {
 
     public static final String TABLE_NAME = "page_description";
 

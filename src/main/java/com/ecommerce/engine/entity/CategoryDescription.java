@@ -27,7 +27,7 @@ import org.hibernate.proxy.HibernateProxy;
 @NoArgsConstructor
 @IdClass(CategoryDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryDescription extends DescriptionSuperclass {
+public class CategoryDescription extends MetaDescriptionSuperclass {
 
     public static final String TABLE_NAME = "category_description";
 

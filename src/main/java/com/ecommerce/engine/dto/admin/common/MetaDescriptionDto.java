@@ -1,6 +1,6 @@
 package com.ecommerce.engine.dto.admin.common;
 
-import com.ecommerce.engine.entity.DescriptionSuperclass;
+import com.ecommerce.engine.entity.MetaDescriptionSuperclass;
 import com.ecommerce.engine.util.StoreSettings;
 import com.ecommerce.engine.validation.EntityPresence;
 import com.ecommerce.engine.validation.EntityType;
@@ -17,14 +17,15 @@ public record MetaDescriptionDto(
         @Size(max = 255) String metaTitle,
         @Size(max = 255) String metaDescription) {
     public static Set<MetaDescriptionDto> createMetaDescriptionDtoSet(
-            Collection<? extends DescriptionSuperclass> descriptionSuperclasses) {
+            Collection<? extends MetaDescriptionSuperclass> descriptionSuperclasses) {
         return descriptionSuperclasses.stream()
-                .filter(meta -> StoreSettings.storeLocales.containsKey(meta.getLanguageId()))
+                .filter(descriptionSuperclass ->
+                        StoreSettings.storeLocales.containsKey(descriptionSuperclass.getLanguageId()))
                 .map(MetaDescriptionDto::new)
                 .collect(Collectors.toSet());
     }
 
-    public MetaDescriptionDto(DescriptionSuperclass descriptionSuperclass) {
+    public MetaDescriptionDto(MetaDescriptionSuperclass descriptionSuperclass) {
         this(
                 descriptionSuperclass.getLanguageId(),
                 descriptionSuperclass.getTitle(),

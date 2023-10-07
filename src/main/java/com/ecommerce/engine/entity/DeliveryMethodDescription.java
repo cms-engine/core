@@ -27,12 +27,9 @@ import org.hibernate.proxy.HibernateProxy;
 @Table(name = TABLE_NAME)
 @IdClass(DeliveryMethodDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DeliveryMethodDescription implements HasLocale {
+public class DeliveryMethodDescription extends NameDescriptionSuperclass {
 
     public static final String TABLE_NAME = "delivery_method_description";
-
-    @Id
-    Integer languageId;
 
     @Id
     @ManyToOne
@@ -41,8 +38,7 @@ public class DeliveryMethodDescription implements HasLocale {
     String name;
 
     public DeliveryMethodDescription(NameDescriptionDto descriptionDto) {
-        languageId = descriptionDto.languageId();
-        name = descriptionDto.name();
+        super(descriptionDto);
     }
 
     @Data
@@ -72,6 +68,6 @@ public class DeliveryMethodDescription implements HasLocale {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(languageId, deliveryMethod);
+        return Objects.hash(getLanguageId(), deliveryMethod);
     }
 }

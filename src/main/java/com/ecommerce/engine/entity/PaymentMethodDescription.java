@@ -28,12 +28,9 @@ import org.hibernate.proxy.HibernateProxy;
 @Table(name = TABLE_NAME)
 @IdClass(PaymentMethodDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentMethodDescription implements HasLocale {
+public class PaymentMethodDescription extends NameDescriptionSuperclass {
 
     public static final String TABLE_NAME = "payment_method_description";
-
-    @Id
-    Integer languageId;
 
     @Id
     @ManyToOne
@@ -43,8 +40,7 @@ public class PaymentMethodDescription implements HasLocale {
     String name;
 
     public PaymentMethodDescription(NameDescriptionDto descriptionDto) {
-        languageId = descriptionDto.languageId();
-        name = descriptionDto.name();
+        super(descriptionDto);
     }
 
     @Data
@@ -74,6 +70,6 @@ public class PaymentMethodDescription implements HasLocale {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(languageId, paymentMethod);
+        return Objects.hash(getLanguageId(), paymentMethod);
     }
 }

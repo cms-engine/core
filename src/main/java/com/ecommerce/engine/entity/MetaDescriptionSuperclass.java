@@ -19,7 +19,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @MappedSuperclass
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public abstract class DescriptionSuperclass implements HasLocale {
+public abstract class MetaDescriptionSuperclass implements HasLocale {
     @Id
     Integer languageId;
 
@@ -36,7 +36,7 @@ public abstract class DescriptionSuperclass implements HasLocale {
         return title;
     }
 
-    public DescriptionSuperclass(MetaDescriptionDto metaDescriptionDto) {
+    public MetaDescriptionSuperclass(MetaDescriptionDto metaDescriptionDto) {
         languageId = metaDescriptionDto.languageId();
         title = metaDescriptionDto.title();
         description = metaDescriptionDto.description();

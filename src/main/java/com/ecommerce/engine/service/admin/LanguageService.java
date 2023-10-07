@@ -134,7 +134,7 @@ public class LanguageService implements EntityPresenceService<Integer> {
                 entityClassesWithLanguage.stream().map(Class::getSimpleName).collect(Collectors.toSet());
 
         classNames.forEach(className -> entityManager
-                .createQuery("DELETE FROM %s lc WHERE lc.language.id = :languageId".formatted(className))
+                .createQuery("DELETE FROM %s lc WHERE lc.languageId = :languageId".formatted(className))
                 .setParameter("languageId", languageId)
                 .executeUpdate());
     }

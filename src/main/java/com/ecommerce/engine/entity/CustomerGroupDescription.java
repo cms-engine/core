@@ -1,7 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.CustomerGroupDescription.TABLE_NAME;
-
 import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -24,7 +22,7 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = TABLE_NAME)
+@Table(name = CustomerGroupDescription.TABLE_NAME)
 @IdClass(CustomerGroupDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerGroupDescription extends NameDescriptionSuperclass {

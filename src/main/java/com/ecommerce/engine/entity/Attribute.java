@@ -1,7 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.Attribute.TABLE_NAME;
-
 import com.ecommerce.engine.dto.admin.request.AttributeRequestDto;
 import com.ecommerce.engine.enums.InputType;
 import jakarta.persistence.*;
@@ -18,7 +16,7 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = TABLE_NAME)
+@Table(name = Attribute.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Attribute {
 

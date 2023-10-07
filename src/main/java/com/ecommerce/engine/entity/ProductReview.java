@@ -1,7 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.ProductReview.TABLE_NAME;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +25,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = ProductReview.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductReview {
 

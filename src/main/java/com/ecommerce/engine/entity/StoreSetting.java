@@ -1,6 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.StoreSetting.TABLE_NAME;
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
 import com.ecommerce.engine.config.EngineConfiguration;
@@ -20,7 +19,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = StoreSetting.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StoreSetting {
 

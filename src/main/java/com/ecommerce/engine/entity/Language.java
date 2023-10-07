@@ -1,7 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.Language.TABLE_NAME;
-
 import com.ecommerce.engine.dto.admin.request.LanguageRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +21,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = Language.TABLE_NAME)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Language {

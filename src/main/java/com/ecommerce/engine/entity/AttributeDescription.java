@@ -1,7 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.AttributeDescription.TABLE_NAME;
-
 import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -15,7 +13,7 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = TABLE_NAME)
+@Table(name = AttributeDescription.TABLE_NAME)
 @IdClass(AttributeDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AttributeDescription extends NameDescriptionSuperclass {

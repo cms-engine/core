@@ -1,7 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.DeliveryMethod.TABLE_NAME;
-
 import com.ecommerce.engine.dto.admin.request.DeliveryMethodRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -30,7 +28,7 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = TABLE_NAME)
+@Table(name = DeliveryMethod.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DeliveryMethod {
 

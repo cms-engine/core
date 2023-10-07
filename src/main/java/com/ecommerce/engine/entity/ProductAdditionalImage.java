@@ -1,6 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.ProductAdditionalImage.TABLE_NAME;
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
@@ -27,7 +26,7 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = TABLE_NAME)
+@Table(name = ProductAdditionalImage.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @IdClass(ProductAdditionalImage.EntityId.class)
 public class ProductAdditionalImage {

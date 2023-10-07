@@ -1,7 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.Brand.TABLE_NAME;
-
 import com.ecommerce.engine.dto.admin.request.BrandRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +19,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = Brand.TABLE_NAME)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Brand {

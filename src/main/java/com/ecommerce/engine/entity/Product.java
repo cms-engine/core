@@ -1,6 +1,5 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.Product.TABLE_NAME;
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
@@ -42,7 +41,7 @@ import org.hibernate.proxy.HibernateProxy;
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name = TABLE_NAME)
+@Table(name = Product.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
 
@@ -113,7 +112,7 @@ public class Product {
     Set<ProductDescription> descriptions = new HashSet<>();
 
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<ProductAdditionalCategory> additionalCategories = new HashSet<>();
 
     @ToString.Exclude

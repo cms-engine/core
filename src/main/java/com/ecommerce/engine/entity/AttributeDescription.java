@@ -1,21 +1,12 @@
 package com.ecommerce.engine.entity;
 
-import static com.ecommerce.engine.entity.DeliveryMethodDescription.TABLE_NAME;
+import static com.ecommerce.engine.entity.AttributeDescription.TABLE_NAME;
 
 import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -25,17 +16,17 @@ import org.hibernate.proxy.HibernateProxy;
 @Entity
 @NoArgsConstructor
 @Table(name = TABLE_NAME)
-@IdClass(DeliveryMethodDescription.EntityId.class)
+@IdClass(AttributeDescription.EntityId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DeliveryMethodDescription extends NameDescriptionSuperclass {
+public class AttributeDescription extends NameDescriptionSuperclass {
 
-    public static final String TABLE_NAME = "delivery_method_description";
+    public static final String TABLE_NAME = "attribute_description";
 
     @Id
     @ManyToOne
-    DeliveryMethod deliveryMethod;
+    Attribute attribute;
 
-    public DeliveryMethodDescription(NameDescriptionDto descriptionDto) {
+    public AttributeDescription(NameDescriptionDto descriptionDto) {
         super(descriptionDto);
     }
 
@@ -43,7 +34,7 @@ public class DeliveryMethodDescription extends NameDescriptionSuperclass {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class EntityId implements Serializable {
         Integer languageId;
-        DeliveryMethod deliveryMethod;
+        Attribute attribute;
     }
 
     @Override
@@ -57,15 +48,15 @@ public class DeliveryMethodDescription extends NameDescriptionSuperclass {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        DeliveryMethodDescription that = (DeliveryMethodDescription) o;
+        AttributeDescription that = (AttributeDescription) o;
         return getLanguageId() != null
                 && Objects.equals(getLanguageId(), that.getLanguageId())
-                && getDeliveryMethod() != null
-                && Objects.equals(getDeliveryMethod(), that.getDeliveryMethod());
+                && getAttribute() != null
+                && Objects.equals(getAttribute(), that.getAttribute());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getLanguageId(), deliveryMethod);
+        return Objects.hash(getLanguageId(), attribute);
     }
 }

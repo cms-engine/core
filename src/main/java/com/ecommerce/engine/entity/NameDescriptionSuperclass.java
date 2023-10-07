@@ -1,6 +1,7 @@
 package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
@@ -17,6 +18,7 @@ public abstract class NameDescriptionSuperclass implements HasLocale {
     @Id
     Integer languageId;
 
+    @Column(nullable = false)
     String name;
 
     public NameDescriptionSuperclass(NameDescriptionDto metaDescriptionDto) {

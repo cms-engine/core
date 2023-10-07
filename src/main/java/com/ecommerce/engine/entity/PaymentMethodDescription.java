@@ -3,7 +3,6 @@ package com.ecommerce.engine.entity;
 import static com.ecommerce.engine.entity.PaymentMethodDescription.TABLE_NAME;
 
 import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -35,9 +34,6 @@ public class PaymentMethodDescription extends NameDescriptionSuperclass {
     @Id
     @ManyToOne
     PaymentMethod paymentMethod;
-
-    @Column(nullable = false)
-    String name;
 
     public PaymentMethodDescription(NameDescriptionDto descriptionDto) {
         super(descriptionDto);

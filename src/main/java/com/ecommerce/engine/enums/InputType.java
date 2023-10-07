@@ -1,6 +1,6 @@
 package com.ecommerce.engine.enums;
 
-public enum InputField {
+public enum InputType {
     TEXT,
     NUMBER,
     DECIMAL,

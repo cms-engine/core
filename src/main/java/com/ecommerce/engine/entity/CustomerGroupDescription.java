@@ -3,7 +3,6 @@ package com.ecommerce.engine.entity;
 import static com.ecommerce.engine.entity.CustomerGroupDescription.TABLE_NAME;
 
 import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -35,9 +34,6 @@ public class CustomerGroupDescription extends NameDescriptionSuperclass {
     @Id
     @ManyToOne
     CustomerGroup customerGroup;
-
-    @Column(nullable = false)
-    String name;
 
     public CustomerGroupDescription(NameDescriptionDto descriptionDto) {
         super(descriptionDto);

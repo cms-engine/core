@@ -5,5 +5,6 @@ public enum EntityType {
     CATEGORY,
     CUSTOMER_GROUP,
     LANGUAGE,
+    ATTRIBUTE,
     IMAGE
 }

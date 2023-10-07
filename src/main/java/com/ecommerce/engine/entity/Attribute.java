@@ -30,12 +30,6 @@ public class Attribute {
     @Column(nullable = false)
     InputType inputType;
 
-    boolean mandatory;
-
-    boolean useInFilters;
-
-    int sortOrder;
-
     boolean enabled;
 
     @ToString.Exclude
@@ -44,9 +38,6 @@ public class Attribute {
 
     public Attribute(AttributeRequestDto requestDto) {
         inputType = requestDto.inputType();
-        mandatory = requestDto.mandatory();
-        useInFilters = requestDto.useInFilters();
-        sortOrder = requestDto.sortOrder();
         enabled = requestDto.enabled();
         descriptions = requestDto.descriptions().stream()
                 .map(AttributeDescription::new)

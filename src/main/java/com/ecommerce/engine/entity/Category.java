@@ -66,6 +66,10 @@ public class Category {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<CategoryDescription> descriptions = new HashSet<>();
 
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
+    Set<CategoryAttribute> attributes = new HashSet<>();
+
     public Category(CategoryRequestDto requestDto) {
         if (requestDto.parentId() != null) {
             parent = new Category(requestDto.parentId());
@@ -78,6 +82,10 @@ public class Category {
         descriptions = requestDto.descriptions().stream()
                 .map(CategoryDescription::new)
                 .peek(desc -> desc.setCategory(this))
+                .collect(Collectors.toSet());
+        attributes = requestDto.attributes().stream()
+                .map(CategoryAttribute::new)
+                .peek(atr -> atr.setCategory(this))
                 .collect(Collectors.toSet());
     }
 

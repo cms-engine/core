@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -36,5 +37,5 @@ public record ProductRequestDto(
 
     public record AdditionalImage(@EntityPresence(EntityType.IMAGE) UUID id, int sortOrder) {}
 
-    public record Attribute(@EntityPresence(EntityType.ATTRIBUTE) long id, String value) {}
+    public record Attribute(@EntityPresence(EntityType.ATTRIBUTE) long id, @NotBlank String value) {}
 }

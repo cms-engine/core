@@ -2,28 +2,16 @@ package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
+import com.ecommerce.engine.config.exception.ApplicationException;
+import com.ecommerce.engine.config.exception.ErrorCode;
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.ecommerce.engine.util.TranslationUtils;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -185,6 +173,39 @@ public class Product {
 
     public String getImageSrc() {
         return nullable(image, Image::getSrc);
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void validateAttributesMatchingCategoryRequirements() {
+        Set<Category> categories = getAdditionalCategories().stream()
+                .map(ProductAdditionalCategory::getCategory)
+                .collect(Collectors.toSet());
+        categories.add(getCategory());
+
+        Set<Long> mandatoryAttributes = categories.stream()
+                .map(Category::getAttributes)
+                .flatMap(Collection::stream)
+                .filter(CategoryAttribute::isMandatory)
+                .map(CategoryAttribute::getAttribute)
+                .map(Attribute::getId)
+                .collect(Collectors.toSet());
+
+        Set<Long> productAttributes = getAttributes().stream()
+                .map(ProductAttribute::getAttribute)
+                .map(Attribute::getId)
+                .collect(Collectors.toSet());
+
+        if (productAttributes.containsAll(mandatoryAttributes)) {
+            return;
+        }
+
+        Set<Long> missingIds = new HashSet<>(mandatoryAttributes);
+        missingIds.removeAll(productAttributes);
+
+        throw new ApplicationException(
+                ErrorCode.INVALID_CONFIGURATION,
+                TranslationUtils.getMessage("exception.productAttributesMismatch", missingIds));
     }
 
     @Override

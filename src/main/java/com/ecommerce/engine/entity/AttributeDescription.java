@@ -55,6 +55,6 @@ public class AttributeDescription extends NameDescriptionSuperclass {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getLanguageId(), attribute);
+        return Objects.hash(getLanguageId(), getAttribute());
     }
 }

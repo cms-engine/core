@@ -64,6 +64,6 @@ public class CustomerGroupDescription extends NameDescriptionSuperclass {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getLanguageId(), customerGroup);
+        return Objects.hash(getLanguageId(), getCustomerGroup());
     }
 }

@@ -64,6 +64,6 @@ public class DeliveryMethodDescription extends NameDescriptionSuperclass {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getLanguageId(), deliveryMethod);
+        return Objects.hash(getLanguageId(), getDeliveryMethod());
     }
 }

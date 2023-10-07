@@ -64,6 +64,6 @@ public class PaymentMethodDescription extends NameDescriptionSuperclass {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getLanguageId(), paymentMethod);
+        return Objects.hash(getLanguageId(), getPaymentMethod());
     }
 }

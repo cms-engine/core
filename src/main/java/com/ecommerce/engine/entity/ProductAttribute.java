@@ -27,6 +27,7 @@ public class ProductAttribute {
     @ManyToOne
     Product product;
 
+    @Column(nullable = false)
     String value;
 
     @Data

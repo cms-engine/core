@@ -1,5 +1,6 @@
 package com.ecommerce.engine.entity;
 
+import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -29,6 +30,11 @@ public class ProductAttribute {
 
     @Column(nullable = false)
     String value;
+
+    public ProductAttribute(ProductRequestDto.Attribute requestDto) {
+        attribute = new Attribute(requestDto.id());
+        value = requestDto.value();
+    }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)

@@ -2,12 +2,8 @@ package com.ecommerce.engine.service.admin;
 
 import com.ecommerce.engine.dto.admin.grid.ProductGridDto;
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
-import com.ecommerce.engine.dto.admin.response.ProductAvailableAttributeDto;
 import com.ecommerce.engine.dto.admin.response.ProductResponseDto;
-import com.ecommerce.engine.entity.Category;
-import com.ecommerce.engine.entity.CategoryAttribute;
 import com.ecommerce.engine.entity.Product;
-import com.ecommerce.engine.entity.ProductAdditionalCategory;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ProductRepository;
 import com.ecommerce.engine.search.SearchEntity;
@@ -15,10 +11,8 @@ import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
-import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +23,7 @@ public class ProductService {
     private final ProductRepository repository;
     private final SearchService<Product, ProductGridDto> searchService;
     private final ForeignKeysChecker foreignKeysChecker;
+    private final ProductAttributeService productAttributeService;
 
     public ProductResponseDto get(long id) {
         Product category = findById(id);
@@ -36,8 +31,10 @@ public class ProductService {
     }
 
     public ProductResponseDto save(ProductRequestDto requestDto) {
-        Product category = new Product(requestDto);
-        Product saved = repository.save(category);
+        Product product = new Product(requestDto);
+        productAttributeService.validateProductAttributesMatchingCategoryRequirements(product);
+
+        Product saved = repository.save(product);
         return new ProductResponseDto(saved);
     }
 
@@ -45,6 +42,8 @@ public class ProductService {
         findById(id);
 
         Product product = new Product(requestDto);
+        productAttributeService.validateProductAttributesMatchingCategoryRequirements(product);
+
         product.setId(id);
         Product saved = repository.save(product);
         return new ProductResponseDto(saved);
@@ -66,20 +65,5 @@ public class ProductService {
 
     public SearchResponse<ProductGridDto> search(UUID id, SearchRequest searchRequest) {
         return searchService.search(id, searchRequest, SearchEntity.PRODUCT, Product.class, ProductGridDto::new);
-    }
-
-    public Collection<ProductAvailableAttributeDto> getPrefillAttributes(long productId) {
-        Product product = findById(productId);
-
-        Set<CategoryAttribute> categoryAttributes = product.getAdditionalCategories().stream()
-                .map(ProductAdditionalCategory::getCategory)
-                .map(Category::getAttributes)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
-        categoryAttributes.addAll(product.getCategory().getAttributes());
-
-        return categoryAttributes.stream()
-                .map(ProductAvailableAttributeDto::new)
-                .collect(Collectors.toSet());
     }
 }

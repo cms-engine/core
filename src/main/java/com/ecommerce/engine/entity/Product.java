@@ -2,12 +2,9 @@ package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
-import com.ecommerce.engine.config.exception.ApplicationException;
-import com.ecommerce.engine.config.exception.ErrorCode;
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
-import com.ecommerce.engine.util.TranslationUtils;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -145,6 +142,11 @@ public class Product {
                 .map(ProductAdditionalCategory::new)
                 .peek(category -> category.setProduct(this))
                 .collect(Collectors.toSet());
+
+        attributes = requestDto.attributes().stream()
+                .map(ProductAttribute::new)
+                .peek(atr -> atr.setProduct(this))
+                .collect(Collectors.toSet());
     }
 
     public String getLocaleTitle() {
@@ -173,39 +175,6 @@ public class Product {
 
     public String getImageSrc() {
         return nullable(image, Image::getSrc);
-    }
-
-    @PrePersist
-    @PreUpdate
-    public void validateAttributesMatchingCategoryRequirements() {
-        Set<Category> categories = getAdditionalCategories().stream()
-                .map(ProductAdditionalCategory::getCategory)
-                .collect(Collectors.toSet());
-        categories.add(getCategory());
-
-        Set<Long> mandatoryAttributes = categories.stream()
-                .map(Category::getAttributes)
-                .flatMap(Collection::stream)
-                .filter(CategoryAttribute::isMandatory)
-                .map(CategoryAttribute::getAttribute)
-                .map(Attribute::getId)
-                .collect(Collectors.toSet());
-
-        Set<Long> productAttributes = getAttributes().stream()
-                .map(ProductAttribute::getAttribute)
-                .map(Attribute::getId)
-                .collect(Collectors.toSet());
-
-        if (productAttributes.containsAll(mandatoryAttributes)) {
-            return;
-        }
-
-        Set<Long> missingIds = new HashSet<>(mandatoryAttributes);
-        missingIds.removeAll(productAttributes);
-
-        throw new ApplicationException(
-                ErrorCode.INVALID_CONFIGURATION,
-                TranslationUtils.getMessage("exception.productAttributesMismatch", missingIds));
     }
 
     @Override

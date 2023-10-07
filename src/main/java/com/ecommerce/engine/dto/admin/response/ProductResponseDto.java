@@ -3,6 +3,7 @@ package com.ecommerce.engine.dto.admin.response;
 import com.ecommerce.engine.dto.admin.common.MetaDescriptionDto;
 import com.ecommerce.engine.entity.Product;
 import com.ecommerce.engine.entity.ProductAdditionalImage;
+import com.ecommerce.engine.entity.ProductAttribute;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
 import java.math.BigDecimal;
@@ -31,7 +32,8 @@ public record ProductResponseDto(
         boolean enabled,
         Set<MetaDescriptionDto> descriptions,
         Set<AdditionalImage> additionalImages,
-        Set<Long> additionalCategories) {
+        Set<Long> additionalCategories,
+        Set<Attribute> attributes) {
 
     public ProductResponseDto(Product product) {
         this(
@@ -56,12 +58,19 @@ public record ProductResponseDto(
                 product.getAdditionalImages().stream().map(AdditionalImage::new).collect(Collectors.toSet()),
                 product.getAdditionalCategories().stream()
                         .map(category -> category.getCategory().getId())
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toSet()),
+                product.getAttributes().stream().map(Attribute::new).collect(Collectors.toSet()));
     }
 
     public record AdditionalImage(UUID id, String src, int sortOrder) {
         public AdditionalImage(ProductAdditionalImage additionalImage) {
             this(additionalImage.getImageId(), additionalImage.getImageSrc(), additionalImage.getSortOrder());
+        }
+    }
+
+    public record Attribute(long id, String value) {
+        public Attribute(ProductAttribute attribute) {
+            this(attribute.getAttribute().getId(), attribute.getValue());
         }
     }
 }

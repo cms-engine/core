@@ -2,11 +2,14 @@ package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.grid.ProductGridDto;
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
+import com.ecommerce.engine.dto.admin.response.ProductAvailableAttributeDto;
 import com.ecommerce.engine.dto.admin.response.ProductResponseDto;
 import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
+import com.ecommerce.engine.service.admin.ProductAttributeService;
 import com.ecommerce.engine.service.admin.ProductService;
 import jakarta.validation.Valid;
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductAttributeService productAttributeService;
 
     @GetMapping("/search/{id}")
     public SearchResponse<ProductGridDto> getGridPageCache(@PathVariable UUID id) {
@@ -59,5 +63,10 @@ public class ProductController {
     @DeleteMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         productService.deleteMany(ids);
+    }
+
+    @GetMapping("/{id}/available-attributes")
+    public Collection<ProductAvailableAttributeDto> getAvailableAttributes(@PathVariable long id) {
+        return productAttributeService.getAvailableAttributes(id);
     }
 }

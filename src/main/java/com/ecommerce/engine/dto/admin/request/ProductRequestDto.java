@@ -31,8 +31,10 @@ public record ProductRequestDto(
         boolean enabled,
         @NotNull @Size(min = 1) Set<@Valid MetaDescriptionDto> descriptions,
         @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid AdditionalImage> additionalImages,
-        @JsonSetter(nulls = Nulls.AS_EMPTY)
-                Set<@Valid @EntityPresence(EntityType.CATEGORY) Long> additionalCategories) {
+        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid @EntityPresence(EntityType.CATEGORY) Long> additionalCategories,
+        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid Attribute> attributes) {
 
     public record AdditionalImage(@EntityPresence(EntityType.IMAGE) UUID id, int sortOrder) {}
+
+    public record Attribute(@EntityPresence(EntityType.ATTRIBUTE) long id, String value) {}
 }

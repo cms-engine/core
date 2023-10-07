@@ -18,7 +18,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
@@ -51,9 +50,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
-    @JoinColumn
-    @NotNull Category category;
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    Category category;
 
     @ManyToOne
     @JoinColumn
@@ -118,6 +117,10 @@ public class Product {
     @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<ProductAdditionalImage> additionalImages = new HashSet<>();
+
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    Set<ProductAttribute> attributes = new HashSet<>();
 
     public Product(ProductRequestDto requestDto) {
         if (requestDto.categoryId() != null) {

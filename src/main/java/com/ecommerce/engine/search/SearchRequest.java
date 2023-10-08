@@ -7,14 +7,14 @@ import com.fasterxml.jackson.annotation.Nulls;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public record SearchRequest(
         @Min(0) int page,
         @Min(0) @Max(100) int size,
-        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid Sort> sorts,
-        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid Filter> filters) {
+        @JsonSetter(nulls = Nulls.AS_EMPTY) List<@Valid Sort> sorts,
+        @JsonSetter(nulls = Nulls.AS_EMPTY) List<@Valid Filter> filters) {
 
     public void validateSearchFieldsExisting(Map<String, SearchField> searchFields) {
         sorts().forEach(sort -> getSearchFieldOrThrow(searchFields, sort.field()));

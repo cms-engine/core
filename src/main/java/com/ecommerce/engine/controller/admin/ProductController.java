@@ -62,7 +62,7 @@ public class ProductController {
 
     @DeleteMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
-        productService.deleteMany(ids);
+        productService.delete(ids);
     }
 
     @GetMapping("/{id}/prefill-attributes")

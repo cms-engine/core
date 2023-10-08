@@ -1,9 +1,11 @@
 package com.ecommerce.engine.service.admin;
 
+import com.ecommerce.annotation.SeoUrlRemove;
 import com.ecommerce.engine.dto.admin.grid.ProductGridDto;
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
 import com.ecommerce.engine.dto.admin.response.ProductResponseDto;
 import com.ecommerce.engine.entity.Product;
+import com.ecommerce.engine.enums.SeoUrlEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ProductRepository;
 import com.ecommerce.engine.search.SearchEntity;
@@ -49,12 +51,14 @@ public class ProductService {
         return new ProductResponseDto(saved);
     }
 
+    @SeoUrlRemove(SeoUrlEntity.PRODUCT)
     public void delete(long id) {
         foreignKeysChecker.checkUsages(Product.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
-    public void deleteMany(Set<Long> ids) {
+    @SeoUrlRemove(SeoUrlEntity.PRODUCT)
+    public void delete(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Product.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }

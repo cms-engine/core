@@ -1,9 +1,11 @@
 package com.ecommerce.engine.service.admin;
 
+import com.ecommerce.annotation.SeoUrlRemove;
 import com.ecommerce.engine.dto.admin.grid.PageGridDto;
 import com.ecommerce.engine.dto.admin.request.PageRequestDto;
 import com.ecommerce.engine.dto.admin.response.PageResponseDto;
 import com.ecommerce.engine.entity.Page;
+import com.ecommerce.engine.enums.SeoUrlEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.PageRepository;
 import com.ecommerce.engine.search.SearchEntity;
@@ -44,12 +46,14 @@ public class PageService {
         return new PageResponseDto(saved);
     }
 
+    @SeoUrlRemove(SeoUrlEntity.PAGE)
     public void delete(long id) {
         foreignKeysChecker.checkUsages(Page.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
-    public void deleteMany(Set<Long> ids) {
+    @SeoUrlRemove(SeoUrlEntity.PAGE)
+    public void delete(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Page.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }

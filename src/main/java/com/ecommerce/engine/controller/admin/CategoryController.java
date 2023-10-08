@@ -58,6 +58,6 @@ public class CategoryController {
 
     @DeleteMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
-        categoryService.deleteMany(ids);
+        categoryService.delete(ids);
     }
 }

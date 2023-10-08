@@ -1,9 +1,11 @@
 package com.ecommerce.engine.service.admin;
 
+import com.ecommerce.annotation.SeoUrlRemove;
 import com.ecommerce.engine.dto.admin.grid.CategoryGridDto;
 import com.ecommerce.engine.dto.admin.request.CategoryRequestDto;
 import com.ecommerce.engine.dto.admin.response.CategoryResponseDto;
 import com.ecommerce.engine.entity.Category;
+import com.ecommerce.engine.enums.SeoUrlEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CategoryRepository;
 import com.ecommerce.engine.search.SearchEntity;
@@ -46,12 +48,14 @@ public class CategoryService implements EntityPresenceService<Long> {
         return new CategoryResponseDto(saved);
     }
 
+    @SeoUrlRemove(SeoUrlEntity.CATEGORY)
     public void delete(long id) {
         foreignKeysChecker.checkUsages(Category.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
-    public void deleteMany(Set<Long> ids) {
+    @SeoUrlRemove(SeoUrlEntity.CATEGORY)
+    public void delete(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Category.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }

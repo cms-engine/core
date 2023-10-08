@@ -24,7 +24,7 @@ public class EntityPresenceValidator implements ConstraintValidator<EntityPresen
         EntityType entityType = constraintAnnotation.value();
         EntityPresenceService entityPresenceService = typeEntityPresenceServiceMap.get(entityType);
         if (entityPresenceService == null) {
-            throw new RuntimeException("Cannot find entity presence service for type %s".formatted(entityType));
+            throw new RuntimeException("Cannot find value presence service for type %s".formatted(entityType));
         }
         getFunction = entityPresenceService::exists;
     }

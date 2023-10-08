@@ -39,9 +39,9 @@ public class StoreSetting {
 
     boolean useSubFoldersForMultiLanguageUrls; // domain.com/uk/, domain.com/en/
 
-    boolean buildUniqueUrlForEachLanguage; // domain.com/biser (uk), domain.com/bead (en)
-
     boolean useSuffixesForMultiLanguageUrls; // domain.com/iphone-uk, domain.com/iphone-en
+
+    boolean translateUrlForEachLanguage; // domain.com/biser (uk), domain.com/bead (en)
 
     boolean allowAnonymousUsersToReviewProducts;
 

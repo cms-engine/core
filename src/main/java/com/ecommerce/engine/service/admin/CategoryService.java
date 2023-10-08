@@ -1,6 +1,6 @@
 package com.ecommerce.engine.service.admin;
 
-import com.ecommerce.annotation.SeoUrlRemove;
+import com.ecommerce.engine.annotation.SeoUrlRemove;
 import com.ecommerce.engine.dto.admin.grid.CategoryGridDto;
 import com.ecommerce.engine.dto.admin.request.CategoryRequestDto;
 import com.ecommerce.engine.dto.admin.response.CategoryResponseDto;

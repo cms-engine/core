@@ -1,4 +1,4 @@
-package com.ecommerce.annotation;
+package com.ecommerce.engine.annotation;
 
 import com.ecommerce.engine.service.admin.SeoUrlRemover;
 import java.util.Collection;

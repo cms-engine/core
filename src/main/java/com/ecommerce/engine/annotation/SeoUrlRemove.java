@@ -1,4 +1,4 @@
-package com.ecommerce.annotation;
+package com.ecommerce.engine.annotation;
 
 import com.ecommerce.engine.enums.SeoUrlEntity;
 import java.lang.annotation.ElementType;

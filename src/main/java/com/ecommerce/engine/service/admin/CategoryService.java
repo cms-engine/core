@@ -15,6 +15,7 @@ import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
+import jakarta.transaction.Transactional;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -48,12 +49,14 @@ public class CategoryService implements EntityPresenceService<Long> {
         return new CategoryResponseDto(saved);
     }
 
+    @Transactional
     @SeoUrlRemove(SeoUrlEntity.CATEGORY)
     public void delete(long id) {
         foreignKeysChecker.checkUsages(Category.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
+    @Transactional
     @SeoUrlRemove(SeoUrlEntity.CATEGORY)
     public void delete(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Category.TABLE_NAME, id));

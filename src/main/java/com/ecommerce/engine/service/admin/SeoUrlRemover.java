@@ -17,6 +17,6 @@ public class SeoUrlRemover {
     }
 
     public void remove(SeoUrlEntity entity, Set<Long> recordIds) {
-        seoUrlRepository.deleteByEntityAndRecordIdIn(entity, recordId);
+        seoUrlRepository.deleteByEntityAndRecordIdIn(entity, recordIds);
     }
 }

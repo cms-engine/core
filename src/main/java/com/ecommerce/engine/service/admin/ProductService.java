@@ -13,6 +13,7 @@ import com.ecommerce.engine.search.SearchRequest;
 import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
+import jakarta.transaction.Transactional;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -51,12 +52,14 @@ public class ProductService {
         return new ProductResponseDto(saved);
     }
 
+    @Transactional
     @SeoUrlRemove(SeoUrlEntity.PRODUCT)
     public void delete(long id) {
         foreignKeysChecker.checkUsages(Product.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
+    @Transactional
     @SeoUrlRemove(SeoUrlEntity.PRODUCT)
     public void delete(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Product.TABLE_NAME, id));

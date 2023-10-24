@@ -1,1 +1,1 @@
-rootProject.name = "engine"
+rootProject.name = "cms-engine"

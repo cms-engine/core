@@ -1,0 +1,3 @@
+#Auto detecting line endings is broken in gradle plugin
+#https://github.com/diffplug/spotless/issues/540#issuecomment-1081762006
+* text eol=lf

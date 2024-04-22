@@ -12,7 +12,7 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 public class CustomAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver {
 
-    public static final List<Locale> SUPPORTED_ADMIN_LOCALES = List.of(Locale.ENGLISH, new Locale("uk"));
+    public static final List<Locale> SUPPORTED_ADMIN_LOCALES = List.of(Locale.ENGLISH, Locale.of("uk"));
 
     @Nonnull
     @Override

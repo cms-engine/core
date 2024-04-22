@@ -1,8 +1,5 @@
 @file:Suppress("SpellCheckingInspection")
 
-import java.net.URI
-
-
 plugins {
 	java
 	id("org.springframework.boot") version "3.2.5"

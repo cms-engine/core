@@ -1,6 +1,11 @@
-package com.ecommerce.engine.config.exception;
+package com.ecommerce.engine.exception.handler;
 
 public enum ErrorCode {
+    VALIDATION_ERROR,
+    NOT_FOUND,
+    INTERNAL_ERROR,
+    NULL_POINTER,
+    JSON_PARSE_ERROR,
     SEARCH_FIELD_NOT_FOUND,
     INVALID_SEARCH_REQUEST,
     EMAIL_ALREADY_USED,

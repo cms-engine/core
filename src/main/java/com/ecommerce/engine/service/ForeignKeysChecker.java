@@ -1,7 +1,7 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.config.exception.ApplicationException;
-import com.ecommerce.engine.config.exception.ErrorCode;
+import com.ecommerce.engine.exception.ApplicationException;
+import com.ecommerce.engine.exception.handler.ErrorCode;
 import com.ecommerce.engine.util.TranslationUtils;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

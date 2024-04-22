@@ -1,13 +1,13 @@
 package com.ecommerce.engine.service.store;
 
-import com.ecommerce.engine.config.exception.ApplicationException;
-import com.ecommerce.engine.config.exception.ErrorCode;
 import com.ecommerce.engine.dto.common.ChangeCredentialsRequestDto;
 import com.ecommerce.engine.dto.store.request.CustomerInfoRequestDto;
 import com.ecommerce.engine.dto.store.request.CustomerRegisterRequestDto;
 import com.ecommerce.engine.dto.store.response.CustomerInfoResponseDto;
 import com.ecommerce.engine.entity.Customer;
+import com.ecommerce.engine.exception.ApplicationException;
 import com.ecommerce.engine.exception.NotFoundException;
+import com.ecommerce.engine.exception.handler.ErrorCode;
 import com.ecommerce.engine.repository.CustomerRepository;
 import com.ecommerce.engine.util.StoreSettings;
 import com.ecommerce.engine.util.TranslationUtils;

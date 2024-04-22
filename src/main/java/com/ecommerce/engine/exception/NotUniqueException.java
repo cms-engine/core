@@ -1,7 +1,6 @@
 package com.ecommerce.engine.exception;
 
-import com.ecommerce.engine.config.exception.ApplicationException;
-import com.ecommerce.engine.config.exception.ErrorCode;
+import com.ecommerce.engine.exception.handler.ErrorCode;
 import com.ecommerce.engine.util.TranslationUtils;
 import org.apache.commons.lang3.StringUtils;
 

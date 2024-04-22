@@ -1,6 +1,5 @@
 package com.ecommerce.engine.config;
 
-import com.ecommerce.engine.config.exception.CustomErrorAttributes;
 import com.ecommerce.engine.validation.LocaleDeserializer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -21,14 +20,19 @@ import org.springframework.web.servlet.LocaleResolver;
 @Configuration
 public class EngineConfiguration {
 
-    public static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
-            .addModule(new JavaTimeModule())
-            .addModule(new SimpleModule().addDeserializer(Locale.class, new LocaleDeserializer()))
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
-            .disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
-            .disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .build();
+    public static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
+
+    private static ObjectMapper buildObjectMapper() {
+        return JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .addModule(new SimpleModule().addDeserializer(Locale.class, new LocaleDeserializer()))
+                .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+                .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+                .disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
+                .disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .build();
+    }
 
     public static final String APP_VERSION;
 
@@ -44,15 +48,9 @@ public class EngineConfiguration {
         APP_VERSION = properties.getProperty("version");
     }
 
-    @SuppressWarnings("SameReturnValue")
     @Bean
     public ObjectMapper objectMapper() {
-        return OBJECT_MAPPER;
-    }
-
-    @Bean
-    public CustomErrorAttributes customErrorAttributes() {
-        return new CustomErrorAttributes();
+        return buildObjectMapper();
     }
 
     @Bean

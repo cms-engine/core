@@ -25,11 +25,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<CategoryGridDto> getGridPageCache() {
-        return categoryService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<CategoryGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return categoryService.search(searchRequest);

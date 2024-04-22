@@ -25,11 +25,6 @@ public class DeliveryMethodController {
 
     private final DeliveryMethodService deliveryMethodService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<DeliveryMethodGridDto> getGridPageCache() {
-        return deliveryMethodService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<DeliveryMethodGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return deliveryMethodService.search(searchRequest);

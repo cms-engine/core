@@ -24,11 +24,6 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<BrandResponseDto> getGridPageCache() {
-        return brandService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<BrandResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return brandService.search(searchRequest);

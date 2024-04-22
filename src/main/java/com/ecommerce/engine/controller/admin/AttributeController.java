@@ -18,11 +18,6 @@ public class AttributeController {
 
     private final AttributeService attributeService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<AttributeGridDto> getGridPageCache() {
-        return attributeService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<AttributeGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return attributeService.search(searchRequest);

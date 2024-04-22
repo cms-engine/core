@@ -25,11 +25,6 @@ public class PageController {
 
     private final PageService pageService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<PageGridDto> getGridPageCache() {
-        return pageService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<PageGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return pageService.search(searchRequest);

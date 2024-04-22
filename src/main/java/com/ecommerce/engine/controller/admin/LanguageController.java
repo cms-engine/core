@@ -24,11 +24,6 @@ public class LanguageController {
 
     private final LanguageService languageService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<LanguageResponseDto> getGridPageCache() {
-        return languageService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<LanguageResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return languageService.search(searchRequest);

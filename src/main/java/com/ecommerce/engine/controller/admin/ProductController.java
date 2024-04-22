@@ -29,11 +29,6 @@ public class ProductController {
     private final ProductService productService;
     private final ProductAttributeService productAttributeService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<ProductGridDto> getGridPageCache() {
-        return productService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<ProductGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return productService.search(searchRequest);

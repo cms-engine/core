@@ -24,11 +24,6 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<CustomerResponseDto> getGridPageCache() {
-        return customerService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<CustomerResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return customerService.search(searchRequest);

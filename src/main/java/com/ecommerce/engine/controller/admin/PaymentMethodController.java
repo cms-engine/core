@@ -25,11 +25,6 @@ public class PaymentMethodController {
 
     private final PaymentMethodService paymentMethodService;
 
-    @GetMapping("/search/{id}")
-    public SearchResponse<PaymentMethodGridDto> getGridPageCache() {
-        return paymentMethodService.search(null);
-    }
-
     @PostMapping("/search")
     public SearchResponse<PaymentMethodGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
         return paymentMethodService.search(searchRequest);

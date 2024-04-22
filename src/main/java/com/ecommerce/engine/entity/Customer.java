@@ -4,6 +4,7 @@ import com.ecommerce.engine.dto.admin.request.CustomerRequestDto;
 import com.ecommerce.engine.dto.store.request.CustomerInfoRequestDto;
 import com.ecommerce.engine.dto.store.request.CustomerRegisterRequestDto;
 import com.ecommerce.engine.util.NullUtils;
+import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +39,7 @@ public class Customer {
 
     public static final String TABLE_NAME = "customer";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

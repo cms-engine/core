@@ -6,15 +6,13 @@ import com.ecommerce.engine.dto.admin.response.AttributeResponseDto;
 import com.ecommerce.engine.entity.Attribute;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.AttributeRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class AttributeService implements EntityPresenceService<Long> {
 
     private final AttributeRepository repository;
-    private final SearchService<Attribute, AttributeGridDto> searchService;
+    private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
 
     public AttributeResponseDto get(long id) {
@@ -60,8 +58,8 @@ public class AttributeService implements EntityPresenceService<Long> {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Attribute.TABLE_NAME, id));
     }
 
-    public SearchResponse<AttributeGridDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(id, searchRequest, SearchEntity.ATTRIBUTE, Attribute.class, AttributeGridDto::new);
+    public SearchResponse<AttributeGridDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, Attribute.class, AttributeGridDto::new);
     }
 
     @Override

@@ -3,12 +3,11 @@ package com.ecommerce.engine.controller.admin;
 import com.ecommerce.engine.dto.admin.grid.PageGridDto;
 import com.ecommerce.engine.dto.admin.request.PageRequestDto;
 import com.ecommerce.engine.dto.admin.response.PageResponseDto;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.admin.PageService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +26,13 @@ public class PageController {
     private final PageService pageService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<PageGridDto> getGridPageCache(@PathVariable UUID id) {
-        return pageService.search(id, null);
+    public SearchResponse<PageGridDto> getGridPageCache() {
+        return pageService.search(null);
     }
 
     @PostMapping("/search")
     public SearchResponse<PageGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return pageService.search(null, searchRequest);
+        return pageService.search(searchRequest);
     }
 
     @GetMapping("/{id}")

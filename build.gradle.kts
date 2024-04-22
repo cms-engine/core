@@ -1,17 +1,20 @@
 @file:Suppress("SpellCheckingInspection")
 
+import java.net.URI
+
+
 plugins {
 	java
-	id("org.springframework.boot") version "3.1.3"
-	id("io.spring.dependency-management") version "1.1.3"
-	id("com.diffplug.spotless") version "6.21.0"
+	id("org.springframework.boot") version "3.2.5"
+	id("io.spring.dependency-management") version "1.1.4"
+	id("com.diffplug.spotless") version "6.25.0"
 }
 
 group = "com.ecommerce"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
@@ -29,8 +32,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-	implementation("org.apache.commons:commons-text:1.10.0")
+	implementation("org.apache.commons:commons-lang3:3.14.0")
 	implementation("org.yaml:snakeyaml:2.2")
+	implementation("io.github.lipiridi:hibernate-search-engine:1.0.3")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 

@@ -6,13 +6,11 @@ import com.ecommerce.engine.dto.admin.response.DeliveryMethodResponseDto;
 import com.ecommerce.engine.entity.DeliveryMethod;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.DeliveryMethodRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class DeliveryMethodService {
 
     private final DeliveryMethodRepository repository;
-    private final SearchService<DeliveryMethod, DeliveryMethodGridDto> searchService;
+    private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
 
     public DeliveryMethodResponseDto get(long id) {
@@ -58,8 +56,7 @@ public class DeliveryMethodService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(DeliveryMethod.TABLE_NAME, id));
     }
 
-    public SearchResponse<DeliveryMethodGridDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(
-                id, searchRequest, SearchEntity.DELIVERY_METHOD, DeliveryMethod.class, DeliveryMethodGridDto::new);
+    public SearchResponse<DeliveryMethodGridDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, DeliveryMethod.class, DeliveryMethodGridDto::new);
     }
 }

@@ -5,6 +5,7 @@ import static com.ecommerce.engine.util.NullUtils.nullable;
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
+import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -31,6 +32,7 @@ public class Product {
 
     public static final String TABLE_NAME = "product";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

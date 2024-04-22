@@ -1,6 +1,7 @@
 package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;
+import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,6 +33,7 @@ public class CustomerGroup {
 
     public static final String TABLE_NAME = "customer_group";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

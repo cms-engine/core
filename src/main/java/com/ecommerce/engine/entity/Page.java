@@ -1,6 +1,7 @@
 package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine.dto.admin.request.PageRequestDto;
+import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,6 +36,7 @@ public class Page {
 
     public static final String TABLE_NAME = "page";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

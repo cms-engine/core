@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.lang3.LocaleUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 public class CustomAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver {
@@ -16,7 +17,7 @@ public class CustomAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver
     @Nonnull
     @Override
     public Locale resolveLocale(@Nonnull HttpServletRequest request) {
-        String languageHeader = request.getHeader("Accept-Language");
+        String languageHeader = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
         Locale requestLocale;
 
         // Ability to accept locales written with underscore

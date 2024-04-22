@@ -1,6 +1,7 @@
 package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
+import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,6 +35,7 @@ public class PaymentMethod {
 
     public static final String TABLE_NAME = "payment_method";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

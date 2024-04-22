@@ -14,14 +14,13 @@ import com.ecommerce.engine.entity.ProductDescription;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.exception.NotUniqueException;
 import com.ecommerce.engine.repository.LanguageRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
 import com.ecommerce.engine.util.StoreSettings;
 import com.ecommerce.engine.util.TranslationUtils;
 import com.ecommerce.engine.validation.EntityType;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.*;
@@ -34,13 +33,10 @@ import org.springframework.stereotype.Service;
 public class LanguageService implements EntityPresenceService<Integer> {
 
     private final LanguageRepository repository;
-    private final SearchService<Language, LanguageResponseDto> searchService;
+    private final SearchService searchService;
     private final EntityManager entityManager;
 
-    public LanguageService(
-            LanguageRepository repository,
-            SearchService<Language, LanguageResponseDto> searchService,
-            EntityManager entityManager) {
+    public LanguageService(LanguageRepository repository, SearchService searchService, EntityManager entityManager) {
         this.repository = repository;
         this.searchService = searchService;
         this.entityManager = entityManager;
@@ -102,8 +98,8 @@ public class LanguageService implements EntityPresenceService<Integer> {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Language.TABLE_NAME, id));
     }
 
-    public SearchResponse<LanguageResponseDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(id, searchRequest, SearchEntity.LANGUAGE, Language.class, LanguageResponseDto::new);
+    public SearchResponse<LanguageResponseDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, Language.class, LanguageResponseDto::new);
     }
 
     @Override

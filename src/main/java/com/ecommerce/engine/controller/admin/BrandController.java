@@ -2,12 +2,11 @@ package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.request.BrandRequestDto;
 import com.ecommerce.engine.dto.admin.response.BrandResponseDto;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.admin.BrandService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +25,13 @@ public class BrandController {
     private final BrandService brandService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<BrandResponseDto> getGridPageCache(@PathVariable UUID id) {
-        return brandService.search(id, null);
+    public SearchResponse<BrandResponseDto> getGridPageCache() {
+        return brandService.search(null);
     }
 
     @PostMapping("/search")
     public SearchResponse<BrandResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return brandService.search(null, searchRequest);
+        return brandService.search(searchRequest);
     }
 
     @GetMapping("/{id}")

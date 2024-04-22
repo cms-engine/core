@@ -3,12 +3,11 @@ package com.ecommerce.engine.controller.admin;
 import com.ecommerce.engine.dto.admin.grid.CustomerGroupGridDto;
 import com.ecommerce.engine.dto.admin.request.CustomerGroupRequestDto;
 import com.ecommerce.engine.dto.admin.response.CustomerGroupResponseDto;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.admin.CustomerGroupService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +26,13 @@ public class CustomerGroupController {
     private final CustomerGroupService customerGroupService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<CustomerGroupGridDto> getGridPageCache(@PathVariable UUID id) {
-        return customerGroupService.search(id, null);
+    public SearchResponse<CustomerGroupGridDto> getGridPageCache() {
+        return customerGroupService.search(null);
     }
 
     @PostMapping("/search")
     public SearchResponse<CustomerGroupGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return customerGroupService.search(null, searchRequest);
+        return customerGroupService.search(searchRequest);
     }
 
     @GetMapping("/{id}")

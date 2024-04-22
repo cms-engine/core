@@ -5,15 +5,13 @@ import com.ecommerce.engine.dto.admin.response.BrandResponseDto;
 import com.ecommerce.engine.entity.Brand;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.BrandRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class BrandService implements EntityPresenceService<Long> {
 
     private final BrandRepository repository;
-    private final SearchService<Brand, BrandResponseDto> searchService;
+    private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
 
     public BrandResponseDto get(long id) {
@@ -59,8 +57,8 @@ public class BrandService implements EntityPresenceService<Long> {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Brand.TABLE_NAME, id));
     }
 
-    public SearchResponse<BrandResponseDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(id, searchRequest, SearchEntity.BRAND, Brand.class, BrandResponseDto::new);
+    public SearchResponse<BrandResponseDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, Brand.class, BrandResponseDto::new);
     }
 
     @Override

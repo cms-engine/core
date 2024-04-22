@@ -8,16 +8,14 @@ import com.ecommerce.engine.entity.Category;
 import com.ecommerce.engine.enums.SeoUrlEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CategoryRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.transaction.Transactional;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class CategoryService implements EntityPresenceService<Long> {
 
     private final CategoryRepository repository;
-    private final SearchService<Category, CategoryGridDto> searchService;
+    private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
 
     public CategoryResponseDto get(long id) {
@@ -67,8 +65,8 @@ public class CategoryService implements EntityPresenceService<Long> {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Category.TABLE_NAME, id));
     }
 
-    public SearchResponse<CategoryGridDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(id, searchRequest, SearchEntity.CATEGORY, Category.class, CategoryGridDto::new);
+    public SearchResponse<CategoryGridDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, Category.class, CategoryGridDto::new);
     }
 
     @Override

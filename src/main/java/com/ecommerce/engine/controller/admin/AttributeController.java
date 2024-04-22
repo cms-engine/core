@@ -3,12 +3,11 @@ package com.ecommerce.engine.controller.admin;
 import com.ecommerce.engine.dto.admin.grid.AttributeGridDto;
 import com.ecommerce.engine.dto.admin.request.AttributeRequestDto;
 import com.ecommerce.engine.dto.admin.response.AttributeResponseDto;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.admin.AttributeService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +19,13 @@ public class AttributeController {
     private final AttributeService attributeService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<AttributeGridDto> getGridPageCache(@PathVariable UUID id) {
-        return attributeService.search(id, null);
+    public SearchResponse<AttributeGridDto> getGridPageCache() {
+        return attributeService.search(null);
     }
 
     @PostMapping("/search")
     public SearchResponse<AttributeGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return attributeService.search(null, searchRequest);
+        return attributeService.search(searchRequest);
     }
 
     @GetMapping("/{id}")

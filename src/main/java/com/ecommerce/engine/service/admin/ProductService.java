@@ -8,14 +8,12 @@ import com.ecommerce.engine.entity.Product;
 import com.ecommerce.engine.enums.SeoUrlEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ProductRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.transaction.Transactional;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepository repository;
-    private final SearchService<Product, ProductGridDto> searchService;
+    private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
     private final ProductAttributeService productAttributeService;
 
@@ -70,7 +68,7 @@ public class ProductService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Product.TABLE_NAME, id));
     }
 
-    public SearchResponse<ProductGridDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(id, searchRequest, SearchEntity.PRODUCT, Product.class, ProductGridDto::new);
+    public SearchResponse<ProductGridDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, Product.class, ProductGridDto::new);
     }
 }

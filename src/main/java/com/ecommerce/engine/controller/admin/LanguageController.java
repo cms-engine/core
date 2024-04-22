@@ -2,12 +2,11 @@ package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.request.LanguageRequestDto;
 import com.ecommerce.engine.dto.admin.response.LanguageResponseDto;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.admin.LanguageService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +25,13 @@ public class LanguageController {
     private final LanguageService languageService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<LanguageResponseDto> getGridPageCache(@PathVariable UUID id) {
-        return languageService.search(id, null);
+    public SearchResponse<LanguageResponseDto> getGridPageCache() {
+        return languageService.search(null);
     }
 
     @PostMapping("/search")
     public SearchResponse<LanguageResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return languageService.search(null, searchRequest);
+        return languageService.search(searchRequest);
     }
 
     @GetMapping("/{id}")

@@ -5,13 +5,11 @@ import com.ecommerce.engine.dto.admin.response.CustomerResponseDto;
 import com.ecommerce.engine.entity.Customer;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CustomerRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
 
     private final CustomerRepository repository;
-    private final SearchService<Customer, CustomerResponseDto> searchService;
+    private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
 
     public CustomerResponseDto get(long id) {
@@ -49,7 +47,7 @@ public class CustomerService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Customer.TABLE_NAME, id));
     }
 
-    public SearchResponse<CustomerResponseDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(id, searchRequest, SearchEntity.CUSTOMER, Customer.class, CustomerResponseDto::new);
+    public SearchResponse<CustomerResponseDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, Customer.class, CustomerResponseDto::new);
     }
 }

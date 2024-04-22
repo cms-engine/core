@@ -8,14 +8,12 @@ import com.ecommerce.engine.entity.Page;
 import com.ecommerce.engine.enums.SeoUrlEntity;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.PageRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.transaction.Transactional;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class PageService {
 
     private final PageRepository repository;
-    private final SearchService<Page, PageGridDto> searchService;
+    private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
 
     public PageResponseDto get(long id) {
@@ -65,7 +63,7 @@ public class PageService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Page.TABLE_NAME, id));
     }
 
-    public SearchResponse<PageGridDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(id, searchRequest, SearchEntity.PAGE, Page.class, PageGridDto::new);
+    public SearchResponse<PageGridDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, Page.class, PageGridDto::new);
     }
 }

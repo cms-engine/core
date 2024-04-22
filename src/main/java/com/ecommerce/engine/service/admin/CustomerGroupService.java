@@ -6,15 +6,13 @@ import com.ecommerce.engine.dto.admin.response.CustomerGroupResponseDto;
 import com.ecommerce.engine.entity.CustomerGroup;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CustomerGroupRepository;
-import com.ecommerce.engine.search.SearchEntity;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
-import com.ecommerce.engine.search.SearchService;
 import com.ecommerce.engine.service.EntityPresenceService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
 import com.ecommerce.engine.validation.EntityType;
+import io.github.lipiridi.searchengine.SearchService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class CustomerGroupService implements EntityPresenceService<Long> {
 
     private final CustomerGroupRepository repository;
-    private final SearchService<CustomerGroup, CustomerGroupGridDto> searchService;
+    private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
 
     public CustomerGroupResponseDto get(long id) {
@@ -60,9 +58,8 @@ public class CustomerGroupService implements EntityPresenceService<Long> {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(CustomerGroup.TABLE_NAME, id));
     }
 
-    public SearchResponse<CustomerGroupGridDto> search(UUID id, SearchRequest searchRequest) {
-        return searchService.search(
-                id, searchRequest, SearchEntity.CUSTOMER_GROUP, CustomerGroup.class, CustomerGroupGridDto::new);
+    public SearchResponse<CustomerGroupGridDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, CustomerGroup.class, CustomerGroupGridDto::new);
     }
 
     @Override

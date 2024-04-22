@@ -3,6 +3,7 @@ package com.ecommerce.engine.entity;
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
 import com.ecommerce.engine.dto.admin.request.CategoryRequestDto;
+import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,6 +41,7 @@ public class Category {
 
     public static final String TABLE_NAME = "category";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

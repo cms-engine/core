@@ -3,12 +3,11 @@ package com.ecommerce.engine.controller.admin;
 import com.ecommerce.engine.dto.admin.grid.PaymentMethodGridDto;
 import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
 import com.ecommerce.engine.dto.admin.response.PaymentMethodResponseDto;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.admin.PaymentMethodService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +26,13 @@ public class PaymentMethodController {
     private final PaymentMethodService paymentMethodService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<PaymentMethodGridDto> getGridPageCache(@PathVariable UUID id) {
-        return paymentMethodService.search(id, null);
+    public SearchResponse<PaymentMethodGridDto> getGridPageCache() {
+        return paymentMethodService.search(null);
     }
 
     @PostMapping("/search")
     public SearchResponse<PaymentMethodGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return paymentMethodService.search(null, searchRequest);
+        return paymentMethodService.search(searchRequest);
     }
 
     @GetMapping("/{id}")

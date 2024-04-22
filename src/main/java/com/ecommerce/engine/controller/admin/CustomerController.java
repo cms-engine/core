@@ -2,12 +2,11 @@ package com.ecommerce.engine.controller.admin;
 
 import com.ecommerce.engine.dto.admin.request.CustomerRequestDto;
 import com.ecommerce.engine.dto.admin.response.CustomerResponseDto;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.admin.CustomerService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +25,13 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<CustomerResponseDto> getGridPageCache(@PathVariable UUID id) {
-        return customerService.search(id, null);
+    public SearchResponse<CustomerResponseDto> getGridPageCache() {
+        return customerService.search(null);
     }
 
     @PostMapping("/search")
     public SearchResponse<CustomerResponseDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return customerService.search(null, searchRequest);
+        return customerService.search(searchRequest);
     }
 
     @GetMapping("/{id}")

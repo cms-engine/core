@@ -3,12 +3,11 @@ package com.ecommerce.engine.controller.admin;
 import com.ecommerce.engine.dto.admin.grid.DeliveryMethodGridDto;
 import com.ecommerce.engine.dto.admin.request.DeliveryMethodRequestDto;
 import com.ecommerce.engine.dto.admin.response.DeliveryMethodResponseDto;
-import com.ecommerce.engine.search.SearchRequest;
-import com.ecommerce.engine.search.SearchResponse;
 import com.ecommerce.engine.service.admin.DeliveryMethodService;
+import io.github.lipiridi.searchengine.dto.SearchRequest;
+import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +26,13 @@ public class DeliveryMethodController {
     private final DeliveryMethodService deliveryMethodService;
 
     @GetMapping("/search/{id}")
-    public SearchResponse<DeliveryMethodGridDto> getGridPageCache(@PathVariable UUID id) {
-        return deliveryMethodService.search(id, null);
+    public SearchResponse<DeliveryMethodGridDto> getGridPageCache() {
+        return deliveryMethodService.search(null);
     }
 
     @PostMapping("/search")
     public SearchResponse<DeliveryMethodGridDto> getGridPage(@Valid @RequestBody SearchRequest searchRequest) {
-        return deliveryMethodService.search(null, searchRequest);
+        return deliveryMethodService.search(searchRequest);
     }
 
     @GetMapping("/{id}")

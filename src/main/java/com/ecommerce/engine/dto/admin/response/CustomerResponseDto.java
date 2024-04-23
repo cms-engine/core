@@ -14,8 +14,8 @@ public record CustomerResponseDto(
         String phone,
         String email,
         boolean newsletter,
-        Instant created,
-        Instant updated,
+        Instant createdAt,
+        Instant updatedAt,
         boolean enabled) {
 
     public CustomerResponseDto(Customer customer) {

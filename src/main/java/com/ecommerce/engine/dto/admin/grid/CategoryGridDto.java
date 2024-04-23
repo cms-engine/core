@@ -10,8 +10,8 @@ public record CategoryGridDto(
         String parentTitle,
         String imageSrc,
         int sortOrder,
-        Instant created,
-        Instant updated,
+        Instant createdAt,
+        Instant updatedAt,
         boolean enabled) {
 
     public CategoryGridDto(Category category) {

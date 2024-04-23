@@ -61,10 +61,10 @@ public class Customer {
     boolean newsletter;
 
     @CreationTimestamp
-    Instant created;
+    Instant createdAt;
 
     @UpdateTimestamp
-    Instant updated;
+    Instant updatedAt;
 
     boolean enabled;
 

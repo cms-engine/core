@@ -56,10 +56,10 @@ public class ProductReview {
     int rating;
 
     @CreationTimestamp
-    Instant created;
+    Instant createdAt;
 
     @UpdateTimestamp
-    Instant updated;
+    Instant updatedAt;
 
     boolean enabled;
 

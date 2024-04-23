@@ -57,10 +57,10 @@ public class Category {
     int sortOrder;
 
     @CreationTimestamp
-    Instant created;
+    Instant createdAt;
 
     @UpdateTimestamp
-    Instant updated;
+    Instant updatedAt;
 
     boolean enabled;
 

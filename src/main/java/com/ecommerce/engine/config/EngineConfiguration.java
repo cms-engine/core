@@ -11,12 +11,20 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.Random;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.type.format.jackson.JacksonJsonFormatMapper;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.LocaleResolver;
 
+@EnableJpaAuditing
 @Configuration
 public class EngineConfiguration {
 
@@ -56,5 +64,17 @@ public class EngineConfiguration {
     @Bean
     public LocaleResolver localeResolver() {
         return new CustomAcceptHeaderLocaleResolver();
+    }
+
+    @Bean
+    public HibernatePropertiesCustomizer jsonFormatMapperCustomizer(ObjectMapper objectMapper) {
+        return properties ->
+                properties.put(AvailableSettings.JSON_FORMAT_MAPPER, new JacksonJsonFormatMapper(objectMapper));
+    }
+
+    // use real user id from security
+    @Bean
+    public AuditorAware<Long> auditorAware() {
+        return () -> Optional.of(new Random().nextLong(100));
     }
 }

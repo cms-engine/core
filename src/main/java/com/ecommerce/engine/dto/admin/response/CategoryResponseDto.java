@@ -14,8 +14,8 @@ public record CategoryResponseDto(
         UUID imageId,
         String imageSrc,
         int sortOrder,
-        Instant created,
-        Instant updated,
+        Instant createdAt,
+        Instant updatedAt,
         boolean enabled,
         Set<MetaDescriptionDto> descriptions,
         Set<Attribute> attributes) {

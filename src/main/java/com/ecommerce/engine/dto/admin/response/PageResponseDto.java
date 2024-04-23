@@ -9,8 +9,8 @@ public record PageResponseDto(
         long id,
         boolean bottom,
         int sortOrder,
-        Instant created,
-        Instant updated,
+        Instant createdAt,
+        Instant updatedAt,
         boolean enabled,
         Set<MetaDescriptionDto> descriptions) {
     public PageResponseDto(Page page) {

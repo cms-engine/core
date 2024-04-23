@@ -20,6 +20,9 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
@@ -27,6 +30,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Entity
 @NoArgsConstructor
 @Table(name = Product.TABLE_NAME)
+@EntityListeners(AuditingEntityListener.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
 
@@ -86,10 +90,17 @@ public class Product {
     BigDecimal weight;
 
     @CreationTimestamp
-    Instant created;
+    Instant createdAt;
 
     @UpdateTimestamp
-    Instant updated;
+    Instant updatedAt;
+
+    @Column(updatable = false)
+    @CreatedBy
+    private UUID createdBy;
+
+    @LastModifiedBy
+    private UUID updatedBy;
 
     boolean enabled;
 

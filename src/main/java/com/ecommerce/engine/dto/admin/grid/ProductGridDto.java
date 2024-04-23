@@ -23,8 +23,8 @@ public record ProductGridDto(
         BigDecimal height,
         WeightClass weightClass,
         BigDecimal weight,
-        Instant created,
-        Instant updated,
+        Instant createdAt,
+        Instant updatedAt,
         boolean enabled) {
 
     public ProductGridDto(Product product) {

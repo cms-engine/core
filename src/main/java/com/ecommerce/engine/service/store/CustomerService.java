@@ -12,6 +12,7 @@ import com.ecommerce.engine.repository.CustomerRepository;
 import com.ecommerce.engine.util.StoreSettings;
 import com.ecommerce.engine.util.TranslationUtils;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +24,7 @@ public class CustomerService {
 
     private final CustomerRepository repository;
 
-    public CustomerInfoResponseDto get(long id) {
+    public CustomerInfoResponseDto get(UUID id) {
         Customer customer = findById(id);
         return new CustomerInfoResponseDto(customer);
     }
@@ -39,7 +40,7 @@ public class CustomerService {
         return new CustomerInfoResponseDto(saved);
     }
 
-    public void changeCredentials(long id, ChangeCredentialsRequestDto requestDto) {
+    public void changeCredentials(UUID id, ChangeCredentialsRequestDto requestDto) {
         Customer customer = findById(id);
 
         String email = requestDto.email();
@@ -60,14 +61,14 @@ public class CustomerService {
         repository.save(customer);
     }
 
-    public CustomerInfoResponseDto update(long id, CustomerInfoRequestDto requestDto) {
+    public CustomerInfoResponseDto update(UUID id, CustomerInfoRequestDto requestDto) {
         Customer customer = findById(id);
         customer.update(requestDto);
         Customer saved = repository.save(customer);
         return new CustomerInfoResponseDto(saved);
     }
 
-    private Customer findById(long id) {
+    private Customer findById(UUID id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Customer.TABLE_NAME, id));
     }
 

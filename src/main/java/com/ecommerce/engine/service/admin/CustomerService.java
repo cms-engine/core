@@ -10,6 +10,7 @@ import io.github.lipiridi.searchengine.SearchService;
 import io.github.lipiridi.searchengine.dto.SearchRequest;
 import io.github.lipiridi.searchengine.dto.SearchResponse;
 import java.util.Set;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,29 +22,29 @@ public class CustomerService {
     private final SearchService searchService;
     private final ForeignKeysChecker foreignKeysChecker;
 
-    public CustomerResponseDto get(long id) {
+    public CustomerResponseDto get(UUID id) {
         Customer customer = findById(id);
         return new CustomerResponseDto(customer);
     }
 
-    public CustomerResponseDto update(long id, CustomerRequestDto requestDto) {
+    public CustomerResponseDto update(UUID id, CustomerRequestDto requestDto) {
         Customer customer = findById(id);
         customer.update(requestDto);
         Customer saved = repository.save(customer);
         return new CustomerResponseDto(saved);
     }
 
-    public void delete(long id) {
+    public void delete(UUID id) {
         foreignKeysChecker.checkUsages(Customer.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
-    public void deleteMany(Set<Long> ids) {
+    public void deleteMany(Set<UUID> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Customer.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 
-    private Customer findById(long id) {
+    private Customer findById(UUID id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Customer.TABLE_NAME, id));
     }
 

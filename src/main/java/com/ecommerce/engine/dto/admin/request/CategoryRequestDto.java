@@ -6,8 +6,7 @@ import com.ecommerce.engine.validation.EntityType;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +15,7 @@ public record CategoryRequestDto(
         @EntityPresence(EntityType.IMAGE) UUID imageId,
         int sortOrder,
         boolean enabled,
-        @NotNull @Size(min = 1) Set<@Valid MetaDescriptionDto> descriptions,
+        @NotEmpty Set<@Valid MetaDescriptionDto> descriptions,
         @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid Attribute> attributes) {
 
     public record Attribute(

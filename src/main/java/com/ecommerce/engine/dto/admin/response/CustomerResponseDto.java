@@ -2,9 +2,10 @@ package com.ecommerce.engine.dto.admin.response;
 
 import com.ecommerce.engine.entity.Customer;
 import java.time.Instant;
+import java.util.UUID;
 
 public record CustomerResponseDto(
-        long id,
+        UUID id,
         Long customerGroupId,
         String firstName,
         String lastName,

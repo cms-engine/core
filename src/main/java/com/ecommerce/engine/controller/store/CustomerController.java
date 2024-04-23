@@ -6,6 +6,7 @@ import com.ecommerce.engine.dto.store.request.CustomerRegisterRequestDto;
 import com.ecommerce.engine.dto.store.response.CustomerInfoResponseDto;
 import com.ecommerce.engine.service.store.CustomerService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +24,13 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping("/{id}")
-    public CustomerInfoResponseDto get(@PathVariable long id) {
+    public CustomerInfoResponseDto get(@PathVariable UUID id) {
         return customerService.get(id);
     }
 
     @PutMapping("/{id}")
     public CustomerInfoResponseDto update(
-            @PathVariable long id, @Valid @RequestBody CustomerInfoRequestDto requestDto) {
+            @PathVariable UUID id, @Valid @RequestBody CustomerInfoRequestDto requestDto) {
         return customerService.update(id, requestDto);
     }
 
@@ -39,7 +40,7 @@ public class CustomerController {
     }
 
     @PostMapping("/{id}/credentials")
-    public void changeCredentials(@PathVariable long id, @Valid @RequestBody ChangeCredentialsRequestDto requestDto) {
+    public void changeCredentials(@PathVariable UUID id, @Valid @RequestBody ChangeCredentialsRequestDto requestDto) {
         customerService.changeCredentials(id, requestDto);
     }
 }

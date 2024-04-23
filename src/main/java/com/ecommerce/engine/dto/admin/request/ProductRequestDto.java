@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -30,7 +30,7 @@ public record ProductRequestDto(
         WeightClass weightClass,
         @Digits(integer = 7, fraction = 8) BigDecimal weight,
         boolean enabled,
-        @NotNull @Size(min = 1) Set<@Valid MetaDescriptionDto> descriptions,
+        @NotEmpty Set<@Valid MetaDescriptionDto> descriptions,
         @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid AdditionalImage> additionalImages,
         @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid @EntityPresence(EntityType.CATEGORY) Long> additionalCategories,
         @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid Attribute> attributes) {

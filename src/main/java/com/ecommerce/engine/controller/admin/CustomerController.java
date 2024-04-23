@@ -7,6 +7,7 @@ import io.github.lipiridi.searchengine.dto.SearchRequest;
 import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.validation.Valid;
 import java.util.Set;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,22 +31,22 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerResponseDto get(@PathVariable long id) {
+    public CustomerResponseDto get(@PathVariable UUID id) {
         return customerService.get(id);
     }
 
     @PutMapping("/{id}")
-    public CustomerResponseDto update(@PathVariable long id, @Valid @RequestBody CustomerRequestDto requestDto) {
+    public CustomerResponseDto update(@PathVariable UUID id, @Valid @RequestBody CustomerRequestDto requestDto) {
         return customerService.update(id, requestDto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable UUID id) {
         customerService.delete(id);
     }
 
     @DeleteMapping("/delete")
-    public void deleteMany(@RequestBody Set<Long> ids) {
+    public void deleteMany(@RequestBody Set<UUID> ids) {
         customerService.deleteMany(ids);
     }
 }

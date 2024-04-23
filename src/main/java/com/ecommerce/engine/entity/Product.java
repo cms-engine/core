@@ -62,11 +62,11 @@ public class Product {
     @JoinColumn
     Brand brand;
 
+    @Column(precision = 15, scale = 3)
+    BigDecimal price;
+
     /*@Column(length = 3)
     Currency currency;
-
-    @Column(precision = 15, scale = 2)
-    BigDecimal price;
 
     @Column(precision = 15, scale = 3)
     BigDecimal quantity;*/

@@ -1,11 +1,11 @@
 package com.ecommerce.engine.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
@@ -45,10 +45,10 @@ public class ProductReview {
 
     String author;
 
-    @Lob
+    @Column(length = 500)
     String text;
 
-    @Lob
+    @Column(length = 500)
     String reply;
 
     @Min(1)

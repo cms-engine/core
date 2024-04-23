@@ -8,10 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,39 +25,46 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
-@Table(name = StoreReview.TABLE_NAME)
+@Table(name = PurchaseOrder.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StoreReview {
+public class PurchaseOrder {
 
-    public static final String TABLE_NAME = "store_review";
+    public static final String TABLE_NAME = "purchase_order";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    UUID id;
+
+    @ManyToOne
+    @JoinColumn
+    PurchaseOrderStatus purchaseOrderStatus;
 
     @ManyToOne
     @JoinColumn
     Customer customer;
 
-    String author;
+    @ManyToOne
+    @JoinColumn
+    PaymentMethod paymentMethod;
+
+    @ManyToOne
+    @JoinColumn
+    DeliveryMethod deliveryMethod;
 
     @Column(length = 500)
-    String text;
+    String customerComment;
 
     @Column(length = 500)
-    String reply;
+    String managerComment;
 
-    @Min(1)
-    @Max(5)
-    int rating;
+    @Column(precision = 15, scale = 3)
+    BigDecimal totalCost;
 
     @CreationTimestamp
     Instant createdAt;
 
     @UpdateTimestamp
     Instant updatedAt;
-
-    boolean enabled;
 
     @Override
     public final boolean equals(Object o) {
@@ -70,7 +77,7 @@ public class StoreReview {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        StoreReview that = (StoreReview) o;
+        PurchaseOrder that = (PurchaseOrder) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

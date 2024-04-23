@@ -1,63 +1,61 @@
 package com.ecommerce.engine.entity;
 
-import jakarta.persistence.Column;
+import com.ecommerce.engine.dto.admin.request.PurchaseOrderStatusRequestDto;
+import io.github.lipiridi.searchengine.Searchable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = StoreReview.TABLE_NAME)
+@NoArgsConstructor
+@Table(name = PurchaseOrderStatus.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StoreReview {
+public class PurchaseOrderStatus {
 
-    public static final String TABLE_NAME = "store_review";
+    public static final String TABLE_NAME = "purchase_order_status";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
-    @JoinColumn
-    Customer customer;
+    @ToString.Exclude
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "purchaseOrderStatus",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL)
+    Set<PurchaseOrderStatusDescription> descriptions = new HashSet<>();
 
-    String author;
+    public PurchaseOrderStatus(PurchaseOrderStatusRequestDto requestDto) {
+        descriptions = requestDto.descriptions().stream()
+                .map(PurchaseOrderStatusDescription::new)
+                .peek(desc -> desc.setPurchaseOrderStatus(this))
+                .collect(Collectors.toSet());
+    }
 
-    @Column(length = 500)
-    String text;
-
-    @Column(length = 500)
-    String reply;
-
-    @Min(1)
-    @Max(5)
-    int rating;
-
-    @CreationTimestamp
-    Instant createdAt;
-
-    @UpdateTimestamp
-    Instant updatedAt;
-
-    boolean enabled;
+    public String getLocaleName() {
+        return HasLocale.getStoreDefaultLocaleName(descriptions);
+    }
 
     @Override
     public final boolean equals(Object o) {
@@ -70,7 +68,7 @@ public class StoreReview {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        StoreReview that = (StoreReview) o;
+        PurchaseOrderStatus that = (PurchaseOrderStatus) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

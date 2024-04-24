@@ -1,16 +1,22 @@
 package com.ecommerce.engine.entity;
 
+import io.github.lipiridi.searchengine.Searchable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,24 +37,33 @@ public class PurchaseOrder {
 
     public static final String TABLE_NAME = "purchase_order";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @ManyToOne
-    @JoinColumn
-    PurchaseOrderStatus purchaseOrderStatus;
+    @Searchable
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    PurchaseOrderStatus status;
 
     @ManyToOne
     @JoinColumn
     Customer customer;
 
-    @ManyToOne
-    @JoinColumn
+    String firstName;
+    String lastName;
+    String middleName;
+    String phone;
+
+    @Searchable
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     PaymentMethod paymentMethod;
 
-    @ManyToOne
-    @JoinColumn
+    @Searchable
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     DeliveryMethod deliveryMethod;
 
     @Column(length = 500)
@@ -57,12 +72,18 @@ public class PurchaseOrder {
     @Column(length = 500)
     String managerComment;
 
-    @Column(precision = 15, scale = 3)
+    @Column(nullable = false, precision = 15, scale = 3)
     BigDecimal totalCost;
 
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "purchaseOrder", orphanRemoval = true, cascade = CascadeType.ALL)
+    Set<OrderItem> items = new HashSet<>();
+
+    @Searchable
     @CreationTimestamp
     Instant createdAt;
 
+    @Searchable
     @UpdateTimestamp
     Instant updatedAt;
 

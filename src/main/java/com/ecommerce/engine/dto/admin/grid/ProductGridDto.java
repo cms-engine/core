@@ -45,8 +45,8 @@ public record ProductGridDto(
                 product.getHeight(),
                 product.getWeightClass(),
                 product.getWeight(),
-                product.getCreated(),
-                product.getUpdated(),
+                product.getCreatedAt(),
+                product.getUpdatedAt(),
                 product.isEnabled());
     }
 }

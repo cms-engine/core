@@ -1,8 +1,9 @@
 package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine.dto.admin.common.MetaDescriptionDto;
-import jakarta.persistence.Column;
+import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,12 +21,15 @@ import lombok.experimental.FieldDefaults;
 @MappedSuperclass
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class MetaDescriptionSuperclass implements HasLocale {
+
+    @Searchable
     @Id
     Integer languageId;
 
+    @Searchable
     String title;
 
-    @Column(columnDefinition = "text")
+    @Lob
     String description;
 
     String metaTitle;

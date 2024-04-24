@@ -41,6 +41,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Searchable
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     Category category;
@@ -62,14 +63,14 @@ public class Product {
     @JoinColumn
     Brand brand;
 
+    /*@Column(length = 3)
+    Currency currency;*/
+
     @Column(precision = 15, scale = 3)
     BigDecimal price;
 
-    /*@Column(length = 3)
-    Currency currency;
-
     @Column(precision = 15, scale = 3)
-    BigDecimal quantity;*/
+    BigDecimal quantity;
 
     @Enumerated(EnumType.STRING)
     LengthClass lengthClass;
@@ -104,6 +105,7 @@ public class Product {
 
     boolean enabled;
 
+    @Searchable
     @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     Set<ProductDescription> descriptions = new HashSet<>();

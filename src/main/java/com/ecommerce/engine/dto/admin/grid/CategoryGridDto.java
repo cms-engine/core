@@ -22,8 +22,8 @@ public record CategoryGridDto(
                 category.getParentLocaleTitle(),
                 category.getImageSrc(),
                 category.getSortOrder(),
-                category.getCreated(),
-                category.getUpdated(),
+                category.getCreatedAt(),
+                category.getUpdatedAt(),
                 category.isEnabled());
     }
 }

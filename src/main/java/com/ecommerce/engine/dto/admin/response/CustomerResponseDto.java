@@ -29,8 +29,8 @@ public record CustomerResponseDto(
                 customer.getPhone(),
                 customer.getEmail(),
                 customer.isNewsletter(),
-                customer.getCreated(),
-                customer.getUpdated(),
+                customer.getCreatedAt(),
+                customer.getUpdatedAt(),
                 customer.isEnabled());
     }
 }

@@ -12,8 +12,8 @@ public record PageGridDto(
                 page.getLocaleTitle(),
                 page.isBottom(),
                 page.getSortOrder(),
-                page.getCreated(),
-                page.getUpdated(),
+                page.getCreatedAt(),
+                page.getUpdatedAt(),
                 page.isEnabled());
     }
 }

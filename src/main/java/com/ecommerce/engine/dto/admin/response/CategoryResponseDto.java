@@ -26,8 +26,8 @@ public record CategoryResponseDto(
                 category.getImageId(),
                 category.getImageSrc(),
                 category.getSortOrder(),
-                category.getCreated(),
-                category.getUpdated(),
+                category.getCreatedAt(),
+                category.getUpdatedAt(),
                 category.isEnabled(),
                 MetaDescriptionDto.createMetaDescriptionDtoSet(category.getDescriptions()),
                 category.getAttributes().stream().map(Attribute::new).collect(Collectors.toSet()));

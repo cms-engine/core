@@ -18,8 +18,8 @@ public record PageResponseDto(
                 page.getId(),
                 page.isBottom(),
                 page.getSortOrder(),
-                page.getCreated(),
-                page.getUpdated(),
+                page.getCreatedAt(),
+                page.getUpdatedAt(),
                 page.isEnabled(),
                 MetaDescriptionDto.createMetaDescriptionDtoSet(page.getDescriptions()));
     }

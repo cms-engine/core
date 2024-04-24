@@ -1,5 +1,6 @@
 package com.ecommerce.engine.entity;
 
+import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,9 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import java.time.Instant;
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -18,51 +17,41 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = ProductReview.TABLE_NAME)
+@Table(name = OrderItem.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductReview {
+public class OrderItem {
 
-    public static final String TABLE_NAME = "product_review";
+    public static final String TABLE_NAME = "order_item";
 
+    @Searchable
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
+    @Searchable
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    PurchaseOrder purchaseOrder;
+
+    @Searchable
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     Product product;
 
-    @ManyToOne
-    @JoinColumn
-    Customer customer;
+    @Column(nullable = false, precision = 15, scale = 3)
+    BigDecimal price;
 
-    String author;
+    @Column(nullable = false, precision = 15, scale = 3)
+    BigDecimal quantity;
 
-    @Column(length = 500)
-    String text;
-
-    @Column(length = 500)
-    String reply;
-
-    @Min(1)
-    @Max(5)
-    int rating;
-
-    @CreationTimestamp
-    Instant createdAt;
-
-    @UpdateTimestamp
-    Instant updatedAt;
-
-    boolean enabled;
+    @Column(nullable = false, precision = 15, scale = 3)
+    BigDecimal cost;
 
     @Override
     public final boolean equals(Object o) {
@@ -75,7 +64,7 @@ public class ProductReview {
                 ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        ProductReview that = (ProductReview) o;
+        OrderItem that = (OrderItem) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

@@ -54,7 +54,7 @@ public class PageService {
 
     @Transactional
     @SeoUrlRemove(SeoUrlType.PAGE)
-    public void delete(Set<Long> ids) {
+    public void deleteMany(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Page.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }

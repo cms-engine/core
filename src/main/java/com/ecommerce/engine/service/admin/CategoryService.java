@@ -56,7 +56,7 @@ public class CategoryService implements EntityPresenceService<Long> {
 
     @Transactional
     @SeoUrlRemove(SeoUrlType.CATEGORY)
-    public void delete(Set<Long> ids) {
+    public void deleteMany(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Category.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }

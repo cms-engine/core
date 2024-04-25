@@ -56,7 +56,7 @@ public class ProductController {
 
     @DeleteMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
-        productService.delete(ids);
+        productService.deleteMany(ids);
     }
 
     @GetMapping("/{id}/prefill-attributes")

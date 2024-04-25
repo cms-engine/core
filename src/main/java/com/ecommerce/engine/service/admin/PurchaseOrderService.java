@@ -1,11 +1,11 @@
 package com.ecommerce.engine.service.admin;
 
+import com.ecommerce.engine.dto.admin.grid.PurchaseOrderGridDto;
 import com.ecommerce.engine.dto.admin.request.PurchaseOrderRequestDto;
 import com.ecommerce.engine.dto.admin.response.PurchaseOrderResponseDto;
 import com.ecommerce.engine.entity.PurchaseOrder;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.PurchaseOrderRepository;
-import com.ecommerce.engine.service.ForeignKeysChecker;
 import io.github.lipiridi.searchengine.SearchService;
 import io.github.lipiridi.searchengine.dto.SearchRequest;
 import io.github.lipiridi.searchengine.dto.SearchResponse;
@@ -14,17 +14,24 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+// TODO Update quantity of products; Calculate total cost
 @Service
 @RequiredArgsConstructor
 public class PurchaseOrderService {
 
     private final PurchaseOrderRepository repository;
     private final SearchService searchService;
-    private final ForeignKeysChecker foreignKeysChecker;
 
     public PurchaseOrderResponseDto get(UUID id) {
         PurchaseOrder purchaseOrder = findById(id);
         return new PurchaseOrderResponseDto(purchaseOrder);
+    }
+
+    public PurchaseOrderResponseDto save(PurchaseOrderRequestDto requestDto) {
+        PurchaseOrder product = new PurchaseOrder(requestDto);
+
+        PurchaseOrder saved = repository.save(product);
+        return new PurchaseOrderResponseDto(saved);
     }
 
     public PurchaseOrderResponseDto update(UUID id, PurchaseOrderRequestDto requestDto) {
@@ -38,12 +45,10 @@ public class PurchaseOrderService {
     }
 
     public void delete(UUID id) {
-        foreignKeysChecker.checkUsages(PurchaseOrder.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     public void deleteMany(Set<UUID> ids) {
-        ids.forEach(id -> foreignKeysChecker.checkUsages(PurchaseOrder.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }
 
@@ -57,7 +62,7 @@ public class PurchaseOrderService {
         }
     }
 
-    public SearchResponse<PurchaseOrderResponseDto> search(SearchRequest searchRequest) {
-        return searchService.search(searchRequest, PurchaseOrder.class, PurchaseOrderResponseDto::new);
+    public SearchResponse<PurchaseOrderGridDto> search(SearchRequest searchRequest) {
+        return searchService.search(searchRequest, PurchaseOrder.class, PurchaseOrderGridDto::new);
     }
 }

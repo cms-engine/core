@@ -59,7 +59,7 @@ public class ProductService {
 
     @Transactional
     @SeoUrlRemove(SeoUrlType.PRODUCT)
-    public void delete(Set<Long> ids) {
+    public void deleteMany(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Product.TABLE_NAME, id));
         repository.deleteAllById(ids);
     }

@@ -13,10 +13,10 @@ public class SeoUrlRemover {
     private final SeoUrlRepository seoUrlRepository;
 
     public void remove(SeoUrlType type, Long recordId) {
-        seoUrlRepository.deleteByEntityAndRecordId(type, recordId);
+        seoUrlRepository.deleteByTypeAndRecordId(type, recordId);
     }
 
     public void remove(SeoUrlType entity, Set<Long> recordIds) {
-        seoUrlRepository.deleteByEntityAndRecordIdIn(entity, recordIds);
+        seoUrlRepository.deleteByTypeAndRecordIdIn(entity, recordIds);
     }
 }

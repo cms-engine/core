@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SeoUrlRepository extends JpaRepository<SeoUrl, Long> {
 
-    void deleteByEntityAndRecordId(SeoUrlType entity, long recordId);
+    void deleteByTypeAndRecordId(SeoUrlType entity, long recordId);
 
-    void deleteByEntityAndRecordIdIn(SeoUrlType entity, Collection<Long> recordIds);
+    void deleteByTypeAndRecordIdIn(SeoUrlType entity, Collection<Long> recordIds);
 }

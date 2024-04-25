@@ -22,6 +22,7 @@ springdoc:
     path: /swagger-ui
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
+  use-fqn: true
 
 engine:
   image-dir: ./images

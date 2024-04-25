@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.enums.SeoUrlEntity;
+import com.ecommerce.engine.enums.SeoUrlType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +22,7 @@ public class SeoUrl {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    SeoUrlEntity entity;
+    SeoUrlType type;
 
     long recordId;
 

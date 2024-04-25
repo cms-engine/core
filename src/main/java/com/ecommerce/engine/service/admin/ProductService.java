@@ -5,7 +5,7 @@ import com.ecommerce.engine.dto.admin.grid.ProductGridDto;
 import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
 import com.ecommerce.engine.dto.admin.response.ProductResponseDto;
 import com.ecommerce.engine.entity.Product;
-import com.ecommerce.engine.enums.SeoUrlEntity;
+import com.ecommerce.engine.enums.SeoUrlType;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ProductRepository;
 import com.ecommerce.engine.service.ForeignKeysChecker;
@@ -40,7 +40,7 @@ public class ProductService {
     }
 
     public ProductResponseDto update(long id, ProductRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         Product product = new Product(requestDto);
         productAttributeService.validateProductAttributesMatchingCategoryRequirements(product);
@@ -51,14 +51,14 @@ public class ProductService {
     }
 
     @Transactional
-    @SeoUrlRemove(SeoUrlEntity.PRODUCT)
+    @SeoUrlRemove(SeoUrlType.PRODUCT)
     public void delete(long id) {
         foreignKeysChecker.checkUsages(Product.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     @Transactional
-    @SeoUrlRemove(SeoUrlEntity.PRODUCT)
+    @SeoUrlRemove(SeoUrlType.PRODUCT)
     public void delete(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Product.TABLE_NAME, id));
         repository.deleteAllById(ids);
@@ -66,6 +66,12 @@ public class ProductService {
 
     private Product findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Product.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(Product.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<ProductGridDto> search(SearchRequest searchRequest) {

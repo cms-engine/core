@@ -53,6 +53,10 @@ public class PurchaseOrderStatus {
                 .collect(Collectors.toSet());
     }
 
+    public PurchaseOrderStatus(Long id) {
+        this.id = id;
+    }
+
     public String getLocaleName() {
         return HasLocale.getStoreDefaultLocaleName(descriptions);
     }

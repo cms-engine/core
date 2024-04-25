@@ -36,7 +36,7 @@ public class CustomerGroupService implements EntityPresenceService<Long> {
     }
 
     public CustomerGroupResponseDto update(long id, CustomerGroupRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         CustomerGroup customerGroup = new CustomerGroup(requestDto);
         customerGroup.setId(id);
@@ -56,6 +56,12 @@ public class CustomerGroupService implements EntityPresenceService<Long> {
 
     private CustomerGroup findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(CustomerGroup.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(CustomerGroup.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<CustomerGroupGridDto> search(SearchRequest searchRequest) {

@@ -1,5 +1,6 @@
 package com.ecommerce.engine.entity;
 
+import com.ecommerce.engine.dto.admin.request.PurchaseOrderRequestDto;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import java.util.Objects;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +25,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = OrderItem.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderItem {
@@ -52,6 +55,13 @@ public class OrderItem {
 
     @Column(nullable = false, precision = 15, scale = 3)
     BigDecimal cost;
+
+    public OrderItem(PurchaseOrderRequestDto.OrderItem requestDto) {
+        product = new Product(requestDto.productId());
+        price = requestDto.price();
+        quantity = requestDto.quantity();
+        cost = requestDto.cost();
+    }
 
     @Override
     public final boolean equals(Object o) {

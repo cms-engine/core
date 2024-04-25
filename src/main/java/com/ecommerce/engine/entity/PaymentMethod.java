@@ -61,6 +61,10 @@ public class PaymentMethod {
                 .collect(Collectors.toSet());
     }
 
+    public PaymentMethod(Long id) {
+        this.id = id;
+    }
+
     public String getLocaleName() {
         return HasLocale.getStoreDefaultLocaleName(descriptions);
     }

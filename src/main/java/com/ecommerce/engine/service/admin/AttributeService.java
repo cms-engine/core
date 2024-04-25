@@ -36,7 +36,7 @@ public class AttributeService implements EntityPresenceService<Long> {
     }
 
     public AttributeResponseDto update(long id, AttributeRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         Attribute attribute = new Attribute(requestDto);
         attribute.setId(id);
@@ -56,6 +56,12 @@ public class AttributeService implements EntityPresenceService<Long> {
 
     private Attribute findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Attribute.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(Attribute.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<AttributeGridDto> search(SearchRequest searchRequest) {

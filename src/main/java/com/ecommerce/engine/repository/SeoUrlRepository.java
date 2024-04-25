@@ -1,13 +1,13 @@
 package com.ecommerce.engine.repository;
 
 import com.ecommerce.engine.entity.SeoUrl;
-import com.ecommerce.engine.enums.SeoUrlEntity;
+import com.ecommerce.engine.enums.SeoUrlType;
 import java.util.Collection;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SeoUrlRepository extends JpaRepository<SeoUrl, Long> {
 
-    void deleteByEntityAndRecordId(SeoUrlEntity entity, long recordId);
+    void deleteByEntityAndRecordId(SeoUrlType entity, long recordId);
 
-    void deleteByEntityAndRecordIdIn(SeoUrlEntity entity, Collection<Long> recordIds);
+    void deleteByEntityAndRecordIdIn(SeoUrlType entity, Collection<Long> recordIds);
 }

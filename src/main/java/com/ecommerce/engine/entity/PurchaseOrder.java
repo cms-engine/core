@@ -2,6 +2,7 @@ package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
+import com.ecommerce.engine.dto.admin.request.PurchaseOrderRequestDto;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,8 +21,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -33,6 +36,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = PurchaseOrder.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PurchaseOrder {
@@ -88,6 +92,21 @@ public class PurchaseOrder {
     @Searchable
     @UpdateTimestamp
     Instant updatedAt;
+
+    public PurchaseOrder(PurchaseOrderRequestDto requestDto) {
+        status = new PurchaseOrderStatus(requestDto.statusId());
+        customer = new Customer(requestDto.customerId());
+        firstName = requestDto.firstName();
+        lastName = requestDto.lastName();
+        middleName = requestDto.middleName();
+        phone = requestDto.phone();
+        paymentMethod = new PaymentMethod(requestDto.paymentMethodId());
+        deliveryMethod = new DeliveryMethod(requestDto.deliveryMethodId());
+        items = requestDto.items().stream()
+                .map(OrderItem::new)
+                .peek(order -> order.setPurchaseOrder(this))
+                .collect(Collectors.toSet());
+    }
 
     public UUID getCustomerId() {
         return nullable(customer, Customer::getId);

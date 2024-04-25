@@ -5,7 +5,7 @@ import com.ecommerce.engine.dto.admin.grid.PageGridDto;
 import com.ecommerce.engine.dto.admin.request.PageRequestDto;
 import com.ecommerce.engine.dto.admin.response.PageResponseDto;
 import com.ecommerce.engine.entity.Page;
-import com.ecommerce.engine.enums.SeoUrlEntity;
+import com.ecommerce.engine.enums.SeoUrlType;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.PageRepository;
 import com.ecommerce.engine.service.ForeignKeysChecker;
@@ -37,7 +37,7 @@ public class PageService {
     }
 
     public PageResponseDto update(long id, PageRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         Page page = new Page(requestDto);
         page.setId(id);
@@ -46,14 +46,14 @@ public class PageService {
     }
 
     @Transactional
-    @SeoUrlRemove(SeoUrlEntity.PAGE)
+    @SeoUrlRemove(SeoUrlType.PAGE)
     public void delete(long id) {
         foreignKeysChecker.checkUsages(Page.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     @Transactional
-    @SeoUrlRemove(SeoUrlEntity.PAGE)
+    @SeoUrlRemove(SeoUrlType.PAGE)
     public void delete(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Page.TABLE_NAME, id));
         repository.deleteAllById(ids);
@@ -61,6 +61,12 @@ public class PageService {
 
     private Page findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Page.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(Page.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<PageGridDto> search(SearchRequest searchRequest) {

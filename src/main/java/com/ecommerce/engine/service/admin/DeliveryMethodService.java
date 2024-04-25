@@ -34,7 +34,7 @@ public class DeliveryMethodService {
     }
 
     public DeliveryMethodResponseDto update(long id, DeliveryMethodRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         DeliveryMethod deliveryMethod = new DeliveryMethod(requestDto);
         deliveryMethod.setId(id);
@@ -54,6 +54,12 @@ public class DeliveryMethodService {
 
     private DeliveryMethod findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(DeliveryMethod.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(DeliveryMethod.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<DeliveryMethodGridDto> search(SearchRequest searchRequest) {

@@ -35,7 +35,7 @@ public class BrandService implements EntityPresenceService<Long> {
     }
 
     public BrandResponseDto update(long id, BrandRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         Brand brand = new Brand(requestDto);
         brand.setId(id);
@@ -55,6 +55,12 @@ public class BrandService implements EntityPresenceService<Long> {
 
     private Brand findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Brand.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(Brand.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<BrandResponseDto> search(SearchRequest searchRequest) {

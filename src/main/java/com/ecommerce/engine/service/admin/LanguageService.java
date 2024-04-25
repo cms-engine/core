@@ -63,7 +63,7 @@ public class LanguageService implements EntityPresenceService<Integer> {
 
     @Transactional
     public LanguageResponseDto update(int id, LanguageRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         checkUniqueFields(requestDto);
 
@@ -96,6 +96,12 @@ public class LanguageService implements EntityPresenceService<Integer> {
 
     private Language findById(int id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Language.TABLE_NAME, id));
+    }
+
+    private void checkExisting(int id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(Language.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<LanguageResponseDto> search(SearchRequest searchRequest) {

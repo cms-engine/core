@@ -34,7 +34,7 @@ public class PurchaseOrderStatusService {
     }
 
     public PurchaseOrderStatusResponseDto update(long id, PurchaseOrderStatusRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         PurchaseOrderStatus purchaseOrderStatus = new PurchaseOrderStatus(requestDto);
         purchaseOrderStatus.setId(id);
@@ -54,6 +54,12 @@ public class PurchaseOrderStatusService {
 
     private PurchaseOrderStatus findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(PurchaseOrderStatus.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(PurchaseOrderStatus.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<PurchaseOrderStatusGridDto> search(SearchRequest searchRequest) {

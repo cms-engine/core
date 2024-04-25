@@ -34,7 +34,7 @@ public class PaymentMethodService {
     }
 
     public PaymentMethodResponseDto update(long id, PaymentMethodRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         PaymentMethod paymentMethod = new PaymentMethod(requestDto);
         paymentMethod.setId(id);
@@ -54,6 +54,12 @@ public class PaymentMethodService {
 
     private PaymentMethod findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(PaymentMethod.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(PaymentMethod.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<PaymentMethodGridDto> search(SearchRequest searchRequest) {

@@ -61,6 +61,10 @@ public class DeliveryMethod {
                 .collect(Collectors.toSet());
     }
 
+    public DeliveryMethod(Long id) {
+        this.id = id;
+    }
+
     public String getLocaleName() {
         return HasLocale.getStoreDefaultLocaleName(descriptions);
     }

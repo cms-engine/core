@@ -79,6 +79,10 @@ public class Customer {
         enabled = true;
     }
 
+    public Customer(UUID id) {
+        this.id = id;
+    }
+
     public String getFullName() {
         String collected =
                 Stream.of(firstName, lastName).filter(Objects::nonNull).collect(Collectors.joining(" "));

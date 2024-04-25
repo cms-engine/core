@@ -164,6 +164,10 @@ public class Product {
                 .collect(Collectors.toSet());
     }
 
+    public Product(Long id) {
+        this.id = id;
+    }
+
     public String getLocaleTitle() {
         return HasLocale.getStoreDefaultLocaleName(descriptions);
     }

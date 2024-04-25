@@ -5,7 +5,7 @@ import com.ecommerce.engine.dto.admin.grid.CategoryGridDto;
 import com.ecommerce.engine.dto.admin.request.CategoryRequestDto;
 import com.ecommerce.engine.dto.admin.response.CategoryResponseDto;
 import com.ecommerce.engine.entity.Category;
-import com.ecommerce.engine.enums.SeoUrlEntity;
+import com.ecommerce.engine.enums.SeoUrlType;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CategoryRepository;
 import com.ecommerce.engine.service.EntityPresenceService;
@@ -39,7 +39,7 @@ public class CategoryService implements EntityPresenceService<Long> {
     }
 
     public CategoryResponseDto update(long id, CategoryRequestDto requestDto) {
-        findById(id);
+        checkExisting(id);
 
         Category category = new Category(requestDto);
         category.setId(id);
@@ -48,14 +48,14 @@ public class CategoryService implements EntityPresenceService<Long> {
     }
 
     @Transactional
-    @SeoUrlRemove(SeoUrlEntity.CATEGORY)
+    @SeoUrlRemove(SeoUrlType.CATEGORY)
     public void delete(long id) {
         foreignKeysChecker.checkUsages(Category.TABLE_NAME, id);
         repository.deleteById(id);
     }
 
     @Transactional
-    @SeoUrlRemove(SeoUrlEntity.CATEGORY)
+    @SeoUrlRemove(SeoUrlType.CATEGORY)
     public void delete(Set<Long> ids) {
         ids.forEach(id -> foreignKeysChecker.checkUsages(Category.TABLE_NAME, id));
         repository.deleteAllById(ids);
@@ -63,6 +63,12 @@ public class CategoryService implements EntityPresenceService<Long> {
 
     private Category findById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Category.TABLE_NAME, id));
+    }
+
+    private void checkExisting(long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(Category.TABLE_NAME, id);
+        }
     }
 
     public SearchResponse<CategoryGridDto> search(SearchRequest searchRequest) {

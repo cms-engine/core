@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -30,10 +31,11 @@ public record ProductRequestDto(
         WeightClass weightClass,
         @Digits(integer = 7, fraction = 8) BigDecimal weight,
         boolean enabled,
-        @NotEmpty Set<@Valid MetaDescriptionDto> descriptions,
-        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid AdditionalImage> additionalImages,
-        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid @EntityPresence(EntityType.CATEGORY) Long> additionalCategories,
-        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid Attribute> attributes) {
+        @NotEmpty Set<@Valid @NotNull MetaDescriptionDto> descriptions,
+        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid @NotNull AdditionalImage> additionalImages,
+        @JsonSetter(nulls = Nulls.AS_EMPTY)
+                Set<@Valid @NotNull @EntityPresence(EntityType.CATEGORY) Long> additionalCategories,
+        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid @NotNull Attribute> attributes) {
 
     public record AdditionalImage(@EntityPresence(EntityType.IMAGE) UUID id, int sortOrder) {}
 

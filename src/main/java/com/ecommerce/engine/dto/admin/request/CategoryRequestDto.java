@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,8 +16,8 @@ public record CategoryRequestDto(
         @EntityPresence(EntityType.IMAGE) UUID imageId,
         int sortOrder,
         boolean enabled,
-        @NotEmpty Set<@Valid MetaDescriptionDto> descriptions,
-        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid Attribute> attributes) {
+        @NotEmpty Set<@Valid @NotNull MetaDescriptionDto> descriptions,
+        @JsonSetter(nulls = Nulls.AS_EMPTY) Set<@Valid @NotNull Attribute> attributes) {
 
     public record Attribute(
             @EntityPresence(EntityType.ATTRIBUTE) long id, boolean mandatory, boolean useInFilters, int sortOrder) {}

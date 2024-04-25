@@ -105,14 +105,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Set<Class<? extends Payload>> payloads =
                 constraintViolation.getConstraintDescriptor().getPayload();
 
-        ErrorSource errorSource = new ErrorSource(error.getField(), error.getRejectedValue());
-
         return payloads.isEmpty()
-                ? List.of(new ErrorRecord(error.getDefaultMessage(), errorSource))
+                ? List.of(new ErrorRecord(error.getDefaultMessage(), error.getField(), error.getRejectedValue()))
                 : payloads.stream()
                         .map(this::createValidationPayloadInstance)
                         .flatMap(Optional::stream)
-                        .map(payload -> new ErrorRecord(payload.get(), errorSource))
+                        .map(payload -> new ErrorRecord(payload.get(), error.getField(), error.getRejectedValue()))
                         .toList();
     }
 

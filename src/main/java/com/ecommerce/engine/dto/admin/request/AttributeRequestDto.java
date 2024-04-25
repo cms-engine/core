@@ -8,4 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 public record AttributeRequestDto(
-        @NotNull InputType inputType, boolean enabled, @NotEmpty Set<@Valid NameDescriptionDto> descriptions) {}
+        @NotNull InputType inputType,
+        boolean enabled,
+        @NotEmpty Set<@Valid @NotNull NameDescriptionDto> descriptions) {}

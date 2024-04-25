@@ -1,5 +1,7 @@
 package com.ecommerce.engine.entity;
 
+import static com.ecommerce.engine.util.NullUtils.nullable;
+
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -86,6 +88,10 @@ public class PurchaseOrder {
     @Searchable
     @UpdateTimestamp
     Instant updatedAt;
+
+    public UUID getCustomerId() {
+        return nullable(customer, Customer::getId);
+    }
 
     @Override
     public final boolean equals(Object o) {

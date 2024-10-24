@@ -2,8 +2,8 @@
 
 plugins {
 	java
-	id("org.springframework.boot") version "3.2.5"
-	id("io.spring.dependency-management") version "1.1.4"
+	id("org.springframework.boot") version "3.3.5"
+	id("io.spring.dependency-management") version "1.1.6"
 	id("com.diffplug.spotless") version "6.25.0"
 }
 
@@ -11,7 +11,9 @@ group = "com.ecommerce"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }
 
 repositories {
@@ -25,17 +27,14 @@ configurations {
 }
 
 dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation("io.micrometer:micrometer-tracing-bridge-brave")
-	implementation("io.zipkin.reporter2:zipkin-reporter-brave")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-	implementation("org.apache.commons:commons-lang3:3.14.0")
-	implementation("org.yaml:snakeyaml:2.2")
-	implementation("io.github.lipiridi:hibernate-search-engine:1.0.3")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+	implementation("org.apache.commons:commons-lang3:3.17.0")
+	implementation("io.github.lipiridi:hibernate-search-engine:1.0.4")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
@@ -48,10 +47,17 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.withType<JavaCompile> {
+	options.compilerArgs.add("-Amapstruct.defaultComponentModel=spring")
+	options.compilerArgs.add("-Amapstruct.unmappedTargetPolicy=ERROR")
 }
 
 springBoot {

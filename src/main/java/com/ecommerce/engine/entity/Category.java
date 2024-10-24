@@ -2,7 +2,7 @@ package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
-import com.ecommerce.engine.dto.admin.request.CategoryRequestDto;
+import com.ecommerce.engine.admin.dto.request.CategoryRequestDto;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

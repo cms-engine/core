@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.admin.request.AttributeRequestDto;
+import com.ecommerce.engine.admin.dto.request.AttributeRequestDto;
 import com.ecommerce.engine.enums.InputType;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.*;

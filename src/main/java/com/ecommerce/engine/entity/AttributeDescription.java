@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.admin.common.NameDescriptionDto;
+import com.ecommerce.engine.admin.dto.common.NameDescriptionDto;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;

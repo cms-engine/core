@@ -2,7 +2,7 @@ package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
-import com.ecommerce.engine.dto.admin.request.ProductRequestDto;
+import com.ecommerce.engine.admin.dto.request.ProductRequestDto;
 import com.ecommerce.engine.enums.LengthClass;
 import com.ecommerce.engine.enums.WeightClass;
 import io.github.lipiridi.searchengine.Searchable;

@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.admin.request.BrandRequestDto;
+import com.ecommerce.engine.admin.dto.request.BrandRequestDto;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

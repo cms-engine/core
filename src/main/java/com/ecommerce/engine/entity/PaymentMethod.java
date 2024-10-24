@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.dto.admin.request.PaymentMethodRequestDto;
+import com.ecommerce.engine.admin.dto.request.PaymentMethodRequestDto;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

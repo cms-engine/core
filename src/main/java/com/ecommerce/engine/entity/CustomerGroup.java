@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.admin.dto.request.CustomerGroupRequestDto;
+import com.ecommerce.engine._admin.dto.request.CustomerGroupRequestDto;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

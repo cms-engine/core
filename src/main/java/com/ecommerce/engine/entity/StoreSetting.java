@@ -2,7 +2,7 @@ package com.ecommerce.engine.entity;
 
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
-import com.ecommerce.engine.admin.dto.common.StoreSettingDto;
+import com.ecommerce.engine._admin.dto.common.StoreSettingDto;
 import com.ecommerce.engine.config.EngineConfiguration;
 import com.ecommerce.engine.util.StoreSettings;
 import jakarta.persistence.*;

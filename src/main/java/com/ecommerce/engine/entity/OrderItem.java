@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.admin.dto.request.PurchaseOrderRequestDto;
+import com.ecommerce.engine._admin.dto.request.PurchaseOrderRequestDto;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

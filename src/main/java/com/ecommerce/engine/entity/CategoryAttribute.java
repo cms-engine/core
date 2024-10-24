@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.admin.dto.request.CategoryRequestDto;
+import com.ecommerce.engine._admin.dto.request.CategoryRequestDto;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;

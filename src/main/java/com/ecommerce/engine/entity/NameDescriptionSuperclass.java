@@ -1,6 +1,6 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.admin.dto.common.NameDescriptionDto;
+import com.ecommerce.engine._admin.dto.common.NameDescriptionDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;

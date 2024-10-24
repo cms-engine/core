@@ -1,8 +1,8 @@
 package com.ecommerce.engine.entity;
 
-import com.ecommerce.engine.admin.dto.request.CustomerRequestDto;
-import com.ecommerce.engine.store.dto.request.CustomerInfoRequestDto;
-import com.ecommerce.engine.store.dto.request.CustomerRegisterRequestDto;
+import com.ecommerce.engine._admin.dto.request.CustomerRequestDto;
+import com.ecommerce.engine._store.dto.request.CustomerInfoRequestDto;
+import com.ecommerce.engine._store.dto.request.CustomerRegisterRequestDto;
 import com.ecommerce.engine.util.NullUtils;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.Column;

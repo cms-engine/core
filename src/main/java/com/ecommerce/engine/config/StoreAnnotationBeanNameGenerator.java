@@ -12,7 +12,7 @@ public class StoreAnnotationBeanNameGenerator extends AnnotationBeanNameGenerato
     public String generateBeanName(@Nonnull BeanDefinition definition, @Nonnull BeanDefinitionRegistry registry) {
         String beanName = super.generateBeanName(definition, registry);
         String beanClassName = definition.getBeanClassName();
-        if (beanClassName != null && beanClassName.contains(".store.")) {
+        if (beanClassName != null && beanClassName.contains("._store.")) {
             return beanName + "Store";
         } else {
             return beanName;

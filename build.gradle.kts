@@ -1,13 +1,10 @@
 @file:Suppress("SpellCheckingInspection")
 
-import com.github.gradle.node.npm.task.NpmTask
-
 plugins {
     java
     id("org.springframework.boot") version "3.3.5"
     id("io.spring.dependency-management") version "1.1.6"
     id("com.diffplug.spotless") version "6.25.0"
-    id("com.github.node-gradle.node") version "7.0.2"
 }
 
 group = "com.ecommerce"
@@ -105,45 +102,4 @@ sourceSets {
             srcDir(createBuildPropertiesFileTask.map { it.temporaryDir })
         }
     }
-}
-
-val feFolder = "${project.projectDir}/frontend"
-
-node {
-    download = false
-    // identify working directory in project
-    workDir = file("$feFolder/nodejs")
-    // NPM work directory
-    npmWorkDir = file("$feFolder/npm")
-    // node modules directory
-    nodeProjectDir = file(feFolder)
-}
-
-tasks.register<NpmTask>("appNpmInstall") {
-    description = "Reads package.json and installs all dependencies"
-    workingDir = file(feFolder)
-    args = listOf("install", "--debug")
-}
-
-tasks.register<NpmTask>("appNpmBuild") {
-    description = "Builds application for your frontend"
-    workingDir = file(feFolder)
-    args = listOf("run", "build")
-}
-
-tasks.register<Copy>("copyToFrontend") {
-    from("$feFolder/build/")
-    into("${project.projectDir}/build/resources/main/public")
-}
-
-tasks.named("appNpmBuild") {
-    dependsOn("appNpmInstall")
-}
-
-tasks.named("copyToFrontend") {
-    dependsOn("appNpmBuild")
-}
-
-tasks.named("compileJava") {
-    dependsOn("copyToFrontend")
 }

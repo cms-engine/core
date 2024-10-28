@@ -4,21 +4,26 @@ import com.ecommerce.engine._admin.dto.grid.AttributeGridDto;
 import com.ecommerce.engine._admin.dto.request.AttributeRequestDto;
 import com.ecommerce.engine._admin.dto.response.AttributeResponseDto;
 import com.ecommerce.engine.entity.Attribute;
+import com.ecommerce.engine.entity.projection.SelectProjection;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.AttributeRepository;
 import com.ecommerce.engine.service.EntityPresenceService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
+import com.ecommerce.engine.service.SelectOptionCollector;
 import com.ecommerce.engine.validation.EntityType;
 import io.github.lipiridi.searchengine.SearchService;
 import io.github.lipiridi.searchengine.dto.SearchRequest;
 import io.github.lipiridi.searchengine.dto.SearchResponse;
+import jakarta.annotation.Nullable;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AttributeService implements EntityPresenceService<Long> {
+public class AttributeService implements EntityPresenceService<Long>, SelectOptionCollector {
 
     private final AttributeRepository repository;
     private final SearchService searchService;
@@ -71,6 +76,11 @@ public class AttributeService implements EntityPresenceService<Long> {
     @Override
     public EntityType getEntityType() {
         return EntityType.ATTRIBUTE;
+    }
+
+    @Override
+    public List<SelectProjection> findSelectOptions(Pageable pageable, int languageId, @Nullable String search) {
+        return repository.findSelectOptions(pageable, languageId, search);
     }
 
     @Override

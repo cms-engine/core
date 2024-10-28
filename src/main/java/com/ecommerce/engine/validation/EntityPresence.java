@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = EntityPresenceValidator.class)
 public @interface EntityPresence {
 
-    String message() default "value was not found";
+    String message() default "entity was not found";
 
     Class<?>[] groups() default {};
 

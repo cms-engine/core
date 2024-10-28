@@ -1,1 +1,2 @@
 1. Provide new store settings and update existing row (via liquibase)
+2. SelectProjection use for 1 entity

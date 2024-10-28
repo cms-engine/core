@@ -10,6 +10,8 @@ public interface LanguageRepository extends JpaRepository<Language, Integer> {
 
     Optional<Language> findByHreflang(Locale hreflang);
 
+    Optional<Language> findByName(String name);
+
     Optional<Language> findBySubFolder(String subFolder);
 
     Optional<Language> findByUrlSuffix(String urlSuffix);

@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,5 +36,17 @@ public class OpenApiConfiguration {
     @Bean
     public OpenAPI openApi() {
         return new OpenAPI().info(new Info().title("API Documentation").version(API_VERSION_1));
+    }
+
+    @Bean
+    public GroupedOpenApi storeOpenApi() {
+        String[] paths = {"/store/**"};
+        return GroupedOpenApi.builder().group("store").pathsToMatch(paths).build();
+    }
+
+    @Bean
+    public GroupedOpenApi adminOpenApi() {
+        String[] paths = {"/admin/**"};
+        return GroupedOpenApi.builder().group("admin").pathsToMatch(paths).build();
     }
 }

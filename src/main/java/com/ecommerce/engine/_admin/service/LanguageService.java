@@ -148,6 +148,12 @@ public class LanguageService implements EntityPresenceService<Integer> {
             throw new NotUniqueException(Language.TABLE_NAME, language.getId(), "hreflang", language.getHreflang());
         }
 
+        Optional<Language> byName = repository.findByName(requestDto.name());
+        if (byName.isPresent()) {
+            Language language = byName.get();
+            throw new NotUniqueException(Language.TABLE_NAME, language.getId(), "name", language.getName());
+        }
+
         if (requestDto.subFolder() != null) {
             Optional<Language> bySubFolder = repository.findBySubFolder(requestDto.subFolder());
             if (bySubFolder.isPresent()) {

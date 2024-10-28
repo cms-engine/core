@@ -36,8 +36,6 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.17.0")
     implementation("io.github.lipiridi:hibernate-search-engine:1.0.4")
 
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-
     compileOnly("org.projectlombok:lombok")
 
     runtimeOnly("org.postgresql:postgresql")

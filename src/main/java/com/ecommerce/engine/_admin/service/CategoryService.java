@@ -5,6 +5,7 @@ import com.ecommerce.engine._admin.dto.grid.CategoryGridDto;
 import com.ecommerce.engine._admin.dto.request.CategoryRequestDto;
 import com.ecommerce.engine._admin.dto.response.CategoryResponseDto;
 import com.ecommerce.engine.entity.Category;
+import com.ecommerce.engine.entity.projection.SelectProjection;
 import com.ecommerce.engine.enums.SeoUrlType;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CategoryRepository;
@@ -14,9 +15,12 @@ import com.ecommerce.engine.validation.EntityType;
 import io.github.lipiridi.searchengine.SearchService;
 import io.github.lipiridi.searchengine.dto.SearchRequest;
 import io.github.lipiridi.searchengine.dto.SearchResponse;
+import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,6 +82,11 @@ public class CategoryService implements EntityPresenceService<Long> {
     @Override
     public EntityType getEntityType() {
         return EntityType.CATEGORY;
+    }
+
+    @Override
+    public List<SelectProjection> findSelectOptions(Pageable pageable, int languageId, @Nullable String search) {
+        return repository.findSelectOptions(pageable, languageId, search);
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.BrandRepository;
 import com.ecommerce.engine.service.EntityPresenceService;
 import com.ecommerce.engine.service.ForeignKeysChecker;
-import com.ecommerce.engine.service.SelectOptionCollector;
 import com.ecommerce.engine.validation.EntityType;
 import io.github.lipiridi.searchengine.SearchService;
 import io.github.lipiridi.searchengine.dto.SearchRequest;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class BrandService implements EntityPresenceService<Long>, SelectOptionCollector {
+public class BrandService implements EntityPresenceService<Long> {
 
     private final BrandRepository repository;
     private final SearchService searchService;

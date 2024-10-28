@@ -1,10 +1,6 @@
 package com.ecommerce.engine.service;
 
-import com.ecommerce.engine.validation.EntityType;
-
-public interface EntityPresenceService<ID> {
-
-    EntityType getEntityType();
+public interface EntityPresenceService<ID> extends SelectOptionCollector {
 
     boolean exists(ID id);
 }

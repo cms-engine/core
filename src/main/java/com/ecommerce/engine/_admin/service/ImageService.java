@@ -3,6 +3,7 @@ package com.ecommerce.engine._admin.service;
 import com.ecommerce.engine._admin.dto.response.ImageResponseDto;
 import com.ecommerce.engine.config.EngineProperties;
 import com.ecommerce.engine.entity.Image;
+import com.ecommerce.engine.entity.projection.SelectProjection;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ImageRepository;
 import com.ecommerce.engine.service.EntityPresenceService;
@@ -12,9 +13,11 @@ import jakarta.annotation.Nullable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -96,6 +99,11 @@ public class ImageService implements EntityPresenceService<UUID> {
     @Override
     public EntityType getEntityType() {
         return EntityType.IMAGE;
+    }
+
+    @Override
+    public List<SelectProjection> findSelectOptions(Pageable pageable, int languageId, @Nullable String search) {
+        return repository.findSelectOptions(pageable, search);
     }
 
     @Override

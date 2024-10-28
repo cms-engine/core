@@ -9,6 +9,7 @@ import com.ecommerce.engine.entity.Language;
 import com.ecommerce.engine.entity.PageDescription;
 import com.ecommerce.engine.entity.PaymentMethodDescription;
 import com.ecommerce.engine.entity.ProductDescription;
+import com.ecommerce.engine.entity.projection.SelectProjection;
 import com.ecommerce.engine.exception.ApplicationException;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.exception.NotUniqueException;
@@ -21,11 +22,13 @@ import com.ecommerce.engine.validation.EntityType;
 import io.github.lipiridi.searchengine.SearchService;
 import io.github.lipiridi.searchengine.dto.SearchRequest;
 import io.github.lipiridi.searchengine.dto.SearchResponse;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @DependsOn("storeSettingService")
@@ -111,6 +114,11 @@ public class LanguageService implements EntityPresenceService<Integer> {
     @Override
     public EntityType getEntityType() {
         return EntityType.LANGUAGE;
+    }
+
+    @Override
+    public List<SelectProjection> findSelectOptions(Pageable pageable, int languageId, @Nullable String search) {
+        return repository.findSelectOptions(pageable, search);
     }
 
     @Override

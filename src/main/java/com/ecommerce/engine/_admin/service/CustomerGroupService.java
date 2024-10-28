@@ -4,6 +4,7 @@ import com.ecommerce.engine._admin.dto.grid.CustomerGroupGridDto;
 import com.ecommerce.engine._admin.dto.request.CustomerGroupRequestDto;
 import com.ecommerce.engine._admin.dto.response.CustomerGroupResponseDto;
 import com.ecommerce.engine.entity.CustomerGroup;
+import com.ecommerce.engine.entity.projection.SelectProjection;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CustomerGroupRepository;
 import com.ecommerce.engine.service.EntityPresenceService;
@@ -12,8 +13,11 @@ import com.ecommerce.engine.validation.EntityType;
 import io.github.lipiridi.searchengine.SearchService;
 import io.github.lipiridi.searchengine.dto.SearchRequest;
 import io.github.lipiridi.searchengine.dto.SearchResponse;
+import jakarta.annotation.Nullable;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -71,6 +75,11 @@ public class CustomerGroupService implements EntityPresenceService<Long> {
     @Override
     public EntityType getEntityType() {
         return EntityType.CUSTOMER_GROUP;
+    }
+
+    @Override
+    public List<SelectProjection> findSelectOptions(Pageable pageable, int languageId, @Nullable String search) {
+        return repository.findSelectOptions(pageable, languageId, search);
     }
 
     @Override

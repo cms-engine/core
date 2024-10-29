@@ -21,6 +21,6 @@ public interface LanguageRepository extends JpaRepository<Language, Integer> {
 
     List<Language> findAllByEnabledTrue();
 
-    @Query("select id as value, name as label from Language where :search is null or name like %:search%")
+    @Query("select id as value, name as label from Language where :search is null or name like %:search% order by name")
     List<SelectProjection> findSelectOptions(Pageable pageable, String search);
 }

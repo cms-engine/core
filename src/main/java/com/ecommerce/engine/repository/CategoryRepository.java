@@ -13,7 +13,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             """
     select m.id as value, d.title as label from Category m
     join m.descriptions d on d.category.id = m.id and d.languageId = :languageId
-    where :search is null or d.title like %:search%
+    where :search is null or d.title like %:search% order by d.title
     """)
     List<SelectProjection> findSelectOptions(Pageable pageable, int languageId, String search);
 }

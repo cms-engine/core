@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 
-    @Query("select id as value, name as label from Brand where :search is null or name like %:search%")
+    @Query("select id as value, name as label from Brand where :search is null or name like %:search% order by name")
     List<SelectProjection> findSelectOptions(Pageable pageable, String search);
 }

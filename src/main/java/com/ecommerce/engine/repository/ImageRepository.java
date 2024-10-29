@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ImageRepository extends JpaRepository<Image, UUID> {
 
-    @Query("select id as value, name as label from Image where :search is null or name like %:search%")
+    @Query("select id as value, name as label from Image where :search is null or name like %:search% order by name")
     List<SelectProjection> findSelectOptions(Pageable pageable, String search);
 }

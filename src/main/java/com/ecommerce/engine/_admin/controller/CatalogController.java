@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -53,14 +54,50 @@ public class CatalogController {
     }
 
     @GetMapping("/brands")
-    public Collection<SelectProjection> brands() {
-        return typeSelectOptionCollectorMapMap.get(EntityType.BRAND).findSelectOptions(PageRequest.of(0, 2), 3, null);
+    public Collection<SelectProjection> brands(
+            @RequestParam int page, @RequestParam int size, @RequestParam(required = false) String search) {
+        return typeSelectOptionCollectorMapMap
+                .get(EntityType.BRAND)
+                .findSelectOptions(PageRequest.of(page, size), 3, search);
+    }
+
+    @GetMapping("/categories")
+    public Collection<SelectProjection> categories(
+            @RequestParam int page, @RequestParam int size, @RequestParam(required = false) String search) {
+        return typeSelectOptionCollectorMapMap
+                .get(EntityType.CATEGORY)
+                .findSelectOptions(PageRequest.of(page, size), 3, search);
+    }
+
+    @GetMapping("/customer-groups")
+    public Collection<SelectProjection> customerGroups(
+            @RequestParam int page, @RequestParam int size, @RequestParam(required = false) String search) {
+        return typeSelectOptionCollectorMapMap
+                .get(EntityType.CUSTOMER_GROUP)
+                .findSelectOptions(PageRequest.of(page, size), 3, search);
+    }
+
+    @GetMapping("/languages")
+    public Collection<SelectProjection> languages(
+            @RequestParam int page, @RequestParam int size, @RequestParam(required = false) String search) {
+        return typeSelectOptionCollectorMapMap
+                .get(EntityType.LANGUAGE)
+                .findSelectOptions(PageRequest.of(page, size), 3, search);
     }
 
     @GetMapping("/attributes")
-    public Collection<SelectProjection> attributes() {
+    public Collection<SelectProjection> attributes(
+            @RequestParam int page, @RequestParam int size, @RequestParam(required = false) String search) {
         return typeSelectOptionCollectorMapMap
                 .get(EntityType.ATTRIBUTE)
-                .findSelectOptions(PageRequest.of(1, 2), 3, null);
+                .findSelectOptions(PageRequest.of(page, size), 3, search);
+    }
+
+    @GetMapping("/images")
+    public Collection<SelectProjection> images(
+            @RequestParam int page, @RequestParam int size, @RequestParam(required = false) String search) {
+        return typeSelectOptionCollectorMapMap
+                .get(EntityType.IMAGE)
+                .findSelectOptions(PageRequest.of(page, size), 3, search);
     }
 }

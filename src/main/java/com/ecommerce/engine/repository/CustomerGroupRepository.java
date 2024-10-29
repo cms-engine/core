@@ -13,7 +13,7 @@ public interface CustomerGroupRepository extends JpaRepository<CustomerGroup, Lo
             """
     select m.id as value, d.name as label from CustomerGroup m
     join m.descriptions d on d.customerGroup.id = m.id and d.languageId = :languageId
-    where :search is null or d.name like %:search%
+    where :search is null or d.name like %:search% order by d.name
     """)
     List<SelectProjection> findSelectOptions(Pageable pageable, int languageId, String search);
 }

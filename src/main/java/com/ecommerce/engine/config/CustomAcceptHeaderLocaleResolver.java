@@ -1,7 +1,7 @@
 package com.ecommerce.engine.config;
 
+import com.ecommerce.engine.converter.LocaleDeserializer;
 import com.ecommerce.engine.util.StoreSettings;
-import com.ecommerce.engine.validation.LocaleDeserializer;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;

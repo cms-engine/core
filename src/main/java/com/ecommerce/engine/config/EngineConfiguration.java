@@ -1,7 +1,7 @@
 package com.ecommerce.engine.config;
 
-import com.ecommerce.engine.validation.LocaleDeserializer;
-import com.ecommerce.engine.validation.LocaleSerializer;
+import com.ecommerce.engine.converter.LocaleDeserializer;
+import com.ecommerce.engine.converter.LocaleSerializer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

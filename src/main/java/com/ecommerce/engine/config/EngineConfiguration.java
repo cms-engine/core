@@ -1,6 +1,7 @@
 package com.ecommerce.engine.config;
 
 import com.ecommerce.engine.validation.LocaleDeserializer;
+import com.ecommerce.engine.validation.LocaleSerializer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,9 @@ public class EngineConfiguration {
     private static ObjectMapper buildObjectMapper() {
         return JsonMapper.builder()
                 .addModule(new JavaTimeModule())
-                .addModule(new SimpleModule().addDeserializer(Locale.class, new LocaleDeserializer()))
+                .addModule(new SimpleModule()
+                        .addDeserializer(Locale.class, new LocaleDeserializer())
+                        .addSerializer(Locale.class, new LocaleSerializer()))
                 .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
                 .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
                 .disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)

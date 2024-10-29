@@ -24,7 +24,7 @@ public class CustomAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver
         if (languageHeader != null && languageHeader.length() >= 5) {
             String substring = languageHeader.substring(0, 5);
             if (LocaleDeserializer.LOCALE_PATTERN.matcher(substring).matches()) {
-                requestLocale = LocaleUtils.toLocale(substring.replace("-", "_"));
+                requestLocale = LocaleUtils.toLocale(substring);
             } else {
                 requestLocale = request.getLocale();
             }

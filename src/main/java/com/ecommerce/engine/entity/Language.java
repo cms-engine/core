@@ -34,20 +34,26 @@ public class Language {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Searchable
     @Column(nullable = false, unique = true)
     String name;
 
+    @Searchable
     @Column(nullable = false, unique = true, length = 5)
     Locale hreflang;
 
+    @Searchable
     @Column(length = 5)
     String subFolder;
 
+    @Searchable
     @Column(length = 5)
     String urlSuffix;
 
+    @Searchable
     int sortOrder;
 
+    @Searchable
     boolean enabled;
 
     public Language(Integer id) {

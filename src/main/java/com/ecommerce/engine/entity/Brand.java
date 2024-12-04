@@ -32,6 +32,7 @@ public class Brand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Searchable
     String name;
 
     public Brand(BrandRequestDto requestDto) {

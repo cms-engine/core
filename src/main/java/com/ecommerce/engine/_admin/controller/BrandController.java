@@ -49,7 +49,7 @@ public class BrandController {
         brandService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         brandService.deleteMany(ids);
     }

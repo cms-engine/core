@@ -52,7 +52,7 @@ public class PurchaseOrderController {
         purchaseOrderService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<UUID> ids) {
         purchaseOrderService.deleteMany(ids);
     }

@@ -51,7 +51,7 @@ public class DeliveryMethodController {
         deliveryMethodService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         deliveryMethodService.deleteMany(ids);
     }

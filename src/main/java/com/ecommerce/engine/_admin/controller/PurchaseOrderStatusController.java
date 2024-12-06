@@ -51,7 +51,7 @@ public class PurchaseOrderStatusController {
         purchaseOrderStatusService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         purchaseOrderStatusService.deleteMany(ids);
     }

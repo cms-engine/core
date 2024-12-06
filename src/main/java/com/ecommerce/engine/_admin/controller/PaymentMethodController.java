@@ -51,7 +51,7 @@ public class PaymentMethodController {
         paymentMethodService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         paymentMethodService.deleteMany(ids);
     }

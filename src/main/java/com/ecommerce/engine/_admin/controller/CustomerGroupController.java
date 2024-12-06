@@ -51,7 +51,7 @@ public class CustomerGroupController {
         customerGroupService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         customerGroupService.deleteMany(ids);
     }

@@ -49,7 +49,7 @@ public class LanguageController {
         languageService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Integer> ids) {
         languageService.deleteMany(ids);
     }

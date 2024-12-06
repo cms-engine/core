@@ -43,7 +43,7 @@ public class AttributeController {
         attributeService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         attributeService.deleteMany(ids);
     }

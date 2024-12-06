@@ -45,7 +45,7 @@ public class CustomerController {
         customerService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<UUID> ids) {
         customerService.deleteMany(ids);
     }

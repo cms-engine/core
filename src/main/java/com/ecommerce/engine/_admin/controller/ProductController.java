@@ -54,7 +54,7 @@ public class ProductController {
         productService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         productService.deleteMany(ids);
     }

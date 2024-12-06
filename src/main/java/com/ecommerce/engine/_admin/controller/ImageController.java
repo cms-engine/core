@@ -47,7 +47,7 @@ public class ImageController {
         imageService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<UUID> ids) {
         imageService.deleteMany(ids);
     }

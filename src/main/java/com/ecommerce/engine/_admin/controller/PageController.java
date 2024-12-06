@@ -50,7 +50,7 @@ public class PageController {
         pageService.delete(id);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteMany(@RequestBody Set<Long> ids) {
         pageService.deleteMany(ids);
     }

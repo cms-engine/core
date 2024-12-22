@@ -54,7 +54,7 @@ jobs:
           chmod 600 private_key
 
           # Copy the JAR file to the droplet
-          scp -o StrictHostKeyChecking=no -i private_key Package/*.jar $DROPLET_USER@$DROPLET_IP:/opt/cms-engine/
+          scp -o StrictHostKeyChecking=no -i private_key *.jar $DROPLET_USER@$DROPLET_IP:/opt/cms-engine/
 
           # SSH into the droplet, stop the old app, and restart the new one
           ssh -o StrictHostKeyChecking=no -i private_key $DROPLET_USER@$DROPLET_IP << 'EOF'

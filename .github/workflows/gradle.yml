@@ -63,7 +63,7 @@ jobs:
           script: |
             # Check if the application is running
             echo "Checking for the running cms-engine application..."
-            PID=$(ps aux | grep '[j]ava -jar /opt/jars/cms-engine-0.0.1.jar' | awk '{print $2}')
+            PID=$(ps aux | grep '[j]ava -jar opt/jars/cms-engine-0.0.1.jar' | awk '{print $2}')
             
             if [ -n "$PID" ]; then
               echo "Stopping the old application with PID: $PID"

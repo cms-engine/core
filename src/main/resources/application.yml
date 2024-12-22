@@ -1,6 +1,13 @@
 management:
   tracing:
     enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: ["health", "metrics", "info", "shutdown"]
+  endpoint:
+    shutdown:
+      access: unrestricted
 
 spring:
   application:

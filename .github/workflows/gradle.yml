@@ -61,20 +61,15 @@ jobs:
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
           script: |
-            # Check if the application is running
+            # Check if the application is running and shut it down
             echo "Checking for the running cms-engine application..."
-            PID=$(ps aux | grep '[j]ava -jar opt/jars/cms-engine-0.0.1.jar' | awk '{print $2}')
-            
-            if [ -n "$PID" ]; then
-              echo "Stopping the old application with PID: $PID"
-              kill $PID
-              echo "Old application stopped."
+            if ps aux | grep -q 'java -jar opt/jars/cms-engine-0.0.1.jar'; then
+              echo "Stopping the old application..."
+              curl -i -X POST http://localhost:8080/actuator/shutdown
+              sleep 5  # Wait for the application to shut down
             else
-              echo "No running cms-engine application found."
+              echo "No running application found."
             fi
-      
-            # Wait for a moment (optional)
-            sleep 5  # Wait for 5 seconds before starting the new app
       
             # Start the new app
             echo "Starting the new application..."

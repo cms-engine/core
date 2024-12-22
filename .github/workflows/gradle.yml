@@ -25,23 +25,32 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      - name: SCP Command to Transfer Files
-        uses: appleboy/scp-action@v0.1.7
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          source: build/libs/cms-engine-0.0.1.jar
-          target: jars/cms-engine.jar
-          host: ${{ secrets.DROPLET_IP }}
-          username: ${{ secrets.DROPLET_USER }}
-          key : ${{ secrets.DROPLET_SSH_KEY }}
-          passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
+          name: Package
+          path: build/libs
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-      - name: Debug List downloaded artifacts
-        run: ls -la
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Package
+
+      - name: SCP Command to Transfer Files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USER }}
+          key : ${{ secrets.DROPLET_SSH_KEY }}
+          passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
+
+          source: cms-engine-0.0.1.jar
+          target: jars/cms-engine.jar
 
       - name: Deploy to Droplet
         uses: appleboy/ssh-action@v1.2.0
@@ -55,6 +64,10 @@ jobs:
             # Check if the JAR file exists in the current directory
             echo "Current Directory Contents:"
             ls -la
+            
+            # Stop the old app and start the new one
+            pkill -f 'java -jar' || true
+            nohup java -jar /opt/jars/cms-engine-0.0.1.jar > /opt/jars/app.log 2>&1 &
 
   dependency-submission:
 

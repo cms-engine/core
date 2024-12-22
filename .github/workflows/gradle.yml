@@ -67,7 +67,7 @@ jobs:
             
             # Stop the old app
             echo "Stopping the old application..."
-            pkill -f 'java -jar' || true
+#            pkill -f 'java -jar' || true
             echo "Old application stopped."
             
             # Wait for a moment

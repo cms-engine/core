@@ -56,7 +56,7 @@ jobs:
           script: |
             # Copy the JAR file to the droplet
             mkdir -p /opt/cms-engine/
-            rsync -avz --progress *.jar /opt/cms-engine/
+            rsync -avz --progress cms-engine-0.0.1-SNAPSHOT.jar /opt/cms-engine/
             
             # Stop the old app and start the new one
             pkill -f 'java -jar' || true

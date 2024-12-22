@@ -60,7 +60,7 @@ jobs:
             
             # Stop the old app and start the new one
             pkill -f 'java -jar' || true
-            nohup java -jar /opt/cms-engine/*.jar > /opt/cms-engine/app.log 2>&1 &
+            nohup java -jar /opt/cms-engine/cms-engine-0.0.1-SNAPSHOT.jar > /opt/cms-engine/app.log 2>&1 &
 
   dependency-submission:
 

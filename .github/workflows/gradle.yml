@@ -64,14 +64,7 @@ jobs:
             # Check if the JAR file exists in the current directory
             echo "Current Directory Contents:"
             ls -la /opt/jars
-            
-            # Stop the old app
-            echo "Stopping the old application..."
-#            pkill -f 'java -jar' || true
-            echo "Old application stopped."
-            
-            # Wait for a moment
-            sleep 5  # Wait for 5 seconds before starting the new app
+
             
             # Start the new app
             echo "Starting the new application..."

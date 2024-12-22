@@ -57,9 +57,15 @@ jobs:
             mkdir -p /opt/cms-engine/
             rsync -avz --progress cms-engine-0.0.1-SNAPSHOT.jar /opt/cms-engine/
             
-            # Stop the old app and start the new one
-            pkill -f 'java -jar' || true
-            nohup java -jar /opt/cms-engine/cms-engine-0.0.1-SNAPSHOT.jar > /opt/cms-engine/app.log 2>&1 &
+            # Check if the JAR file exists
+            if [ -f /opt/cms-engine/cms-engine-0.0.1-SNAPSHOT.jar ]; then
+              # Stop the old app and start the new one
+              pkill -f 'java -jar' || true
+              nohup java -jar /opt/cms-engine/cms-engine-0.0.1-SNAPSHOT.jar > /opt/cms-engine/app.log 2>&1 &
+            else
+              echo "JAR file does not exist!"
+              exit 1
+            fi
 
   dependency-submission:
 

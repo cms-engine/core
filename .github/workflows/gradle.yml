@@ -68,8 +68,8 @@ jobs:
             if [ -n "$PID" ]; then
               echo "Stopping the old application with PID: $PID"
               kill $PID
-            echo "Old application stopped."
-              else
+              echo "Old application stopped."
+            else
               echo "No running cms-engine application found."
             fi
       

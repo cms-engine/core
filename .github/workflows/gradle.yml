@@ -61,15 +61,26 @@ jobs:
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
           script: |
-            # Check if the JAR file exists in the current directory
-            echo "Current Directory Contents:"
-            ls -la opt/jars
-
-            
+            # Stop the old app
+            echo "Stopping the old application..."
+            if pgrep -f 'java -jar' > /dev/null; then
+              pkill -f 'java -jar'
+              echo "Old application stopped successfully."
+            else
+              echo "No running application found."
+            fi
+      
+            # Wait for a moment (optional)
+            sleep 5  # Wait for 5 seconds before starting the new app
+      
             # Start the new app
             echo "Starting the new application..."
-            nohup java -jar opt/jars/cms-engine-0.0.1.jar > opt/jars/app.log 2>&1 &
-            echo "New application started."
+            nohup java -jar /opt/jars/cms-engine-0.0.1.jar > /opt/jars/app.log 2>&1 &
+            if [ $? -eq 0 ]; then
+              echo "New application started."
+            else
+              echo "Failed to start the new application."
+            fi
 
   dependency-submission:
 

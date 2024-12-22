@@ -75,7 +75,7 @@ jobs:
       
             # Start the new app
             echo "Starting the new application..."
-            nohup java -jar /opt/jars/cms-engine-0.0.1.jar > /opt/jars/app.log 2>&1 &
+            nohup java -jar opt/jars/cms-engine-0.0.1.jar > opt/jars/app.log 2>&1 &
             if [ $? -eq 0 ]; then
               echo "New application started."
             else

@@ -53,17 +53,27 @@ jobs:
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
           script: |
+            # Check if the JAR file exists in the current directory
+            echo "Current Directory Contents:"
+            ls -la
+            
             # Copy the JAR file to the droplet
             mkdir -p /opt/cms-engine/
-            rsync -avz --progress cms-engine-0.0.1-SNAPSHOT.jar /opt/cms-engine/
+            # Ensure the correct file name is referenced
+            if [ -f cms-engine-0.0.1-SNAPSHOT.jar ]; then
+              rsync -avz --progress cms-engine-0.0.1-SNAPSHOT.jar /opt/cms-engine/
+            else
+              echo "JAR file does not exist in the current directory!"
+              exit 1
+            fi
             
-            # Check if the JAR file exists
+            # Check if the JAR file exists on the droplet before starting
             if [ -f /opt/cms-engine/cms-engine-0.0.1-SNAPSHOT.jar ]; then
               # Stop the old app and start the new one
               pkill -f 'java -jar' || true
               nohup java -jar /opt/cms-engine/cms-engine-0.0.1-SNAPSHOT.jar > /opt/cms-engine/app.log 2>&1 &
             else
-              echo "JAR file does not exist!"
+              echo "JAR file does not exist on the droplet!"
               exit 1
             fi
 

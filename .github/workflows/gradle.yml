@@ -33,7 +33,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-
     needs: build
 
     steps:
@@ -41,6 +40,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Package
+
+      - name: Debug List downloaded artifacts
+        run: ls -la
 
       - name: Deploy to Droplet
         env:
@@ -50,17 +52,18 @@ jobs:
         run: |
           echo "$DROPLET_SSH_KEY" > private_key
           chmod 600 private_key
-          
+
           # Copy the JAR file to the droplet
-          scp -o StrictHostKeyChecking=no -i private_key build/libs/*.jar $DROPLET_USER@$DROPLET_IP:/opt/cms-engine/
-          
+          scp -o StrictHostKeyChecking=no -i private_key Package/*.jar $DROPLET_USER@$DROPLET_IP:/opt/cms-engine/
+
           # SSH into the droplet, stop the old app, and restart the new one
           ssh -o StrictHostKeyChecking=no -i private_key $DROPLET_USER@$DROPLET_IP << 'EOF'
             pkill -f 'java -jar' || true
             nohup java -jar /opt/cms-engine/*.jar > /opt/cms-engine/app.log 2>&1 &
           EOF
-          
+
           rm private_key
+  
 
   dependency-submission:
 

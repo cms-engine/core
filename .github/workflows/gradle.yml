@@ -25,28 +25,23 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - name: Copy via ssh
+        uses: garygrossgarten/github-action-scp@0.9.0
         with:
-          name: Package
-          path: build/libs
+          local: cms-engine.jar
+          remote: build/libs/*.jar
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USER }}
+          privateKey : ${{ secrets.DROPLET_SSH_KEY }}
+          passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: Package
-
       - name: Debug List downloaded artifacts
         run: ls -la
-
-      - name: Set JAR file variable
-        id: set-jar-file
-        run: echo "JAR_FILE=$(ls -1 *.jar | head -n 1)" >> $GITHUB_ENV
 
       - name: Deploy to Droplet
         uses: appleboy/ssh-action@v1.2.0
@@ -60,25 +55,6 @@ jobs:
             # Check if the JAR file exists in the current directory
             echo "Current Directory Contents:"
             ls -la
-            
-            # Copy the JAR file to the droplet
-            mkdir -p /opt/cms-engine/
-            if [ -f "$JAR_FILE" ]; then
-              rsync -avz --progress "$JAR_FILE" /opt/cms-engine/
-            else
-              echo "JAR file does not exist in the current directory!"
-              exit 1
-            fi
-            
-            # Check if the JAR file exists on the droplet before starting
-            if [ -f /opt/cms-engine/$(basename $JAR_FILE) ]; then
-              # Stop the old app and start the new one
-              pkill -f 'java -jar' || true
-              nohup java -jar /opt/cms-engine/$(basename $JAR_FILE) > /opt/cms-engine/app.log 2>&1 &
-            else
-              echo "JAR file does not exist on the droplet!"
-              exit 1
-            fi
 
   dependency-submission:
 

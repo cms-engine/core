@@ -45,25 +45,21 @@ jobs:
         run: ls -la
 
       - name: Deploy to Droplet
-        env:
-          DROPLET_SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
-          DROPLET_IP: ${{ secrets.DROPLET_IP }}
-          DROPLET_USER: ${{ secrets.DROPLET_USER }}
-        run: |
-          echo "$DROPLET_SSH_KEY" > private_key
-          chmod 600 private_key
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
-          # Copy the JAR file to the droplet
-          scp -o StrictHostKeyChecking=no -i private_key *.jar $DROPLET_USER@$DROPLET_IP:/opt/cms-engine/
-
-          # SSH into the droplet, stop the old app, and restart the new one
-          ssh -o StrictHostKeyChecking=no -i private_key $DROPLET_USER@$DROPLET_IP << 'EOF'
+          script: |
+            # Copy the JAR file to the droplet
+            mkdir -p /opt/cms-engine/
+            rsync -avz --progress *.jar /opt/cms-engine/
+            
+            # Stop the old app and start the new one
             pkill -f 'java -jar' || true
             nohup java -jar /opt/cms-engine/*.jar > /opt/cms-engine/app.log 2>&1 &
-          EOF
-
-          rm private_key
-  
 
   dependency-submission:
 

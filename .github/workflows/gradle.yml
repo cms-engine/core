@@ -63,16 +63,12 @@ jobs:
           script: |
             # Check if the JAR file exists in the current directory
             echo "Current Directory Contents:"
-            ls -la 1opt/jars
+            ls -la /opt/jars
             
             # Stop the old app
             echo "Stopping the old application..."
             pkill -f 'java -jar' || true
-            if [ $? -eq 0 ]; then
-              echo "Old application stopped successfully."
-            else
-              echo "No running application found or failed to stop."
-            fi
+            echo "Old application stopped."
             
             # Wait for a moment
             sleep 5  # Wait for 5 seconds before starting the new app
@@ -80,11 +76,7 @@ jobs:
             # Start the new app
             echo "Starting the new application..."
             nohup java -jar /opt/jars/cms-engine-0.0.1.jar > /opt/jars/app.log 2>&1 &
-            if [ $? -eq 0 ]; then
-              echo "New application started successfully."
-            else
-              echo "Failed to start the new application."
-            fi
+            echo "New application started."
 
   dependency-submission:
 

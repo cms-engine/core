@@ -62,13 +62,13 @@ jobs:
 
           script: |
             # Check if the application is running and shut it down
-            echo "Checking for the running cms-engine application..."
-            if ps aux | grep -q 'java -jar opt/jars/cms-engine-0.0.1.jar'; then
+            echo "Checking application health..."
+            if curl -s -o /dev/null -w "%{http_code}" http://165.227.137.72:8080/actuator/health | grep -q "200"; then
               echo "Stopping the old application..."
               curl -i -X POST http://localhost:8080/actuator/shutdown
               sleep 5  # Wait for the application to shut down
             else
-              echo "No running application found."
+              echo "No running application found or application is unhealthy."
             fi
       
             # Start the new app

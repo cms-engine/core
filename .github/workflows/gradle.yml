@@ -50,7 +50,7 @@ jobs:
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
           source: cms-engine-0.0.1.jar
-          target: jars
+          target: opt/jars
 
       - name: Deploy to Droplet
         uses: appleboy/ssh-action@v1.2.0
@@ -63,11 +63,11 @@ jobs:
           script: |
             # Check if the JAR file exists in the current directory
             echo "Current Directory Contents:"
-            ls -la jars
+            ls -la opt/jars
             
             # Stop the old app and start the new one
             pkill -f 'java -jar' || true
-            nohup java -jar /opt/jars/cms-engine-0.0.1.jar > /opt/jars/app.log 2>&1 &
+            nohup java -jar opt/jars/cms-engine-0.0.1.jar > opt/jars/app.log 2>&1 &
 
   dependency-submission:
 

@@ -61,13 +61,16 @@ jobs:
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
           script: |
-            # Stop the old app
-            echo "Stopping the old application..."
-            if pgrep -f 'java -jar' > /dev/null; then
-              pkill -f 'java -jar'
-              echo "Old application stopped successfully."
-            else
-              echo "No running application found."
+            # Check if the application is running
+            echo "Checking for the running cms-engine application..."
+            PID=$(ps aux | grep '[j]ava -jar /opt/jars/cms-engine-0.0.1.jar' | awk '{print $2}')
+            
+            if [ -n "$PID" ]; then
+              echo "Stopping the old application with PID: $PID"
+              kill $PID
+            echo "Old application stopped."
+              else
+              echo "No running cms-engine application found."
             fi
       
             # Wait for a moment (optional)

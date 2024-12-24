@@ -1,5 +1,5 @@
 # First stage: complete build environment
-FROM gradle:8.10.2-jdk21 AS base
+FROM gradle:8.12-jdk21 AS base
 
 WORKDIR /app
 ADD build.gradle.kts build.gradle.kts

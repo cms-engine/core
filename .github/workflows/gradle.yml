@@ -20,7 +20,7 @@ jobs:
           distribution: 'liberica'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
@@ -95,4 +95,4 @@ jobs:
           distribution: 'liberica'
 
       - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+        uses: gradle/actions/dependency-submission@v4

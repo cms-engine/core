@@ -5,6 +5,7 @@ import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +20,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Setter
@@ -28,7 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @Table(name = BackofficeUser.TABLE_NAME)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BackofficeUser implements UserDetails {
+public class BackofficeUser {
 
     public static final String TABLE_NAME = "backoffice_user";
 
@@ -45,7 +45,7 @@ public class BackofficeUser implements UserDetails {
 
     boolean enabled = true;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     Set<Permission> authorities = new HashSet<>();
 
     @Override

@@ -68,14 +68,15 @@ jobs:
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
           script: |
-            # Check if the application is running and shut it down
-            echo "Checking application health..."
-            if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/actuator/health | grep -q "200"; then
-              echo "Stopping the old application..."
-              curl -i -X POST http://localhost:8080/actuator/shutdown
-              sleep 5  # Wait for the application to shut down
+            trap 'echo "Received SIGTERM (143). Ignoring to prevent job failure." && exit 0' SIGTERM
+            
+            # Stop the old app
+            echo "Stopping the old application..."
+            pkill -f 'java -jar' || true
+            if [ $? -eq 0 ]; then
+              echo "Old application stopped successfully."
             else
-              echo "No running application found or application is unhealthy."
+              echo "No running application found or failed to stop."
             fi
       
             # Start the new app

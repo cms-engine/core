@@ -1,10 +1,13 @@
 @file:Suppress("SpellCheckingInspection")
 
+import com.github.gradle.node.npm.task.NpmTask
+
 plugins {
     java
     id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "6.25.0"
+    id("com.github.node-gradle.node") version "7.1.0"
 }
 
 group = "com.ecommerce"
@@ -104,4 +107,40 @@ sourceSets {
             srcDir(createBuildPropertiesFileTask.map { it.temporaryDir })
         }
     }
+}
+
+val feFolder = "${project.projectDir}/frontend"
+
+node {
+    // node modules directory
+    nodeProjectDir = file(feFolder)
+}
+
+tasks.register<NpmTask>("appNpmInstall") {
+    description = "Reads package.json and installs all dependencies"
+    workingDir = file(feFolder)
+    args = listOf("install")
+}
+
+tasks.register<NpmTask>("appNpmBuild") {
+    description = "Builds application for your frontend"
+    workingDir = file(feFolder)
+    args = listOf("run", "build")
+}
+
+tasks.register<Copy>("copyToFrontend") {
+    from("$feFolder/out/")
+    into("${project.projectDir}/build/resources/main/public")
+}
+
+tasks.named("appNpmBuild") {
+    dependsOn("appNpmInstall")
+}
+
+tasks.named("copyToFrontend") {
+    dependsOn("appNpmBuild")
+}
+
+tasks.named("compileJava") {
+    dependsOn("copyToFrontend")
 }

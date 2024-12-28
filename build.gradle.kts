@@ -142,15 +142,17 @@ tasks.register<NpmTask>("appNpmBuild") {
 }
 
 tasks.register<Copy>("copyToFrontend") {
+    val publicDir = "${layout.buildDirectory.get()}/resources/main/public"
+
     doFirst {
-        delete("${project.projectDir}/build/resources/main/public")
+        delete(publicDir)
     }
 
     from("$feFolder/out")
-    into("${project.projectDir}/build/resources/main/public")
+    into(publicDir)
 
     inputs.dir("$feFolder/out")
-    outputs.dir("${project.projectDir}/build/resources/main/public")
+    outputs.dir(publicDir)
 }
 
 tasks.named("appNpmBuild") {

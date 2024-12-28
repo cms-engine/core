@@ -1,6 +1,7 @@
 @file:Suppress("SpellCheckingInspection")
 
 import com.github.gradle.node.npm.task.NpmTask
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 
 plugins {
     java
@@ -120,17 +121,32 @@ tasks.register<NpmTask>("appNpmInstall") {
     description = "Reads package.json and installs all dependencies"
     workingDir = file(feFolder)
     args = listOf("install")
+
+    inputs.file("$feFolder/package.json")
+    outputs.dir("$feFolder/node_modules")
 }
 
 tasks.register<NpmTask>("appNpmBuild") {
     description = "Builds application for your frontend"
     workingDir = file(feFolder)
     args = listOf("run", "build")
+
+    inputs.dir(fileTree(feFolder) {
+        exclude("out/**", ".next/**", "*.md")
+    })
+    outputs.dir("$feFolder/out")
 }
 
 tasks.register<Copy>("copyToFrontend") {
-    from("$feFolder/out/")
+    doFirst {
+        delete("${project.projectDir}/build/resources/main/public")
+    }
+
+    from("$feFolder/out")
     into("${project.projectDir}/build/resources/main/public")
+
+    inputs.dir("$feFolder/out")
+    outputs.dir("${project.projectDir}/build/resources/main/public")
 }
 
 tasks.named("appNpmBuild") {

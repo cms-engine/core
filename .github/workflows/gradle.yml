@@ -73,11 +73,7 @@ jobs:
             # Stop the old app
             echo "Stopping the old application..."
             pkill -f 'java -jar' || true
-            if [ $? -eq 0 ]; then
-              echo "Old application stopped successfully."
-            else
-              echo "No running application found or failed to stop."
-            fi
+            echo "Old application stopped successfully."
       
             # Start the new app
             echo "Starting the new application..."

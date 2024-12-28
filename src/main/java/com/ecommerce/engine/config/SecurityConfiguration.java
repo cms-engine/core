@@ -27,10 +27,12 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(request -> request.requestMatchers("/store/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
+        http.authorizeHttpRequests(
+                        request -> request.requestMatchers("/store/**")
+                                .permitAll()
+                                .anyRequest()
+                                .permitAll() // temporary
+                        )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults())
                 .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()))

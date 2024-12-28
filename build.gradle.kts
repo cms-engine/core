@@ -32,6 +32,7 @@ configurations {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -131,9 +132,11 @@ tasks.register<NpmTask>("appNpmBuild") {
     workingDir = file(feFolder)
     args = listOf("run", "build")
 
-    inputs.dir(fileTree(feFolder) {
-        exclude("out/**", ".next/**", "*.md")
-    })
+    inputs.dir(
+        fileTree(feFolder) {
+            exclude("out/**", ".next/**", "*.md")
+        },
+    )
     outputs.dir("$feFolder/out")
 }
 

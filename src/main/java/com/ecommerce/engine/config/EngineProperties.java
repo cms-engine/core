@@ -9,4 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "engine")
 public class EngineProperties {
     private String imageDir;
+    private SystemUser systemUser;
+
+    public record SystemUser(String username, String password) {}
 }

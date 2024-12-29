@@ -8,7 +8,8 @@ digital content, allowing you to focus on your website or application's front-en
 ____
 Prerequisites
 
-- Java 17
+- Java 21
+- Node.js && NPM
 - PostgreSQL
 
 Before you can run the application, you need to get the application source code onto your machine.
@@ -16,7 +17,7 @@ Before you can run the application, you need to get the application source code 
 1. Clone the getting-started repository using the following command:
 
 ```bash
-git clone https://github.com/lipiridi/cms-engine.git
+git clone https://github.com/cms-engine/core.git
 ```
 
 2. Go to the app folder
@@ -29,8 +30,8 @@ cd cms-engine
 4. Build and run project locally:
 
 ```bash
-./gradlew jar
-java -jar build/libs/awd-backoffice-0.0.1-SNAPSHOT.jar
+./gradlew build
+java -jar build/libs/cms-engine-0.0.1.jar
 ```
 
 or
@@ -39,8 +40,18 @@ or
 ./gradlew bootRun
 ```
 
-## Building image
+## Docker
+
+### Building image
 
 ```bash
 docker build -t cms-engine .
+```
+
+### All in one
+
+To simplify running the application with a PostgreSQL database, use Docker Compose.
+
+```bash
+docker-compose up --build
 ```

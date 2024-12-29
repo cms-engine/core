@@ -12,4 +12,6 @@ public enum ErrorCode {
     NOT_UNIQUE,
     DEFAULT_ENTITY,
     INVALID_CONFIGURATION,
+    FORBIDDEN,
+    UNAUTHORIZED
 }

@@ -4,10 +4,8 @@ import static com.ecommerce.engine.exception.handler.ErrorCode.INTERNAL_ERROR;
 import static com.ecommerce.engine.exception.handler.ErrorCode.JSON_PARSE_ERROR;
 import static com.ecommerce.engine.exception.handler.ErrorCode.VALIDATION_ERROR;
 
+import com.ecommerce.engine.config.TraceProvider;
 import com.ecommerce.engine.exception.ApplicationException;
-import io.micrometer.tracing.Span;
-import io.micrometer.tracing.TraceContext;
-import io.micrometer.tracing.Tracer;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Payload;
@@ -23,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,7 +38,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     private static final String INTERNAL_ERROR_MESSAGE = "A system error has occurred. Please contact the support.";
     private static final String VALIDATION_ERROR_MESSAGE = "Validation failed. Please check errors for details.";
 
-    private final Tracer tracer;
+    private final TraceProvider traceProvider;
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -53,7 +52,11 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
                 .toList();
 
         ProblemDetail problemDetail = new ProblemDetail(
-                VALIDATION_ERROR, VALIDATION_ERROR_MESSAGE, Instant.now(), getTraceId(), fieldErrorRecords);
+                VALIDATION_ERROR,
+                VALIDATION_ERROR_MESSAGE,
+                Instant.now(),
+                traceProvider.getTraceId(),
+                fieldErrorRecords);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
@@ -65,7 +68,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
             @Nonnull HttpStatusCode status,
             @Nonnull WebRequest request) {
         ProblemDetail problemDetail =
-                new ProblemDetail(JSON_PARSE_ERROR, ex.getMessage(), Instant.now(), getTraceId(), null);
+                new ProblemDetail(JSON_PARSE_ERROR, ex.getMessage(), Instant.now(), traceProvider.getTraceId(), null);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
@@ -75,7 +78,8 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     protected ProblemDetail globalExceptionHandling(Exception ex) {
         log.error(ex.getMessage(), ex);
 
-        return new ProblemDetail(INTERNAL_ERROR, INTERNAL_ERROR_MESSAGE, Instant.now(), getTraceId(), null);
+        return new ProblemDetail(
+                INTERNAL_ERROR, INTERNAL_ERROR_MESSAGE, Instant.now(), traceProvider.getTraceId(), null);
     }
 
     @ExceptionHandler
@@ -86,9 +90,17 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         log.error(exceptionMessage, ex);
 
         ProblemDetail problemDetail =
-                new ProblemDetail(ex.getErrorCode(), exceptionMessage, Instant.now(), getTraceId(), null);
+                new ProblemDetail(ex.getErrorCode(), exceptionMessage, Instant.now(), traceProvider.getTraceId(), null);
 
         return ResponseEntity.status(exceptionHttpStatus).body(problemDetail);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    public ProblemDetail handleAccessDeniedException(AccessDeniedException ex) {
+        log.debug(ex.getMessage(), ex);
+
+        return new ProblemDetail(ErrorCode.FORBIDDEN, ex.getMessage(), Instant.now(), traceProvider.getTraceId(), null);
     }
 
     private List<ErrorRecord> createFromFieldError(FieldError error) {
@@ -109,12 +121,5 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         return ValidationPayload.class.isAssignableFrom(clazz)
                 ? Optional.of(BeanUtils.instantiateClass(clazz, ValidationPayload.class))
                 : Optional.empty();
-    }
-
-    private String getTraceId() {
-        return Optional.ofNullable(tracer.currentSpan())
-                .map(Span::context)
-                .map(TraceContext::traceId)
-                .orElse(null);
     }
 }

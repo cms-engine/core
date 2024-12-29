@@ -31,6 +31,7 @@ public class BackofficeUserController {
         return backofficeUserService.search(searchRequest);
     }
 
+    @PreAuthorize("hasAuthority(T(com.ecommerce.engine._admin.enumeration.Permission).ACTUATOR)")
     @GetMapping("/{id}")
     public BackofficeUserResponseDto get(@PathVariable long id) {
         return backofficeUserService.get(id);

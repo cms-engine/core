@@ -46,3 +46,6 @@ engine:
   system-user:
     username: admin@engine.pp.ua
     password: admin
+logging:
+  level:
+    root: info

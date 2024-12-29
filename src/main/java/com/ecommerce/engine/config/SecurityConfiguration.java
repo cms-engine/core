@@ -1,9 +1,9 @@
 package com.ecommerce.engine.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import com.ecommerce.engine._admin.enumeration.Permission;
 import com.ecommerce.engine._admin.repository.BackofficeUserRepository;
+import com.ecommerce.engine.exception.handler.CommonAccessDeniedHandler;
+import com.ecommerce.engine.exception.handler.UnauthorizedHandler;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(
+            HttpSecurity http,
+            UnauthorizedHandler unauthorizedHandler,
+            CommonAccessDeniedHandler commonAccessDeniedHandler)
+            throws Exception {
         http.authorizeHttpRequests(
                         request -> request.requestMatchers("/store/**")
                                 .permitAll()
@@ -36,10 +40,11 @@ public class SecurityConfiguration {
                                 .anyRequest()
                                 .permitAll() // temporary
                         )
-                .httpBasic(withDefaults())
+                .exceptionHandling(exHandling -> exHandling.accessDeniedHandler(commonAccessDeniedHandler))
+                .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(unauthorizedHandler))
                 .formLogin(formLogin -> formLogin.loginPage("/login.html").loginProcessingUrl("/login"))
                 .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()))
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable); // temporary
 
         return http.build();
     }

@@ -5,7 +5,7 @@ import com.ecommerce.engine._admin.dto.grid.ProductGridDto;
 import com.ecommerce.engine._admin.dto.request.ProductRequestDto;
 import com.ecommerce.engine._admin.dto.response.ProductResponseDto;
 import com.ecommerce.engine.entity.Product;
-import com.ecommerce.engine.enums.SeoUrlType;
+import com.ecommerce.engine.enumeration.SeoUrlType;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.ProductRepository;
 import com.ecommerce.engine.service.ForeignKeysChecker;

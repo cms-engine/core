@@ -6,7 +6,7 @@ import com.ecommerce.engine._admin.dto.request.CategoryRequestDto;
 import com.ecommerce.engine._admin.dto.response.CategoryResponseDto;
 import com.ecommerce.engine.entity.Category;
 import com.ecommerce.engine.entity.projection.SelectProjection;
-import com.ecommerce.engine.enums.SeoUrlType;
+import com.ecommerce.engine.enumeration.SeoUrlType;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.CategoryRepository;
 import com.ecommerce.engine.service.EntityPresenceService;

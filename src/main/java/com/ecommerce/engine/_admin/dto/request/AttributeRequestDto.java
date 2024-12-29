@@ -1,7 +1,7 @@
 package com.ecommerce.engine._admin.dto.request;
 
 import com.ecommerce.engine._admin.dto.common.NameDescriptionDto;
-import com.ecommerce.engine.enums.InputType;
+import com.ecommerce.engine.enumeration.InputType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

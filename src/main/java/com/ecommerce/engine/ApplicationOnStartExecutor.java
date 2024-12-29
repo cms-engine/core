@@ -29,7 +29,7 @@ public class ApplicationOnStartExecutor {
         BackofficeUser backofficeUser = new BackofficeUser();
         backofficeUser.setUsername(systemUser.username());
         backofficeUser.setPassword(passwordEncoder.encode(systemUser.password()));
-        backofficeUser.setAuthorities(Set.of(Permission.USERS_WRITE));
+        backofficeUser.setAuthorities(Set.of(Permission.ACTUATOR, Permission.USERS_WRITE));
         repository.save(backofficeUser);
     }
 }

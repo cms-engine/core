@@ -2,6 +2,7 @@ package com.ecommerce.engine.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import com.ecommerce.engine._admin.enumeration.Permission;
 import com.ecommerce.engine._admin.repository.BackofficeUserRepository;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
@@ -30,11 +31,13 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(
                         request -> request.requestMatchers("/store/**")
                                 .permitAll()
+                                .requestMatchers("/actuator/**")
+                                .hasAuthority(Permission.ACTUATOR.getAuthority())
                                 .anyRequest()
                                 .permitAll() // temporary
                         )
                 .httpBasic(withDefaults())
-                .formLogin(withDefaults())
+                .formLogin(formLogin -> formLogin.loginPage("/login.html").loginProcessingUrl("/login"))
                 .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()))
                 .csrf(AbstractHttpConfigurer::disable);
 

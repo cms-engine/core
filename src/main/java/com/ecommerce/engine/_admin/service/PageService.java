@@ -5,7 +5,7 @@ import com.ecommerce.engine._admin.dto.grid.PageGridDto;
 import com.ecommerce.engine._admin.dto.request.PageRequestDto;
 import com.ecommerce.engine._admin.dto.response.PageResponseDto;
 import com.ecommerce.engine.entity.Page;
-import com.ecommerce.engine.enums.SeoUrlType;
+import com.ecommerce.engine.enumeration.SeoUrlType;
 import com.ecommerce.engine.exception.NotFoundException;
 import com.ecommerce.engine.repository.PageRepository;
 import com.ecommerce.engine.service.ForeignKeysChecker;

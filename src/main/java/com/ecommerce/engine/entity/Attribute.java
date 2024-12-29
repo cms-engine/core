@@ -1,7 +1,7 @@
 package com.ecommerce.engine.entity;
 
 import com.ecommerce.engine._admin.dto.request.AttributeRequestDto;
-import com.ecommerce.engine.enums.InputType;
+import com.ecommerce.engine.enumeration.InputType;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.*;
 import java.util.HashSet;

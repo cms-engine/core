@@ -4,10 +4,18 @@ management:
   endpoints:
     web:
       exposure:
-        include: ["health", "metrics", "info", "shutdown"]
+        include: "*"
   endpoint:
     shutdown:
       access: unrestricted
+    health:
+      probes:
+        enabled: true
+      show-details: always
+      group:
+        readiness:
+          include:
+            - db
 
 spring:
   application:
@@ -22,7 +30,6 @@ spring:
     hibernate:
       ddl-auto: update
   session:
-    timeout: 24h
     jdbc:
       initialize-schema: always
 

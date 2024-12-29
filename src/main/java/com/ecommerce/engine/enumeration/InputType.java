@@ -1,4 +1,4 @@
-package com.ecommerce.engine.enums;
+package com.ecommerce.engine.enumeration;
 
 public enum InputType {
     TEXT,

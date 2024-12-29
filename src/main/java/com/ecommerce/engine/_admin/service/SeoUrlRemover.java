@@ -1,6 +1,6 @@
 package com.ecommerce.engine._admin.service;
 
-import com.ecommerce.engine.enums.SeoUrlType;
+import com.ecommerce.engine.enumeration.SeoUrlType;
 import com.ecommerce.engine.repository.SeoUrlRepository;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;

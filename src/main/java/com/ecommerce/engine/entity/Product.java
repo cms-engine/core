@@ -3,8 +3,8 @@ package com.ecommerce.engine.entity;
 import static com.ecommerce.engine.util.NullUtils.nullable;
 
 import com.ecommerce.engine._admin.dto.request.ProductRequestDto;
-import com.ecommerce.engine.enums.LengthClass;
-import com.ecommerce.engine.enums.WeightClass;
+import com.ecommerce.engine.enumeration.LengthClass;
+import com.ecommerce.engine.enumeration.WeightClass;
 import io.github.lipiridi.searchengine.Searchable;
 import jakarta.persistence.*;
 import java.math.BigDecimal;

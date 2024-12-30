@@ -50,8 +50,8 @@ public class SecurityConfiguration {
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(unauthorizedHandler))
                 .formLogin(formLogin -> formLogin.loginPage("/login.html").loginProcessingUrl("/login"))
                 .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()))
-                .csrf(AbstractHttpConfigurer::disable)
-                .build(); // temporary
+                .csrf(AbstractHttpConfigurer::disable) // TODO temporary
+                .build();
     }
 
     @Bean

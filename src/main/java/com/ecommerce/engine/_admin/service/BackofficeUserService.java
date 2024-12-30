@@ -14,6 +14,7 @@ import io.github.lipiridi.searchengine.dto.SearchResponse;
 import jakarta.annotation.Nullable;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,7 @@ public class BackofficeUserService {
         backofficeUser.setUsername(requestDto.username());
         backofficeUser.setAuthorities(requestDto.authorities());
         backofficeUser.setEnabled(requestDto.enabled());
-        if (requestDto.password() != null) {
+        if (StringUtils.isNotBlank(requestDto.password())) {
             backofficeUser.setPassword(passwordEncoder.encode(requestDto.password()));
         }
 

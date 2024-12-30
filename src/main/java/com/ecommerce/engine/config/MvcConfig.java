@@ -2,7 +2,6 @@ package com.ecommerce.engine.config;
 
 import jakarta.annotation.Nonnull;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(@Nonnull ResourceHandlerRegistry registry) {
         String imageDir = engineProperties.getImageDir();
         if (imageDir == null) {
-            imageDir = Path.of(Paths.get("").toAbsolutePath().toString(), IMAGES_FOLDER)
+            imageDir = Path.of(Path.of("").toAbsolutePath().toString(), IMAGES_FOLDER)
                     .toString();
         }
 

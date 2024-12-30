@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+// TODO Fill with liquibase
 @Component
 @RequiredArgsConstructor
 public class ApplicationOnStartExecutor {

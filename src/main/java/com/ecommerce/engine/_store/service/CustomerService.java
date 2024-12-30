@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
 
     private final CustomerRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     public CustomerInfoResponseDto get(UUID id) {
         Customer customer = findById(id);
@@ -33,8 +35,7 @@ public class CustomerService {
         checkEmailForUniqueness(requestDto.email());
         checkPasswordForRegexMatch(requestDto.password());
 
-        // TODO encrypt password
-        String encryptedPassword = requestDto.password();
+        String encryptedPassword = passwordEncoder.encode(requestDto.password());
         Customer customer = new Customer(requestDto, encryptedPassword);
         Customer saved = repository.save(customer);
         return new CustomerInfoResponseDto(saved);
@@ -53,8 +54,7 @@ public class CustomerService {
         if (StringUtils.isNotBlank(password)) {
             checkPasswordForRegexMatch(password);
 
-            // TODO encrypt password
-            String encryptedPassword = requestDto.password();
+            String encryptedPassword = passwordEncoder.encode(requestDto.password());
             customer.setPassword(encryptedPassword);
         }
 

@@ -14,7 +14,6 @@ import com.ecommerce.engine.validation.EntityType;
 import jakarta.annotation.Nullable;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
-// TODO Original and cache images
 public class ImageService implements EntityPresenceService<UUID> {
 
     private final ImageRepository repository;
@@ -44,8 +42,8 @@ public class ImageService implements EntityPresenceService<UUID> {
         // Create the directory if it doesn't exist
         String engineImageDir = engineProperties.getImageDir();
         imageDir = engineImageDir != null
-                ? Paths.get(engineImageDir)
-                : Path.of(Paths.get("").toAbsolutePath().toString(), IMAGES_FOLDER);
+                ? Path.of(engineImageDir)
+                : Path.of(Path.of("").toAbsolutePath().toString(), IMAGES_FOLDER);
 
         if (!Files.exists(imageDir)) {
             log.info("Create image directory: {}", imageDir);
@@ -80,7 +78,7 @@ public class ImageService implements EntityPresenceService<UUID> {
         Path filePath = imageDir.resolve(uniqueFileName);
 
         if (oldPath != null) {
-            Path oldFilePath = Paths.get(oldPath);
+            Path oldFilePath = Path.of(imageDir.toString(), oldPath.substring(IMAGES_FOLDER.length()));
             if (!filePath.equals(oldFilePath) && Files.exists(oldFilePath)) {
                 Files.delete(oldFilePath);
             }

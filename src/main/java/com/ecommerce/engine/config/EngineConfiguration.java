@@ -9,12 +9,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.Random;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.type.format.jackson.JacksonJsonFormatMapper;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
@@ -22,11 +20,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.LocaleResolver;
 
 @EnableJpaAuditing
 @Configuration
+@RequiredArgsConstructor
 public class EngineConfiguration {
 
     public static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
@@ -43,20 +41,6 @@ public class EngineConfiguration {
                 .disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .build();
-    }
-
-    public static final String APP_VERSION;
-
-    static {
-        Properties properties = new Properties();
-
-        InputStream input = ValidationUtils.class.getResourceAsStream("/build.properties");
-        try {
-            properties.load(input);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        APP_VERSION = properties.getProperty("version");
     }
 
     @Bean

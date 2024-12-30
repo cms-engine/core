@@ -1,6 +1,6 @@
 package com.ecommerce.engine._admin.service;
 
-import static com.ecommerce.engine.config.MvcConfig.IMAGE_FOLDER;
+import static com.ecommerce.engine.config.MvcConfig.IMAGES_FOLDER;
 
 import com.ecommerce.engine._admin.dto.response.ImageResponseDto;
 import com.ecommerce.engine.config.EngineProperties;
@@ -15,6 +15,7 @@ import jakarta.annotation.Nullable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -44,7 +45,7 @@ public class ImageService implements EntityPresenceService<UUID> {
         String engineImageDir = engineProperties.getImageDir();
         imageDir = engineImageDir != null
                 ? Paths.get(engineImageDir)
-                : Path.of(Paths.get("").toAbsolutePath().toString(), IMAGE_FOLDER);
+                : Path.of(Paths.get("").toAbsolutePath().toString(), IMAGES_FOLDER);
 
         if (!Files.exists(imageDir)) {
             log.info("Create image directory: {}", imageDir);
@@ -86,10 +87,10 @@ public class ImageService implements EntityPresenceService<UUID> {
         }
 
         // Save the image file to the server using Java NIO
-        Files.copy(imageFile.getInputStream(), filePath);
+        Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
         // Store the image reference in the database
-        Image image = new Image(id, IMAGE_FOLDER + "/" + uniqueFileName, name);
+        Image image = new Image(id, IMAGES_FOLDER + "/" + uniqueFileName, name);
         Image saved = repository.save(image);
 
         return new ImageResponseDto(saved.getId(), saved.getSrc(), saved.getName());

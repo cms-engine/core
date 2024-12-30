@@ -88,32 +88,6 @@ spotless {
     }
 }
 
-val createBuildPropertiesFileTask: TaskProvider<Task> =
-    tasks.register("createVersionPropertiesFile") {
-        group = "build"
-
-        // define a local val, to be compatible with Configuration Cache
-        val projectVersion = project.version
-        inputs.property("projectVersion", projectVersion)
-
-        // tell Gradle about the output directory
-        outputs.dir(temporaryDir)
-
-        doLast {
-            val resource = File(temporaryDir, "build.properties")
-            resource.writeText("version=$projectVersion")
-        }
-    }
-
-sourceSets {
-    main {
-        resources {
-            // add a new resource dir that is produced by the task
-            srcDir(createBuildPropertiesFileTask.map { it.temporaryDir })
-        }
-    }
-}
-
 val feFolder = "${project.projectDir}/frontend"
 
 node {

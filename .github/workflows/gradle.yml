@@ -59,7 +59,7 @@ jobs:
         id: get_version
         run: |
           APP_VERSION=$(./gradlew printVersion -q)
-          echo "app_version=${APP_VERSION}" >> GITHUB_OUTPUT
+          echo "app_version=${APP_VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

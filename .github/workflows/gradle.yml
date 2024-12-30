@@ -81,7 +81,13 @@ jobs:
 
       - name: Echo the application version
         run: |
-          echo "Transferring file for version: ${{ env.APP_VERSION }}"
+          echo "Transferring file for version: $APP_VERSION"
+
+      - name: Echo the application version from env
+        env:
+          APP_VERSION1: ${{needs.build.outputs.app_version}}
+        run: |
+          echo "Transferring file for version: $APP_VERSION1"
 
       - name: SCP Command to Transfer Files
         uses: appleboy/scp-action@v0.1.7
@@ -91,7 +97,7 @@ jobs:
           key: ${{ secrets.DROPLET_SSH_KEY }}
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
-          source: cms-engine-${{ env.APP_VERSION }}.jar
+          source: cms-engine-$APP_VERSION.jar
           target: opt/jars
 
       - name: Deploy to Droplet
@@ -112,7 +118,7 @@ jobs:
       
             # Start the new app
             echo "Starting the new application..."
-            nohup java -jar opt/jars/cms-engine-${{ env.APP_VERSION }}.jar > opt/jars/app.log 2>&1 &
+            nohup java -jar opt/jars/cms-engine-$APP_VERSION.jar > opt/jars/app.log 2>&1 &
             if [ $? -eq 0 ]; then
               echo "New application started."
             else

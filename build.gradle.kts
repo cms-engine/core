@@ -75,6 +75,10 @@ springBoot {
     buildInfo()
 }
 
+tasks.register("printVersion") {
+    println(project.version)
+}
+
 spotless {
     java {
         target("src/*/java/**/*.java")

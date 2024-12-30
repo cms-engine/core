@@ -53,6 +53,11 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
+      - name: Get app version
+        run: |
+          VERSION=$(./gradlew printVersion -q)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -77,7 +82,7 @@ jobs:
           key: ${{ secrets.DROPLET_SSH_KEY }}
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
-          source: cms-engine-0.0.1.jar
+          source: cms-engine-${{ env.VERSION }}.jar
           target: opt/jars
 
       - name: Deploy to Droplet
@@ -98,7 +103,7 @@ jobs:
       
             # Start the new app
             echo "Starting the new application..."
-            nohup java -jar opt/jars/cms-engine-0.0.1.jar > opt/jars/app.log 2>&1 &
+            nohup java -jar opt/jars/cms-engine-${{ env.VERSION }}.jar > opt/jars/app.log 2>&1 &
             if [ $? -eq 0 ]; then
               echo "New application started."
             else

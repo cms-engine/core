@@ -55,10 +55,10 @@ jobs:
 
       - name: Get app version
         run: |
-          ./gradlew printVersion --info
-          VERSION=$(./gradlew printVersion -q)
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "Captured version: ${VERSION}"  # This helps verify if the version is being captured correctly
+          APP_VERSION=$(./gradlew printVersion -q)
+          echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
+          echo "Captured version: ${APP_VERSION}"  # This helps verify if the version is being captured correctly
+          echo "Captured version from ENV: ${{ env.APP_VERSION }}"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -76,6 +76,10 @@ jobs:
         with:
           name: Package
 
+      - name: Echo the application version
+        run: |
+          echo "Transferring file for version: ${{ env.APP_VERSION }}"
+
       - name: SCP Command to Transfer Files
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -84,7 +88,7 @@ jobs:
           key: ${{ secrets.DROPLET_SSH_KEY }}
           passphrase: ${{ secrets.DROPLET_SSH_PASSPHRASE }}
 
-          source: cms-engine-${{ env.VERSION }}.jar
+          source: cms-engine-${{ env.APP_VERSION }}.jar
           target: opt/jars
 
       - name: Deploy to Droplet
@@ -105,7 +109,7 @@ jobs:
       
             # Start the new app
             echo "Starting the new application..."
-            nohup java -jar opt/jars/cms-engine-${{ env.VERSION }}.jar > opt/jars/app.log 2>&1 &
+            nohup java -jar opt/jars/cms-engine-${{ env.APP_VERSION }}.jar > opt/jars/app.log 2>&1 &
             if [ $? -eq 0 ]; then
               echo "New application started."
             else

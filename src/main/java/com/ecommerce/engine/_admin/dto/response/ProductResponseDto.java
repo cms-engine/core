@@ -70,7 +70,7 @@ public record ProductResponseDto(
 
     public record Attribute(long id, String value) {
         public Attribute(ProductAttribute attribute) {
-            this(attribute.getAttribute().getId(), attribute.getValue());
+            this(attribute.getAttribute().getId(), attribute.getAttributeValue());
         }
     }
 }

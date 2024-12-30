@@ -39,5 +39,5 @@ public record ProductRequestDto(
 
     public record AdditionalImage(@EntityPresence(EntityType.IMAGE) UUID id, int sortOrder) {}
 
-    public record Attribute(@EntityPresence(EntityType.ATTRIBUTE) long id, @NotBlank String value) {}
+    public record Attribute(@EntityPresence(EntityType.ATTRIBUTE) long id, @NotBlank String attributeValue) {}
 }

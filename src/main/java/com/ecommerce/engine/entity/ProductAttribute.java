@@ -29,11 +29,11 @@ public class ProductAttribute {
     Product product;
 
     @Column(nullable = false)
-    String value;
+    String attributeValue;
 
     public ProductAttribute(ProductRequestDto.Attribute requestDto) {
         attribute = new Attribute(requestDto.id());
-        value = requestDto.value();
+        attributeValue = requestDto.attributeValue();
     }
 
     @Data

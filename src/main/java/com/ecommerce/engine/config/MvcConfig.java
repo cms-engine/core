@@ -21,8 +21,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(@Nonnull ResourceHandlerRegistry registry) {
         String imageDir = engineProperties.getImageDir();
         if (imageDir == null) {
-            imageDir = Path.of(Path.of("").toAbsolutePath().toString(), IMAGES_FOLDER)
-                    .toString();
+            imageDir = Path.of(Path.of("").toAbsolutePath().toString(), IMAGES_FOLDER) + "/";
         }
 
         registry.addResourceHandler(IMAGES_PATTERN)

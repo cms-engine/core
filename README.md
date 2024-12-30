@@ -31,13 +31,14 @@ cd cms-engine
 
 ```bash
 ./gradlew build
-java -jar build/libs/cms-engine-0.0.1.jar
+./gradlew bootRun
 ```
 
-or
-
+### Run with embedded h2 database
+In case you don't want to install PostgreSQL, you can run the project with an embedded database called H2.
 ```bash
-./gradlew bootRun
+./gradlew build
+./gradlew bootRun --args='--spring.profiles.active=h2'
 ```
 
 ## Docker

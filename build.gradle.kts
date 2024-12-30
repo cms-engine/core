@@ -1,7 +1,6 @@
 @file:Suppress("SpellCheckingInspection")
 
 import com.github.gradle.node.npm.task.NpmTask
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 
 plugins {
     java
@@ -9,6 +8,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "6.25.0"
     id("com.github.node-gradle.node") version "7.1.0"
+    id("org.panteleyev.jpackageplugin") version "1.6.0"
 }
 
 group = "com.ecommerce"
@@ -85,6 +85,30 @@ spotless {
     kotlinGradle {
         target("*.gradle.kts")
         ktlint()
+    }
+}
+
+tasks.jpackage {
+    dependsOn("build")
+
+    appName = "CMS Engine"
+    appVersion = project.version.toString()
+    description = "CMS-Engine is a powerful and flexible Content Management System"
+    aboutUrl = "https://github.com/cms-engine/core"
+    licenseFile = "LICENSE"
+    input = "${layout.buildDirectory.get()}/libs"
+    destination = "${layout.buildDirectory.get()}"
+    mainJar = tasks.bootJar.get().archiveFileName.get()
+    icon = "icon.ico"
+    arguments = listOf("--spring.profiles.active=h2", "logging.file.path: ./logs")
+
+    windows {
+        winConsole = true
+        winMenu = true
+        winShortcut = true
+        winShortcutPrompt = true
+        winDirChooser = true
+        winUpdateUrl = "https://github.com/cms-engine"
     }
 }
 

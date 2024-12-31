@@ -105,7 +105,7 @@ tasks.jpackage {
     destination = "${layout.buildDirectory.get()}"
     mainJar = tasks.bootJar.get().archiveFileName.get()
     icon = "icon.ico"
-    arguments = listOf("--spring.profiles.active=h2", "logging.file.path: ./logs")
+    arguments = listOf("--spring.profiles.active=h2", "--logging.file.path=./logs")
 
     windows {
         winConsole = true

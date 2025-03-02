@@ -25,7 +25,6 @@ export default function LoginPage() {
           password,
           "remember-me": rememberMe.toString(),
         }).toString(),
-        credentials: "include",
       });
 
       // Handle response based on status

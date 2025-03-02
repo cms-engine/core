@@ -7,6 +7,9 @@ import com.ecommerce.engine._admin.repository.BackofficeUserRepository;
 import com.ecommerce.engine.exception.handler.CommonAccessDeniedHandler;
 import com.ecommerce.engine.exception.handler.UnauthorizedHandler;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,7 +30,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
+
+    @Value("${engine.fe.unsecure}")
+    private final boolean feUnsecure;
 
     @Bean
     public SecurityFilterChain filterChain(
@@ -35,7 +42,7 @@ public class SecurityConfiguration {
             UnauthorizedHandler unauthorizedHandler,
             CommonAccessDeniedHandler commonAccessDeniedHandler)
             throws Exception {
-        return http.securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher(IMAGES_PATTERN)))
+        http.securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher(IMAGES_PATTERN)))
                 .authorizeHttpRequests(
                         request -> request.requestMatchers("/store/**", "/login*", "/favicon.ico")
                                 .permitAll()
@@ -47,9 +54,13 @@ public class SecurityConfiguration {
                 .exceptionHandling(exHandling -> exHandling.accessDeniedHandler(commonAccessDeniedHandler))
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(unauthorizedHandler))
                 .formLogin(formLogin -> formLogin.loginPage("/login.html").loginProcessingUrl("/login"))
-                .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()))
-                .csrf(AbstractHttpConfigurer::disable) // TODO temporary
-                .build();
+                .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()));
+
+        if (feUnsecure) {
+            http.csrf(AbstractHttpConfigurer::disable);
+        }
+
+        return http.build();
     }
 
     @Bean
@@ -82,6 +93,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(value = "engine.fe.unsecure", havingValue = "true")
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
         configuration.setAllowedOrigins(null);

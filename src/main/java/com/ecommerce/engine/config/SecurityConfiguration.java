@@ -33,7 +33,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    @Value("${engine.fe.unsecure}")
+    @Value("${engine.fe.unsecure:false}")
     private final boolean feUnsecure;
 
     @Bean
@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/actuator/**")
                                 .hasAuthority(Permission.ACTUATOR.getAuthority())
                                 .anyRequest()
-                                .permitAll() // TODO temporary
+                                .authenticated() // TODO temporary
                         )
                 .exceptionHandling(exHandling -> exHandling.accessDeniedHandler(commonAccessDeniedHandler))
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(unauthorizedHandler))

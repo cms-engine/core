@@ -44,17 +44,15 @@ public class SecurityConfiguration {
             CommonAccessDeniedHandler commonAccessDeniedHandler)
             throws Exception {
         http.securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher(IMAGES_PATTERN)))
-                .authorizeHttpRequests(
-                        request -> request.requestMatchers("/store/**", "/favicon.ico")
-                                .permitAll()
-                                .requestMatchers("/actuator/**")
-                                .hasAuthority(Permission.ACTUATOR.getAuthority())
-                                .anyRequest()
-                                .authenticated() // TODO temporary
-                        )
+                .authorizeHttpRequests(request -> request.requestMatchers("/store/**", "/favicon.ico")
+                        .permitAll()
+                        .requestMatchers("/actuator/**")
+                        .hasAuthority(Permission.ACTUATOR.getAuthority())
+                        .anyRequest()
+                        .authenticated())
                 .exceptionHandling(exHandling -> exHandling.accessDeniedHandler(commonAccessDeniedHandler))
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(unauthorizedHandler))
-                .formLogin(formLogin -> formLogin.loginPage("/login.html").loginProcessingUrl("/login").permitAll())
+                .formLogin(Customizer.withDefaults())
                 .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()));
 
         if (feUnsecure) {

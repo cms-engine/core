@@ -169,7 +169,5 @@ tasks.named("copyToFrontend") {
 }
 
 tasks.named("compileJava") {
-    if (project.gradle.startParameter.taskNames.contains("build")) {
-        dependsOn("copyToFrontend")
-    }
+    dependsOn("copyToFrontend")
 }

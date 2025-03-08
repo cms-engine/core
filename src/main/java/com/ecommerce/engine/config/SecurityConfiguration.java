@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -44,7 +45,7 @@ public class SecurityConfiguration {
             throws Exception {
         http.securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher(IMAGES_PATTERN)))
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers("/store/**", "/login*", "/favicon.ico")
+                        request -> request.requestMatchers("/store/**", "/favicon.ico")
                                 .permitAll()
                                 .requestMatchers("/actuator/**")
                                 .hasAuthority(Permission.ACTUATOR.getAuthority())
@@ -53,11 +54,13 @@ public class SecurityConfiguration {
                         )
                 .exceptionHandling(exHandling -> exHandling.accessDeniedHandler(commonAccessDeniedHandler))
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(unauthorizedHandler))
-                .formLogin(formLogin -> formLogin.loginPage("/login.html").loginProcessingUrl("/login"))
+                .formLogin(formLogin -> formLogin.loginPage("/login.html").loginProcessingUrl("/login").permitAll())
                 .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()));
 
         if (feUnsecure) {
             http.csrf(AbstractHttpConfigurer::disable);
+        } else {
+            http.csrf(Customizer.withDefaults());
         }
 
         return http.build();

@@ -1,67 +1,136 @@
-<!DOCTYPE html>
-<html lang="en" data-lt-installed="true">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Login Page">
-    <meta name="author" content="Your Name">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Login Page" />
+    <meta name="author" content="Your Name" />
     <title>Please Sign In</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
     <style>
-        body {
-            background-color: #f8f9fa; /* Light background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full viewport height */
-            margin: 0;
-        }
+      body {
+        background-color: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
 
-        .content {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-            width: 100%;
-            max-width: 400px; /* Max width for the form */
-        }
+      .content {
+        background: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
 
-        h2 {
-            margin-bottom: 20px;
-        }
+      h2 {
+        margin-bottom: 20px;
+      }
 
-        .form-control {
-            margin-bottom: 15px; /* Space between inputs */
-        }
+      .form-control {
+        margin-bottom: 15px;
+      }
 
-        .primary {
-            width: 100%; /* Full width button */
-        }
+      .primary {
+        width: 100%;
+      }
+
+      .message {
+        font-size: 14px;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+      }
+
+      .error-message {
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+      }
+
+      .logout-message {
+        color: #155724;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+      }
     </style>
-</head>
-<body>
-<div class="content">
-    <form class="login-form" method="post" action="/login">
+  </head>
+  <body>
+    <div class="content">
+      <form class="login-form" method="post" action="/login">
         <h2 class="text-center">Please Sign In</h2>
 
+        <!-- Error and Logout message placeholders -->
+        <div id="error-message" class="message error-message">Invalid credentials. Please try again.</div>
+        <div id="logout-message" class="message logout-message">You have been logged out successfully.</div>
+
         <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required
-                   autofocus>
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-control"
+            placeholder="Username"
+            required
+            autofocus
+          />
         </div>
         <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Password" required />
         </div>
         <div class="form-check mb-3">
-            <input type="checkbox" name="remember-me" id="remember-me" class="form-check-input">
-            <label for="remember-me" class="form-check-label">Remember me on this computer.</label>
+          <input type="checkbox" name="remember-me" id="remember-me" class="form-check-input" />
+          <label for="remember-me" class="form-check-label">Remember me on this computer.</label>
         </div>
 
-        <button type="submit" class="btn btn-primary primary">Sign In</button>
-    </form>
-</div>
+        <!-- CSRF Token -->
+        <input type="hidden" name="_csrf" id="csrf-token" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-</body>
+        <button type="submit" class="btn btn-primary primary">Sign In</button>
+      </form>
+    </div>
+
+    <script>
+      // Function to get CSRF token from cookies
+      function getCsrfTokenFromCookie() {
+        const cookies = document.cookie.split('; ');
+        for (let cookie of cookies) {
+          if (cookie.startsWith('XSRF-TOKEN=')) {
+            return decodeURIComponent(cookie.split('=')[1]);
+          }
+        }
+        return null;
+      }
+
+      // Set CSRF token in the form
+      document.addEventListener("DOMContentLoaded", function () {
+        const csrfToken = getCsrfTokenFromCookie();
+        if (csrfToken) {
+          document.getElementById("csrf-token").value = csrfToken;
+        }
+      });
+
+      // Check URL parameters and display the appropriate message
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("error")) {
+        document.getElementById("error-message").style.display = "block";
+      }
+      if (urlParams.has("logout")) {
+        document.getElementById("logout-message").style.display = "block";
+      }
+      // Fetch CSRF token from meta tag and insert into hidden input
+      const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute("content");
+      if (csrfToken) {
+        document.getElementById("csrf-token").value = csrfToken;
+      }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

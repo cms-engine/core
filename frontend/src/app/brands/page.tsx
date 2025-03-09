@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import apiClient from "@/utils/axiosInstance";
 import {
   Container,
   Typography,
@@ -31,26 +32,16 @@ export default function BrandsPage() {
   const fetchBrands = async (page: number) => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || ""}/admin/brands/search`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          page: page,
-          size: pageSize,
-          sorts: [], // Add any sorting options if needed
-          filters: [], // Add any filters if needed
-        }),
+      const response = await apiClient.post("/admin/brands/search", {
+        page: page,
+        size: pageSize,
+        sorts: [],
+        filters: [],
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-      setBrands(data.data);
-      setTotalElements(data.totalElements);
+      const responseData = response.data;
+      setBrands(responseData.data);
+      setTotalElements(responseData.totalElements);
     } catch (error) {
       console.error("Error fetching brands:", error);
     } finally {

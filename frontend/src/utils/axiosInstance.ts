@@ -17,7 +17,7 @@ const apiClient = isDevelopment
       headers: {
         "Content-Type": "application/json",
       },
-      withCredentials: true
-  });
+      withCredentials: true,
+    });
 
 export default apiClient;

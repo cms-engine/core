@@ -35,10 +35,21 @@ cd cms-engine
 ```
 
 ### Run with embedded h2 database
+
 In case you don't want to install PostgreSQL, you can run the project with an embedded database called H2.
+
 ```bash
 ./gradlew build
 ./gradlew bootRun --args='--spring.profiles.active=h2'
+```
+
+### Run BE for FE developing
+
+It allows `localhost` pattern in CORS configuration
+
+```bash
+./gradlew build
+./gradlew bootRun --args='--spring.profiles.active=fedev'
 ```
 
 ## Docker

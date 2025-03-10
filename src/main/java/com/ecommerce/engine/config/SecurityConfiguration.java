@@ -8,10 +8,9 @@ import com.ecommerce.engine.exception.handler.CommonAccessDeniedHandler;
 import com.ecommerce.engine.exception.handler.UnauthorizedHandler;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,8 +22,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
@@ -36,16 +33,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    @Value("${engine.fe.unsecure:false}")
-    private final boolean feUnsecure;
-
     @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http,
             UnauthorizedHandler unauthorizedHandler,
             CommonAccessDeniedHandler commonAccessDeniedHandler)
             throws Exception {
-        http.securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher(IMAGES_PATTERN)))
+        return http.securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher(IMAGES_PATTERN)))
                 .authorizeHttpRequests(request -> request.requestMatchers("/store/**", "/favicon.ico")
                         .permitAll()
                         .requestMatchers("/actuator/**")
@@ -55,16 +49,9 @@ public class SecurityConfiguration {
                 .exceptionHandling(exHandling -> exHandling.accessDeniedHandler(commonAccessDeniedHandler))
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(unauthorizedHandler))
                 .formLogin(Customizer.withDefaults())
-                .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()));
-
-        if (feUnsecure) {
-            http.csrf(AbstractHttpConfigurer::disable);
-        } else {
-            http.csrf((csrf) -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()));
-        }
-
-        return http.build();
+                .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .build();
     }
 
     @Bean
@@ -97,11 +84,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "engine.fe.unsecure", havingValue = "true")
+    @Profile("fedev")
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-        configuration.setAllowedOrigins(null);
-        configuration.setAllowedOriginPatterns(List.of(CorsConfiguration.ALL));
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:[*]"));
+        configuration.setAllowedHeaders(List.of(CorsConfiguration.ALL));
+        configuration.setAllowedMethods(List.of(CorsConfiguration.ALL));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

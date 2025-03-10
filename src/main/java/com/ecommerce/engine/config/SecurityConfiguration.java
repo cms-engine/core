@@ -7,8 +7,11 @@ import com.ecommerce.engine._admin.repository.BackofficeUserRepository;
 import com.ecommerce.engine.exception.handler.CommonAccessDeniedHandler;
 import com.ecommerce.engine.exception.handler.UnauthorizedHandler;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     @Bean
@@ -36,19 +40,17 @@ public class SecurityConfiguration {
             CommonAccessDeniedHandler commonAccessDeniedHandler)
             throws Exception {
         return http.securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher(IMAGES_PATTERN)))
-                .authorizeHttpRequests(
-                        request -> request.requestMatchers("/store/**", "/login*", "/favicon.ico")
-                                .permitAll()
-                                .requestMatchers("/actuator/**")
-                                .hasAuthority(Permission.ACTUATOR.getAuthority())
-                                .anyRequest()
-                                .permitAll() // TODO temporary
-                        )
+                .authorizeHttpRequests(request -> request.requestMatchers("/store/**", "/favicon.ico")
+                        .permitAll()
+                        .requestMatchers("/actuator/**")
+                        .hasAuthority(Permission.ACTUATOR.getAuthority())
+                        .anyRequest()
+                        .authenticated())
                 .exceptionHandling(exHandling -> exHandling.accessDeniedHandler(commonAccessDeniedHandler))
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(unauthorizedHandler))
-                .formLogin(formLogin -> formLogin.loginPage("/login.html").loginProcessingUrl("/login"))
+                .formLogin(Customizer.withDefaults())
                 .rememberMe(rememberMe -> rememberMe.rememberMeServices(new SpringSessionRememberMeServices()))
-                .csrf(AbstractHttpConfigurer::disable) // TODO temporary
+                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 
@@ -82,10 +84,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    @Profile("fedev")
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-        configuration.setAllowedOrigins(null);
-        configuration.setAllowedOriginPatterns(List.of(CorsConfiguration.ALL));
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:[*]"));
+        configuration.setAllowedHeaders(List.of(CorsConfiguration.ALL));
+        configuration.setAllowedMethods(List.of(CorsConfiguration.ALL));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

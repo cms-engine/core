@@ -169,5 +169,7 @@ tasks.named("copyToFrontend") {
 }
 
 tasks.named("compileJava") {
-    dependsOn("copyToFrontend")
+    if (!project.hasProperty("withoutFe")) {
+        dependsOn("copyToFrontend")
+    }
 }

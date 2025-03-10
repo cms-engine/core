@@ -1,13 +1,13 @@
 @file:Suppress("SpellCheckingInspection")
 
-import com.github.gradle.node.npm.task.NpmTask
+import org.gradle.api.file.ArchiveOperations
+import java.net.URI
 
 plugins {
     java
     id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "6.25.0"
-    id("com.github.node-gradle.node") version "7.1.0"
     id("org.panteleyev.jpackageplugin") version "1.6.0"
 }
 
@@ -117,59 +117,81 @@ tasks.jpackage {
     }
 }
 
-val feFolder = "${project.projectDir}/frontend"
+abstract class DownloadNextJsTask
+    @Inject
+    constructor(
+        private val archiveOperations: ArchiveOperations,
+        private val fileSystemOperations: FileSystemOperations,
+    ) : DefaultTask() {
+        @get:OutputDirectory
+        abstract val outputDir: DirectoryProperty
 
-node {
-    // node modules directory
-    nodeProjectDir = file(feFolder)
-}
+        @get:OutputFile
+        abstract val cacheFile: RegularFileProperty
 
-tasks.register<NpmTask>("appNpmInstall") {
-    description = "Reads package.json and installs all dependencies"
-    workingDir = file(feFolder)
-    args = listOf("install")
+        @get:InputDirectory
+        abstract val buildDirectory: DirectoryProperty
 
-    inputs.file("$feFolder/package.json")
-    outputs.dir("$feFolder/node_modules")
-}
+        @TaskAction
+        fun downloadAndExtract() {
+            val apiUrl = "https://api.github.com/repos/cms-engine/admin-ui/releases/latest"
 
-tasks.register<NpmTask>("appNpmBuild") {
-    description = "Builds application for your frontend"
-    workingDir = file(feFolder)
-    args = listOf("run", "build")
+            // Fetch release info from GitHub API
+            val json = URI(apiUrl).toURL().readText()
+            val regex = """"browser_download_url":\s*"([^"]*nextjs-out-[\d.]+.tar.gz)"""".toRegex()
+            val match = regex.find(json) ?: throw GradleException("Next.js release URL not found")
 
-    inputs.dir(
-        fileTree(feFolder) {
-            exclude("out/**", ".next/**", "*.md")
-        },
-    )
-    outputs.dir("$feFolder/out")
-}
+            val downloadUrl = match.groupValues[1]
+            val versionRegex = """nextjs-out-([\d.]+).tar.gz""".toRegex()
+            val versionMatch = versionRegex.find(downloadUrl) ?: throw GradleException("Cannot extract version")
 
-tasks.register<Copy>("copyToFrontend") {
-    val publicDir = "${layout.buildDirectory.get()}/resources/main/public"
+            val nextJsVersion = versionMatch.groupValues[1]
+            val previousVersion = cacheFile.asFile.get().takeIf { it.exists() }?.readText()
 
-    doFirst {
-        delete(publicDir)
+            val extractedDir = buildDirectory.get().asFile
+
+            // Skip download if version is unchanged
+            if (previousVersion == nextJsVersion) {
+                println("✅ Next.js is up-to-date ($nextJsVersion), skipping download")
+                extractedDir.deleteRecursively()
+                return
+            }
+
+            // Download Next.js archive
+            val archiveFile = buildDirectory.file("nextjs-out.tar.gz").get().asFile
+            println("⬇️ Downloading Next.js version $nextJsVersion from $downloadUrl")
+            archiveFile.writeBytes(URI(downloadUrl).toURL().readBytes())
+
+            // Extract with tarTree
+            fileSystemOperations.copy {
+                from(archiveOperations.tarTree(archiveFile))
+                into(extractedDir) // Extract to the build directory
+            }
+
+            // Move all files from the "out" folder to the public directory
+            val outFolder = File(extractedDir, "out")
+            if (outFolder.exists() && outFolder.isDirectory) {
+                outFolder.copyRecursively(outputDir.get().asFile, overwrite = true) // Copy all files to the public directory
+                extractedDir.deleteRecursively() // Optionally delete the "out" folder after copying
+            }
+
+            // Cache the downloaded version
+            cacheFile.asFile.get().writeText(nextJsVersion)
+            println("✅ Next.js $nextJsVersion extracted to ${outputDir.get().asFile}")
+        }
     }
 
-    from("$feFolder/out")
-    into(publicDir)
+// Register the task
+tasks.register<DownloadNextJsTask>("downloadNextJs") {
+    // Set the output directory and cache file
+    outputDir.set(layout.buildDirectory.dir("resources/main/public"))
+    cacheFile.set(layout.buildDirectory.file("nextjs-version.txt"))
 
-    inputs.dir("$feFolder/out")
-    outputs.dir(publicDir)
+    val nextjsDir = layout.buildDirectory.dir("nextjs-out")
+    nextjsDir.get().asFile.mkdirs()
+    buildDirectory.set(nextjsDir)
 }
 
-tasks.named("appNpmBuild") {
-    dependsOn("appNpmInstall")
-}
-
-tasks.named("copyToFrontend") {
-    dependsOn("appNpmBuild")
-}
-
-tasks.named("compileJava") {
-    if (!project.hasProperty("withoutFe")) {
-        dependsOn("copyToFrontend")
-    }
+tasks.named("classes").configure {
+    finalizedBy("downloadNextJs")
 }

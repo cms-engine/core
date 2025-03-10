@@ -193,5 +193,5 @@ tasks.register<DownloadNextJsTask>("downloadNextJs") {
 }
 
 tasks.named("classes").configure {
-    finalizedBy("downloadNextJs")
+    dependsOn("downloadNextJs")
 }

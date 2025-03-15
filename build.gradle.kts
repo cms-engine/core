@@ -181,15 +181,13 @@ abstract class DownloadNextJsTask
         }
     }
 
-// Register the task
 tasks.register<DownloadNextJsTask>("downloadNextJs") {
     val nextjsDir = layout.buildDirectory.dir("nextjs-out")
     nextjsDir.get().asFile.mkdirs()
 
-    // Set the output directory and cache file
     buildDirectory.set(nextjsDir)
     cacheFile.set(nextjsDir.get().file("nextjs-version.txt"))
-    outputDir.set(layout.buildDirectory.dir("resources/main/public"))
+    outputDir.set(layout.buildDirectory.dir("resources/main/public/admin"))
 }
 
 tasks.named("classes").configure {

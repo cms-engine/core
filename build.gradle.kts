@@ -153,7 +153,6 @@ abstract class DownloadNextJsTask
             // Skip download if version is unchanged
             if (previousVersion == nextJsVersion) {
                 println("✅ Next.js is up-to-date ($nextJsVersion), skipping download")
-                extractedDir.deleteRecursively()
                 return
             }
 
@@ -172,7 +171,8 @@ abstract class DownloadNextJsTask
             val outFolder = File(extractedDir, "out")
             if (outFolder.exists() && outFolder.isDirectory) {
                 outFolder.copyRecursively(outputDir.get().asFile, overwrite = true) // Copy all files to the public directory
-                extractedDir.deleteRecursively() // Optionally delete the "out" folder after copying
+                archiveFile.delete()
+                outFolder.deleteRecursively() // Optionally delete the "out" folder after copying
             }
 
             // Cache the downloaded version
@@ -183,15 +183,15 @@ abstract class DownloadNextJsTask
 
 // Register the task
 tasks.register<DownloadNextJsTask>("downloadNextJs") {
-    // Set the output directory and cache file
-    outputDir.set(layout.buildDirectory.dir("resources/main/public"))
-    cacheFile.set(layout.buildDirectory.file("nextjs-version.txt"))
-
     val nextjsDir = layout.buildDirectory.dir("nextjs-out")
     nextjsDir.get().asFile.mkdirs()
+
+    // Set the output directory and cache file
     buildDirectory.set(nextjsDir)
+    cacheFile.set(nextjsDir.get().file("nextjs-version.txt"))
+    outputDir.set(layout.buildDirectory.dir("resources/main/public"))
 }
 
 tasks.named("classes").configure {
-    finalizedBy("downloadNextJs")
+    dependsOn("downloadNextJs")
 }

@@ -48,7 +48,7 @@ In case you don't want to install PostgreSQL, you can run the project with an em
 It allows `localhost` pattern in CORS configuration
 
 ```bash
-./gradlew build -PwithoutFe
+./gradlew build
 ./gradlew bootRun --args='--spring.profiles.active=fedev'
 ```
 

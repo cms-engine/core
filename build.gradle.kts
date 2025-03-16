@@ -176,3 +176,22 @@ tasks.register<DownloadNextJsTask>("downloadNextJs") {
 tasks.named("classes").configure {
     dependsOn("downloadNextJs")
 }
+
+tasks.register("forceUpdateNextJs") {
+    doLast {
+        val cacheFile = layout.buildDirectory.file("nextjs-version.txt").get().asFile
+        val outputDir = layout.buildDirectory.dir("resources/main/public/admin").get().asFile
+
+        if (cacheFile.exists()) {
+            cacheFile.delete()
+            println("🗑️ Deleted cache file: ${cacheFile.absolutePath}")
+        }
+
+        if (outputDir.exists()) {
+            outputDir.deleteRecursively()
+            println("🗑️ Deleted output directory: ${outputDir.absolutePath}")
+        }
+    }
+}.configure {
+    finalizedBy("downloadNextJs") // Ensure downloadNextJs runs after cleaning
+}

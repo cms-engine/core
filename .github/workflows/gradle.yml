@@ -33,25 +33,6 @@ jobs:
 #      - name: Install WiX Toolset
 #        run: dotnet tool install --global wix
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.12
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Next.js cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ${{ github.workspace }}/frontend/.next/cache
-          # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
-          # If source files changed but packages didn't, rebuild from a prior cache.
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 

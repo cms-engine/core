@@ -117,7 +117,7 @@ tasks.jpackage {
     }
 }
 
-abstract class DownloadNextJsTask
+abstract class DownloadAdminUiTask
     @Inject
     constructor(
         private val archiveOperations: ArchiveOperations,
@@ -136,17 +136,17 @@ abstract class DownloadNextJsTask
             // Fetch release info from GitHub API
             val json = URI(apiUrl).toURL().readText()
             val regex = """"browser_download_url":\s*"([^"]*nextjs-out-[\d.]+.tar.gz)"""".toRegex()
-            val match = regex.find(json) ?: throw GradleException("Next.js release URL not found")
+            val match = regex.find(json) ?: throw GradleException("Admin UI release URL not found")
 
             val downloadUrl = match.groupValues[1]
             val versionRegex = """nextjs-out-([\d.]+).tar.gz""".toRegex()
             val versionMatch = versionRegex.find(downloadUrl) ?: throw GradleException("Cannot extract version")
 
-            val nextJsVersion = versionMatch.groupValues[1]
+            val adminUiVersion = versionMatch.groupValues[1]
 
-            // Download Next.js archive
+            // Download Admin UI archive
             val archiveFile = temporaryDir.resolve("nextjs-out.tar.gz")
-            println("⬇️ Downloading Next.js version $nextJsVersion from $downloadUrl")
+            println("⬇️ Downloading Admin UI version $adminUiVersion from $downloadUrl")
             archiveFile.writeBytes(URI(downloadUrl).toURL().readBytes())
 
             // Extract with tarTree
@@ -163,23 +163,23 @@ abstract class DownloadNextJsTask
             }
 
             // Cache the downloaded version
-            cacheFile.asFile.get().writeText(nextJsVersion)
-            println("✅ Next.js $nextJsVersion extracted to ${outputDir.get().asFile}")
+            cacheFile.asFile.get().writeText(adminUiVersion)
+            println("✅ Admin UI $adminUiVersion extracted to ${outputDir.get().asFile}")
         }
     }
 
-tasks.register<DownloadNextJsTask>("downloadNextJs") {
-    cacheFile.set(layout.buildDirectory.file("nextjs-version.txt"))
+tasks.register<DownloadAdminUiTask>("downloadAdminUi") {
+    cacheFile.set(layout.buildDirectory.file("admin-ui-version.txt"))
     outputDir.set(layout.buildDirectory.dir("resources/main/public/admin"))
 }
 
 tasks.named("classes").configure {
-    dependsOn("downloadNextJs")
+    dependsOn("downloadAdminUi")
 }
 
-tasks.register("forceUpdateNextJs") {
+tasks.register("forceUpdateAdminUi") {
     doLast {
-        val cacheFile = layout.buildDirectory.file("nextjs-version.txt").get().asFile
+        val cacheFile = layout.buildDirectory.file("admin-ui-version.txt").get().asFile
         val outputDir = layout.buildDirectory.dir("resources/main/public/admin").get().asFile
 
         if (cacheFile.exists()) {
@@ -193,5 +193,5 @@ tasks.register("forceUpdateNextJs") {
         }
     }
 }.configure {
-    finalizedBy("downloadNextJs") // Ensure downloadNextJs runs after cleaning
+    finalizedBy("downloadAdminUi")
 }

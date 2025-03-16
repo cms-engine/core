@@ -129,9 +129,6 @@ abstract class DownloadNextJsTask
         @get:OutputFile
         abstract val cacheFile: RegularFileProperty
 
-        @get:InputDirectory
-        abstract val buildDirectory: DirectoryProperty
-
         @TaskAction
         fun downloadAndExtract() {
             val apiUrl = "https://api.github.com/repos/cms-engine/admin-ui/releases/latest"
@@ -146,32 +143,22 @@ abstract class DownloadNextJsTask
             val versionMatch = versionRegex.find(downloadUrl) ?: throw GradleException("Cannot extract version")
 
             val nextJsVersion = versionMatch.groupValues[1]
-            val previousVersion = cacheFile.asFile.get().takeIf { it.exists() }?.readText()
-
-            val extractedDir = buildDirectory.get().asFile
-
-            // Skip download if version is unchanged
-            if (previousVersion == nextJsVersion) {
-                println("✅ Next.js is up-to-date ($nextJsVersion), skipping download")
-                return
-            }
 
             // Download Next.js archive
-            val archiveFile = buildDirectory.file("nextjs-out.tar.gz").get().asFile
+            val archiveFile = temporaryDir.resolve("nextjs-out.tar.gz")
             println("⬇️ Downloading Next.js version $nextJsVersion from $downloadUrl")
             archiveFile.writeBytes(URI(downloadUrl).toURL().readBytes())
 
             // Extract with tarTree
             fileSystemOperations.copy {
                 from(archiveOperations.tarTree(archiveFile))
-                into(extractedDir) // Extract to the build directory
+                into(temporaryDir) // Extract to the build directory
             }
 
             // Move all files from the "out" folder to the public directory
-            val outFolder = File(extractedDir, "out")
+            val outFolder = File(temporaryDir, "out")
             if (outFolder.exists() && outFolder.isDirectory) {
                 outFolder.copyRecursively(outputDir.get().asFile, overwrite = true) // Copy all files to the public directory
-                archiveFile.delete()
                 outFolder.deleteRecursively() // Optionally delete the "out" folder after copying
             }
 
@@ -182,11 +169,7 @@ abstract class DownloadNextJsTask
     }
 
 tasks.register<DownloadNextJsTask>("downloadNextJs") {
-    val nextjsDir = layout.buildDirectory.dir("nextjs-out")
-    nextjsDir.get().asFile.mkdirs()
-
-    buildDirectory.set(nextjsDir)
-    cacheFile.set(nextjsDir.get().file("nextjs-version.txt"))
+    cacheFile.set(layout.buildDirectory.file("nextjs-version.txt"))
     outputDir.set(layout.buildDirectory.dir("resources/main/public/admin"))
 }
 
